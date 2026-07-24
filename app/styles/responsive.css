@@ -87,6 +87,13 @@
   .gallery-main-frame { height: 250px !important; }
   .detail-title { font-size: 1.35rem !important; }
   .detail-price-current { font-size: 1.6rem !important; }
+
+  /* Gift Page Mobile Optimizations */
+  .hero-btn-row { flex-direction: column !important; align-items: stretch !important; gap: 12px !important; }
+  .hero-btn-row > * { width: 100% !important; justify-content: center !important; text-align: center; }
+  .hero-title-text { font-size: 28px !important; line-height: 1.25 !important; }
+  .hero-subtitle-text { font-size: 14px !important; line-height: 1.5 !important; }
+  .gift-section-padding { padding: 24px 0 !important; }
 }
 
 @media (max-width: 390px) {
