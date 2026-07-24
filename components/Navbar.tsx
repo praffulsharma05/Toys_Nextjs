@@ -12,7 +12,7 @@ function NavbarContent({ onSearch }: { onSearch?: (query: string) => void }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [categoryDropdownOpen, setCategoryDropdownOpen] = useState(false);
   const [query, setQuery] = useState('');
-  const [wishlistCount, setWishlistCount] = useState(() => typeof window !== 'undefined' ? getWishlistFromCookies().length : 0);
+  const [wishlistCount, setWishlistCount] = useState(0);
 
   const categoryRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
@@ -20,12 +20,18 @@ function NavbarContent({ onSearch }: { onSearch?: (query: string) => void }) {
   const searchParams = useSearchParams();
 
   useEffect(() => {
+    // Set actual count after hydration asynchronously on client mount
+    const timer = setTimeout(() => {
+      setWishlistCount(getWishlistFromCookies().length);
+    }, 0);
+
     const handleWishlistUpdate = () => {
       setWishlistCount(getWishlistFromCookies().length);
     };
 
     window.addEventListener('wishlist-updated', handleWishlistUpdate);
     return () => {
+      clearTimeout(timer);
       window.removeEventListener('wishlist-updated', handleWishlistUpdate);
     };
   }, []);
