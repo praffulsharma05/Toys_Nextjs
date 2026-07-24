@@ -96,6 +96,11 @@
   .hero-title-text { font-size: 28px !important; line-height: 1.25 !important; }
   .hero-subtitle-text { font-size: 14px !important; line-height: 1.5 !important; }
   .gift-section-padding { padding: 24px 0 !important; }
+
+  /* Empty state card mobile adjustments */
+  .grid-empty-card, .admin-empty-card { padding: 24px 16px !important; border-radius: 20px !important; margin: 12px auto !important; max-width: 100% !important; }
+  .lottie-container-wrap { max-width: 160px !important; height: 160px !important; margin-bottom: 8px !important; }
+  .grid-empty-title { font-size: 20px !important; }
 }
 
 @media (max-width: 390px) {

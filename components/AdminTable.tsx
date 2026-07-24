@@ -16,10 +16,14 @@ export default function AdminTable({ products, loading, onDelete, onToggleBestSe
   if (products.length === 0) {
     return (
       <div className="admin-empty-card">
+        <div className="lottie-container-wrap">
+          {/* @ts-expect-error - dotlottie-player is a third-party custom element loaded via CDN */}
+          <dotlottie-player src="https://assets-v2.lottiefiles.com/a/e92c8698-1151-11ee-ab0a-f7211d47ac6f/f9et4o6xEv.lottie" background="transparent" speed="1" className="empty-lottie-player" loop autoplay></dotlottie-player>
+        </div>
         <p className="admin-empty-text">
           No products found in MySQL database. Use &quot;Add New Toy&quot; to add products from the admin panel.
         </p>
-        <Link href="/admin/add" className="btn-primary-toyjoy">
+        <Link href="/admin/add" className="btn-primary-toyjoy btn-admin-add">
           <span className="material-symbols-outlined">add</span>
           <span>Add Your First Toy Product</span>
         </Link>

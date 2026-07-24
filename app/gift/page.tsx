@@ -61,14 +61,13 @@ export default async function GiftPage() {
           </div>
 
           {dbGifts.length === 0 ? (
-            <div className="catalog-empty-wrap">
-              <div className="catalog-empty-icon-wrap">
-                <span className="material-symbols-outlined catalog-empty-icon">
-                  featured_seasonal
-                </span>
+            <div className="grid-empty-card">
+              <div className="lottie-container-wrap">
+                {/* @ts-expect-error - dotlottie-player is a third-party custom element loaded via CDN */}
+                <dotlottie-player src="https://assets-v2.lottiefiles.com/a/e92c8698-1151-11ee-ab0a-f7211d47ac6f/f9et4o6xEv.lottie" background="transparent" speed="1" className="empty-lottie-player" loop autoplay></dotlottie-player>
               </div>
-              <h2 className="catalog-empty-title">No Gifts Found</h2>
-              <p className="catalog-empty-text">
+              <h2 className="grid-empty-title">No Gifts Found</h2>
+              <p className="grid-empty-subtitle">
                 Add toys with category &apos;Gift&apos; from your Admin Panel to populate your gift catalog!
               </p>
               <Link href="/admin" className="btn-primary-toyjoy btn-clear-empty-state bouncy-btn">

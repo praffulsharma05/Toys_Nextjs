@@ -24,6 +24,7 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
           rel="stylesheet"
         />
+        <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module" async></script>
       </head>
       <body className="bg-surface text-on-surface font-body-md selection:bg-secondary-container selection:text-on-secondary-container">
         {children}
