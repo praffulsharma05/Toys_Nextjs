@@ -1,8 +1,7 @@
 import Link from 'next/link';
-import { Sparkles, PlusCircle, LayoutDashboard, ExternalLink, Package, Shield } from 'lucide-react';
 
 export const metadata = {
-  title: 'Admin Panel | ToyVerse Inventory Management',
+  title: 'Toy Joy Admin | Inventory Management',
 };
 
 export default function AdminLayout({
@@ -11,73 +10,61 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: '#0b0f17' }}>
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: 'var(--color-surface)' }}>
       {/* Admin Header */}
       <header
         style={{
           position: 'sticky',
           top: 0,
           zIndex: 100,
-          background: 'rgba(17, 24, 39, 0.95)',
-          backdropFilter: 'blur(16px)',
-          borderBottom: '1px solid var(--border-color)',
+          background: '#ffffff',
+          boxShadow: '0 2px 10px rgba(0, 0, 0, 0.05)',
+          borderBottom: '1px solid var(--color-outline-variant)',
         }}
       >
-        <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1rem 1.5rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-            <Link href="/admin" className="brand-logo" style={{ fontSize: '1.4rem' }}>
-              <Shield className="w-6 h-6 text-red-500" />
-              <span>ToyVerse Admin</span>
+        <div className="container-max" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '80px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <Link href="/admin" className="brand-logo-toyjoy">
+              <span className="material-symbols-outlined" style={{ fontSize: '32px', color: 'var(--color-primary)' }}>
+                shield
+              </span>
+              <span className="brand-title" style={{ fontSize: '24px' }}>Toy Joy Admin</span>
             </Link>
             <span
               style={{
-                background: 'rgba(0, 180, 216, 0.15)',
-                color: 'var(--accent-tertiary)',
-                fontSize: '0.75rem',
+                background: 'var(--color-surface-container-highest)',
+                color: 'var(--color-primary)',
+                fontSize: '12px',
                 fontWeight: '700',
-                padding: '3px 10px',
-                borderRadius: 'var(--radius-pill)',
+                padding: '4px 10px',
+                borderRadius: '9999px',
               }}
             >
-              MySQL Active
+              MySQL Connected
             </span>
           </div>
 
-          <nav style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-            <Link
-              href="/admin"
-              className="btn-admin"
-              style={{ padding: '0.55rem 1rem' }}
-            >
-              <LayoutDashboard className="w-4 h-4" />
-              <span>Manage Products</span>
+          <nav style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <Link href="/admin" className="nav-link-active">
+              Manage Products
             </Link>
 
-            <Link
-              href="/admin/add"
-              className="btn-primary"
-              style={{ padding: '0.55rem 1.1rem', fontSize: '0.88rem' }}
-            >
-              <PlusCircle className="w-4 h-4" />
+            <Link href="/admin/add" className="btn-primary-toyjoy">
+              <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>add_circle</span>
               <span>Add New Toy</span>
             </Link>
 
-            <Link
-              href="/"
-              target="_blank"
-              className="btn-admin"
-              style={{ padding: '0.55rem 1rem', borderColor: 'rgba(255, 183, 3, 0.4)' }}
-            >
-              <ExternalLink className="w-4 h-4 text-yellow-400" />
-              <span>View Storefront</span>
+            <Link href="/" target="_blank" className="btn-whatsapp-toyjoy" style={{ padding: '8px 16px', fontSize: '13px', background: 'var(--color-surface-container-highest)', color: 'var(--color-on-surface)' }}>
+              <span className="material-symbols-outlined" style={{ fontSize: '18px', color: 'var(--color-primary)' }}>open_in_new</span>
+              <span>Storefront</span>
             </Link>
           </nav>
         </div>
       </header>
 
       {/* Main Admin Body */}
-      <main style={{ flex: 1, padding: '2rem 0' }}>
-        <div className="container">{children}</div>
+      <main style={{ flex: 1, padding: '32px 0' }}>
+        <div className="container-max">{children}</div>
       </main>
     </div>
   );

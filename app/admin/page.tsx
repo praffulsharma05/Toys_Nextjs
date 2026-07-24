@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { ProductType, CATEGORIES } from '@/lib/products';
 import AdminStats from '@/components/AdminStats';
 import AdminTable from '@/components/AdminTable';
-import { Plus, Search, CheckCircle, AlertCircle } from 'lucide-react';
 
 export default function AdminDashboard() {
   const [products, setProducts] = useState<ProductType[]>([]);
@@ -80,42 +79,42 @@ export default function AdminDashboard() {
 
   return (
     <div>
-      <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '1.5rem', marginBottom: '2rem' }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '24px', marginBottom: '32px' }}>
         <div>
-          <h1 style={{ fontSize: '2rem', fontWeight: '800', color: 'var(--text-main)', marginBottom: '0.4rem' }}>
+          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '32px', fontWeight: '700', color: 'var(--color-on-surface)', marginBottom: '8px' }}>
             Product Inventory Management
           </h1>
-          <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>
+          <p style={{ color: 'var(--color-on-surface-variant)', fontSize: '15px' }}>
             Add, update pricing, set categories, toggle best sellers, and manage toy stock directly in MySQL.
           </p>
         </div>
 
         <div>
           <Link href="/admin/add" className="btn-primary-toyjoy">
-            <Plus className="w-4 h-4" />
+            <span className="material-symbols-outlined">add</span>
             <span>Add New Toy</span>
           </Link>
         </div>
       </div>
 
       {statusMsg && (
-        <div style={{ padding: '1rem 1.25rem', borderRadius: 'var(--radius-md)', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.75rem', background: statusMsg.type === 'success' ? 'rgba(37, 211, 102, 0.15)' : 'rgba(255, 82, 82, 0.15)', border: `1px solid ${statusMsg.type === 'success' ? 'rgba(37, 211, 102, 0.4)' : 'rgba(255, 82, 82, 0.4)'}`, color: statusMsg.type === 'success' ? '#25d366' : '#ff5252', fontWeight: '600' }}>
-          {statusMsg.type === 'success' ? <CheckCircle className="w-5 h-5" /> : <AlertCircle className="w-5 h-5" />}
+        <div style={{ padding: '16px 20px', borderRadius: '16px', marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '12px', background: statusMsg.type === 'success' ? 'rgba(37, 211, 102, 0.15)' : 'rgba(186, 26, 26, 0.15)', color: statusMsg.type === 'success' ? '#20ba59' : '#ba1a1a', fontWeight: '700' }}>
+          <span className="material-symbols-outlined">{statusMsg.type === 'success' ? 'check_circle' : 'error'}</span>
           <span>{statusMsg.text}</span>
         </div>
       )}
 
       <AdminStats products={products} />
 
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem' }}>
-        <div className="search-box" style={{ maxWidth: '360px' }}>
-          <Search className="search-icon w-4 h-4" />
-          <input type="text" className="search-input" placeholder="Search toy..." value={search} onChange={(e) => setSearch(e.target.value)} />
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px' }}>
+        <div style={{ position: 'relative', width: '320px' }}>
+          <span className="material-symbols-outlined" style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', color: 'var(--color-primary)', fontSize: '20px' }}>search</span>
+          <input type="text" className="admin-input" placeholder="Search toy by name..." value={search} onChange={(e) => setSearch(e.target.value)} style={{ paddingLeft: '44px', borderRadius: '9999px' }} />
         </div>
 
-        <div style={{ display: 'flex', gap: '0.5rem', overflowX: 'auto', paddingBottom: '0.25rem' }}>
+        <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '4px' }}>
           {CATEGORIES.map((cat) => (
-            <button key={cat} onClick={() => setSelectedCategory(cat)} className={`category-chip ${selectedCategory === cat ? 'active' : ''}`} style={{ fontSize: '0.82rem', padding: '0.4rem 1rem' }}>
+            <button key={cat} onClick={() => setSelectedCategory(cat)} className="bouncy-btn" style={{ padding: '8px 16px', borderRadius: '9999px', border: 'none', background: selectedCategory === cat ? 'var(--color-primary)' : 'var(--color-surface-container-highest)', color: selectedCategory === cat ? '#ffffff' : 'var(--color-on-surface-variant)', fontWeight: '700', fontSize: '13px', cursor: 'pointer' }}>
               {cat}
             </button>
           ))}
