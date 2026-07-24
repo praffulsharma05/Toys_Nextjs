@@ -107,7 +107,6 @@
   box-shadow: var(--plush-shadow);
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 20px;
   border: 1px solid var(--color-outline-variant);
 }
