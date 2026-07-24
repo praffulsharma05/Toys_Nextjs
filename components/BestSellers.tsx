@@ -6,11 +6,10 @@ interface BestSellersProps {
 }
 
 export default function BestSellers({ products }: BestSellersProps) {
-  // Filter products marked as isBestSeller, or fallback to first items if none marked yet
+  // Filter products marked as isBestSeller (only show items with isBestSeller badge)
   const bestSellers = products.filter((p) => p.isBestSeller);
-  const displayItems = bestSellers.length > 0 ? bestSellers : products.slice(0, 4);
 
-  if (products.length === 0) return null;
+  if (bestSellers.length === 0) return null;
 
   return (
     <section className="bestsellers-section">
@@ -37,8 +36,8 @@ export default function BestSellers({ products }: BestSellersProps) {
       </div>
 
       <div className="toy-grid">
-        {displayItems.map((product) => (
-          <ProductCard key={product.id} product={{ ...product, isBestSeller: true }} />
+        {bestSellers.map((product) => (
+          <ProductCard key={product.id} product={product} />
         ))}
       </div>
     </section>

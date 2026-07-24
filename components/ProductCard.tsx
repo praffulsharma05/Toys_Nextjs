@@ -12,12 +12,10 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product, onWishlistToggle }: ProductCardProps) {
-  const [isWishlisted, setIsWishlisted] = useState(false);
+  const [isWishlisted, setIsWishlisted] = useState(() => typeof window !== 'undefined' ? isWishlistedInCookies(product.id) : false);
   const router = useRouter();
 
   useEffect(() => {
-    setIsWishlisted(isWishlistedInCookies(product.id));
-
     const handleWishlistUpdate = () => {
       setIsWishlisted(isWishlistedInCookies(product.id));
     };
@@ -68,8 +66,7 @@ export default function ProductCard({ product, onWishlistToggle }: ProductCardPr
           title={isWishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
         >
           <span
-            className={`material-symbols-outlined ${isWishlisted ? 'toy-card-heart-icon-active' : 'toy-card-heart-icon-inactive'}`}
-            style={{ fontVariationSettings: isWishlisted ? "'FILL' 1" : "'FILL' 0" }}
+            className={`material-symbols-outlined ${isWishlisted ? 'toy-card-heart-icon-active icon-filled' : 'toy-card-heart-icon-inactive icon-outlined'}`}
           >
             favorite
           </span>
@@ -96,7 +93,7 @@ export default function ProductCard({ product, onWishlistToggle }: ProductCardPr
 
         {product.images && product.images.length > 1 && (
           <div className="toy-card-badge-photos">
-            <span className="material-symbols-outlined" style={{ fontSize: '14px' }}>photo_library</span>
+            <span className="material-symbols-outlined card-photos-icon">photo_library</span>
             <span>{product.images.length} Photos</span>
           </div>
         )}

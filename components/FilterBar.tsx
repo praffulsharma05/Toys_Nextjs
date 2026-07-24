@@ -51,7 +51,7 @@ export default function FilterBar({
           <div className="filter-flex-group">
             {/* Custom Stylish Age Filter Dropdown */}
             <div className="custom-filter-dropdown" ref={ageRef}>
-              <div style={{ fontSize: '11px', fontWeight: '700', color: 'var(--color-on-surface-variant)', marginLeft: '12px', marginBottom: '2px' }}>
+              <div className="filter-label-sub">
                 Filter by Age
               </div>
               <button
@@ -62,11 +62,11 @@ export default function FilterBar({
                 }}
                 className={`custom-filter-trigger ${ageOpen ? 'custom-filter-trigger-active' : ''}`}
               >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <div className="filter-trigger-flex">
                   <span className="material-symbols-outlined filter-icon">child_care</span>
                   <span>{selectedAge || 'All Ages'}</span>
                 </div>
-                <ChevronDown style={{ width: '16px', height: '16px', color: 'var(--color-on-surface-variant)', transform: ageOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s ease' }} />
+                <ChevronDown className={`filter-chevron-icon ${ageOpen ? 'nav-arrow-open' : 'nav-arrow-closed'}`} />
               </button>
 
               {ageOpen && (
@@ -84,7 +84,7 @@ export default function FilterBar({
                         className={`custom-filter-option ${isSelected ? 'custom-filter-option-selected' : ''}`}
                       >
                         <span>{opt}</span>
-                        {isSelected && <Check style={{ width: '16px', height: '16px', color: 'var(--color-primary)' }} />}
+                        {isSelected && <Check className="filter-check-icon" />}
                       </button>
                     );
                   })}
@@ -94,7 +94,7 @@ export default function FilterBar({
 
             {/* Custom Stylish Price Filter Dropdown */}
             <div className="custom-filter-dropdown" ref={priceRef}>
-              <div style={{ fontSize: '11px', fontWeight: '700', color: 'var(--color-on-surface-variant)', marginLeft: '12px', marginBottom: '2px' }}>
+              <div className="filter-label-sub">
                 Filter by Price
               </div>
               <button
@@ -105,11 +105,11 @@ export default function FilterBar({
                 }}
                 className={`custom-filter-trigger ${priceOpen ? 'custom-filter-trigger-active' : ''}`}
               >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <div className="filter-trigger-flex">
                   <span className="material-symbols-outlined filter-icon">payments</span>
                   <span>{selectedPrice || 'Any Price'}</span>
                 </div>
-                <ChevronDown style={{ width: '16px', height: '16px', color: 'var(--color-on-surface-variant)', transform: priceOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s ease' }} />
+                <ChevronDown className={`filter-chevron-icon ${priceOpen ? 'nav-arrow-open' : 'nav-arrow-closed'}`} />
               </button>
 
               {priceOpen && (
@@ -127,7 +127,7 @@ export default function FilterBar({
                         className={`custom-filter-option ${isSelected ? 'custom-filter-option-selected' : ''}`}
                       >
                         <span>{opt}</span>
-                        {isSelected && <Check style={{ width: '16px', height: '16px', color: 'var(--color-primary)' }} />}
+                        {isSelected && <Check className="filter-check-icon" />}
                       </button>
                     );
                   })}
@@ -139,14 +139,14 @@ export default function FilterBar({
           {/* Stylish Action Buttons */}
           <div className="filter-actions">
             <button className="btn-show-toys bouncy-btn">
-              <Sparkles style={{ width: '16px', height: '16px' }} />
+              <Sparkles className="filter-sparkle-icon" />
               <span>Show Toys</span>
             </button>
             <button
               onClick={onClear}
               className="btn-clear-all-stylish bouncy-btn"
             >
-              <RotateCcw style={{ width: '14px', height: '14px' }} />
+              <RotateCcw className="filter-clear-icon" />
               <span>Clear All</span>
             </button>
           </div>
@@ -159,10 +159,10 @@ export default function FilterBar({
           onClick={() => setIsBottomSheetOpen(true)}
           className="mobile-filter-trigger-btn bouncy-btn"
         >
-          <SlidersHorizontal style={{ width: '18px', height: '18px' }} />
+          <SlidersHorizontal className="form-plus-icon" />
           <span>{hasActiveFilters ? 'Filters Applied 🎛️' : 'Filter Toys by Age & Price'}</span>
           {hasActiveFilters && (
-            <span style={{ background: 'var(--color-primary)', color: '#fff', fontSize: '11px', padding: '2px 8px', borderRadius: '9999px', fontWeight: '800' }}>
+            <span className="filter-active-badge">
               Active
             </span>
           )}
@@ -175,21 +175,21 @@ export default function FilterBar({
           <div className="bottom-sheet-content" onClick={(e) => e.stopPropagation()}>
             <div className="bottom-sheet-header">
               <div className="bottom-sheet-title">
-                <SlidersHorizontal style={{ width: '20px', height: '20px', color: 'var(--color-primary)' }} />
+                <SlidersHorizontal className="reviews-alert-icon text-primary" />
                 <span>Filter Toys</span>
               </div>
               <button
                 onClick={() => setIsBottomSheetOpen(false)}
                 className="bottom-sheet-close-btn bouncy-btn"
               >
-                <X style={{ width: '20px', height: '20px' }} />
+                <X className="reviews-close-icon" />
               </button>
             </div>
 
             {/* Filter Chips inside Bottom Sheet */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+            <div className="bottom-sheet-chips-col">
               <div>
-                <label style={{ display: 'block', fontSize: '13px', fontWeight: '700', color: 'var(--color-on-surface)', marginBottom: '8px' }}>
+                <label className="bottom-sheet-label">
                   Filter by Age
                 </label>
                 <div className="filter-chip-group">
@@ -202,7 +202,7 @@ export default function FilterBar({
                         onClick={() => onAgeChange(opt)}
                         className={`filter-chip-btn bouncy-btn ${isSelected ? 'filter-chip-btn-active' : ''}`}
                       >
-                        {isSelected && <Check style={{ width: '14px', height: '14px' }} />}
+                        {isSelected && <Check className="filter-clear-icon" />}
                         <span>{opt}</span>
                       </button>
                     );
@@ -211,7 +211,7 @@ export default function FilterBar({
               </div>
 
               <div>
-                <label style={{ display: 'block', fontSize: '13px', fontWeight: '700', color: 'var(--color-on-surface)', marginBottom: '8px' }}>
+                <label className="bottom-sheet-label">
                   Filter by Price
                 </label>
                 <div className="filter-chip-group">
@@ -224,7 +224,7 @@ export default function FilterBar({
                         onClick={() => onPriceChange(opt)}
                         className={`filter-chip-btn bouncy-btn ${isSelected ? 'filter-chip-btn-active' : ''}`}
                       >
-                        {isSelected && <Check style={{ width: '14px', height: '14px' }} />}
+                        {isSelected && <Check className="filter-clear-icon" />}
                         <span>{opt}</span>
                       </button>
                     );
@@ -234,13 +234,12 @@ export default function FilterBar({
             </div>
 
             {/* Bottom Sheet Action Buttons */}
-            <div style={{ display: 'flex', gap: '12px', marginTop: '12px' }}>
+            <div className="bottom-sheet-actions-row">
               <button
                 onClick={() => setIsBottomSheetOpen(false)}
-                className="btn-show-toys bouncy-btn"
-                style={{ flex: 1, padding: '12px' }}
+                className="btn-show-toys bouncy-btn bottom-sheet-btn-show"
               >
-                <Sparkles style={{ width: '18px', height: '18px' }} />
+                <Sparkles className="form-plus-icon" />
                 <span>Show Toys</span>
               </button>
               <button
@@ -248,10 +247,9 @@ export default function FilterBar({
                   onClear();
                   setIsBottomSheetOpen(false);
                 }}
-                className="btn-clear-all-stylish bouncy-btn"
-                style={{ padding: '10px 18px' }}
+                className="btn-clear-all-stylish bouncy-btn bottom-sheet-btn-clear"
               >
-                <RotateCcw style={{ width: '14px', height: '14px' }} />
+                <RotateCcw className="filter-clear-icon" />
                 <span>Clear All</span>
               </button>
             </div>

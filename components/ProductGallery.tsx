@@ -44,7 +44,7 @@ export default function ProductGallery({
         />
 
         {/* Badges Overlay */}
-        <div style={{ position: 'absolute', top: '16px', left: '16px', display: 'flex', flexDirection: 'column', gap: '8px', zIndex: 10 }}>
+        <div className="gallery-badges-overlay">
           {isBestSeller && (
             <div className="gallery-badge-bestseller">
               ★ BEST SELLER
@@ -60,7 +60,7 @@ export default function ProductGallery({
         {/* Image Counter Badge */}
         {imageList.length > 1 && (
           <div className="gallery-badge-count">
-            <ImageIcon style={{ width: '14px', height: '14px' }} />
+            <ImageIcon className="gallery-counter-icon" />
             <span>
               {selectedIndex + 1} / {imageList.length}
             </span>
@@ -75,7 +75,7 @@ export default function ProductGallery({
               title="Previous photo"
               className="gallery-arrow-btn gallery-arrow-prev bouncy-btn"
             >
-              <ChevronLeft style={{ width: '22px', height: '22px' }} />
+              <ChevronLeft className="gallery-arrow-icon" />
             </button>
 
             <button
@@ -83,7 +83,7 @@ export default function ProductGallery({
               title="Next photo"
               className="gallery-arrow-btn gallery-arrow-next bouncy-btn"
             >
-              <ChevronRight style={{ width: '22px', height: '22px' }} />
+              <ChevronRight className="gallery-arrow-icon" />
             </button>
           </>
         )}

@@ -2,13 +2,13 @@
 
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import ProductForm from '@/components/ProductForm';
+import ProductForm, { ProductFormData } from '@/components/ProductForm';
 import { ArrowLeft } from 'lucide-react';
 
 export default function AddProductPage() {
   const router = useRouter();
 
-  const handleAddProduct = async (formData: any) => {
+  const handleAddProduct = async (formData: ProductFormData) => {
     const res = await fetch('/api/products', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -37,7 +37,7 @@ export default function AddProductPage() {
 
   return (
     <div>
-      <Link href="/admin" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '1.5rem' }}>
+      <Link href="/admin" className="wishlist-back-link">
         <ArrowLeft className="w-4 h-4" />
         <span>Back to Admin Dashboard</span>
       </Link>

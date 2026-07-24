@@ -3,14 +3,14 @@
 import { useState, useEffect, use } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import ProductForm from '@/components/ProductForm';
+import ProductForm, { ProductFormData } from '@/components/ProductForm';
 import { ArrowLeft } from 'lucide-react';
 
 export default function EditProductPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const router = useRouter();
   const [loading, setLoading] = useState(true);
-  const [initialData, setInitialData] = useState<any>(null);
+  const [initialData, setInitialData] = useState<ProductFormData | null>(null);
 
   useEffect(() => {
     async function loadProduct() {
@@ -32,7 +32,7 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
             isBestSeller: Boolean(p.isBestSeller),
           });
         }
-      } catch (err) {
+      } catch (err: unknown) {
         console.error(err);
       } finally {
         setLoading(false);
@@ -41,7 +41,7 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
     loadProduct();
   }, [id]);
 
-  const handleEditProduct = async (formData: any) => {
+  const handleEditProduct = async (formData: ProductFormData) => {
     const res = await fetch(`/api/products/${id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
@@ -68,22 +68,24 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
     }
   };
 
-  if (loading) return <div style={{ padding: '4rem', textAlign: 'center', color: 'var(--text-muted)' }}>Loading product details...</div>;
+  if (loading) return <div className="admin-loading-text">Loading product details...</div>;
 
   return (
     <div>
-      <Link href="/admin" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '1.5rem' }}>
+      <Link href="/admin" className="wishlist-back-link">
         <ArrowLeft className="w-4 h-4" />
         <span>Back to Admin Dashboard</span>
       </Link>
 
-      <ProductForm
-        initialData={initialData}
-        title="Edit Toy Details"
-        subtitle="Update toy specifications, category, pricing, or best seller status in MySQL"
-        submitLabel="Save Changes"
-        onSubmit={handleEditProduct}
-      />
+      {initialData && (
+        <ProductForm
+          initialData={initialData}
+          title="Edit Toy Details"
+          subtitle="Update toy specifications, category, pricing, or best seller status in MySQL"
+          submitLabel="Save Changes"
+          onSubmit={handleEditProduct}
+        />
+      )}
     </div>
   );
 }

@@ -10,52 +10,38 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: 'var(--color-surface)' }}>
+    <div className="page-container-flex bg-surface">
       {/* Admin Header */}
       <header
-        style={{
-          position: 'sticky',
-          top: 0,
-          zIndex: 100,
-          background: '#ffffff',
-          boxShadow: '0 2px 10px rgba(0, 0, 0, 0.05)',
-          borderBottom: '1px solid var(--color-outline-variant)',
-        }}
+        className="admin-sticky-header"
       >
-        <div className="container-max" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '80px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+        <div className="container-max admin-header-flex">
+          <div className="admin-brand-wrap">
             <Link href="/admin" className="brand-logo-toyjoy">
-              <span className="material-symbols-outlined" style={{ fontSize: '32px', color: 'var(--color-primary)' }}>
+              <span className="material-symbols-outlined admin-shield-icon">
                 shield
               </span>
-              <span className="brand-title" style={{ fontSize: '24px' }}>Toy Joy Admin</span>
+              <span className="brand-title admin-brand-title">Toy Joy Admin</span>
             </Link>
             <span
-              style={{
-                background: 'var(--color-surface-container-highest)',
-                color: 'var(--color-primary)',
-                fontSize: '12px',
-                fontWeight: '700',
-                padding: '4px 10px',
-                borderRadius: '9999px',
-              }}
+              className="admin-db-badge"
             >
               MySQL Connected
             </span>
           </div>
 
-          <nav style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <nav className="admin-nav-flex">
             <Link href="/admin" className="nav-link-active">
               Manage Products
             </Link>
 
             <Link href="/admin/add" className="btn-primary-toyjoy">
-              <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>add_circle</span>
+              <span className="material-symbols-outlined admin-add-icon">add_circle</span>
               <span>Add New Toy</span>
             </Link>
 
-            <Link href="/" target="_blank" className="btn-whatsapp-toyjoy" style={{ padding: '8px 16px', fontSize: '13px', background: 'var(--color-surface-container-highest)', color: 'var(--color-on-surface)' }}>
-              <span className="material-symbols-outlined" style={{ fontSize: '18px', color: 'var(--color-primary)' }}>open_in_new</span>
+            <Link href="/" target="_blank" className="btn-whatsapp-toyjoy admin-store-link">
+              <span className="material-symbols-outlined admin-store-icon">open_in_new</span>
               <span>Storefront</span>
             </Link>
           </nav>
@@ -63,7 +49,7 @@ export default function AdminLayout({
       </header>
 
       {/* Main Admin Body */}
-      <main style={{ flex: 1, padding: '32px 0' }}>
+      <main className="admin-main-body">
         <div className="container-max">{children}</div>
       </main>
     </div>

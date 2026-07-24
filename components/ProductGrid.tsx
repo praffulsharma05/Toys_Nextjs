@@ -56,28 +56,28 @@ export default function ProductGrid({ products }: ProductGridProps) {
           </div>
 
           {/* Pagination */}
-          <div style={{ marginTop: '48px', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '12px' }}>
-            <button className="bouncy-btn" style={{ width: '48px', height: '48px', borderRadius: '9999px', background: 'var(--color-surface-container-high)', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div className="grid-pagination-wrap">
+            <button className="bouncy-btn grid-page-btn-icon">
               <span className="material-symbols-outlined">chevron_left</span>
             </button>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <button className="bouncy-btn" style={{ width: '48px', height: '48px', borderRadius: '9999px', background: 'var(--color-primary)', color: '#ffffff', fontWeight: '700', border: 'none', cursor: 'pointer' }}>1</button>
-              <button className="bouncy-btn" style={{ width: '48px', height: '48px', borderRadius: '9999px', background: 'var(--color-surface-container-highest)', fontWeight: '700', border: 'none', cursor: 'pointer' }}>2</button>
+            <div className="grid-pages-row">
+              <button className="bouncy-btn grid-page-btn-active">1</button>
+              <button className="bouncy-btn grid-page-btn-inactive">2</button>
             </div>
-            <button className="bouncy-btn" style={{ width: '48px', height: '48px', borderRadius: '9999px', background: 'var(--color-surface-container-high)', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <button className="bouncy-btn grid-page-btn-icon">
               <span className="material-symbols-outlined">chevron_right</span>
             </button>
           </div>
         </>
       ) : (
-        <div style={{ textAlign: 'center', padding: '48px', background: 'var(--color-surface-container-lowest)', borderRadius: '16px', boxShadow: 'var(--plush-shadow)' }}>
-          <span className="material-symbols-outlined" style={{ fontSize: '48px', color: 'var(--color-primary)', marginBottom: '16px' }}>
+        <div className="grid-empty-card">
+          <span className="material-symbols-outlined grid-empty-icon">
             sentiment_dissatisfied
           </span>
-          <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '20px', fontWeight: '700', marginBottom: '8px' }}>
+          <h3 className="grid-empty-title">
             No Toys Found
           </h3>
-          <p style={{ color: 'var(--color-on-surface-variant)', marginBottom: '24px' }}>
+          <p className="grid-empty-subtitle">
             Add toys from your Admin Panel to populate your catalog in MySQL!
           </p>
           <button onClick={handleClear} className="btn-primary-toyjoy">Clear Filters</button>

@@ -17,9 +17,9 @@ export default async function HomePage({
   const products = await getProducts(params?.category, params?.search);
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+    <div className="page-container-flex">
       <Navbar />
-      <main style={{ flex: 1 }} className="container-max">
+      <main className="flex-1 container-max">
         {!params?.search && <HeroBanner />}
         {!params?.search && <BestSellers products={products} />}
         <ProductGrid

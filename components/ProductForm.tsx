@@ -3,7 +3,20 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { CATEGORIES } from '@/lib/products';
-import { Plus, Trash2, Image as ImageIcon, Star } from 'lucide-react';
+import { Plus, Trash2, Image as ImageIcon } from 'lucide-react';
+
+export interface ProductFormData {
+  name: string;
+  category: string;
+  price: string;
+  originalPrice: string;
+  imageUrl: string;
+  images: string[];
+  description: string;
+  ageGroup: string;
+  stock: string;
+  isBestSeller: boolean;
+}
 
 interface ProductFormProps {
   initialData?: {
@@ -21,7 +34,7 @@ interface ProductFormProps {
   title: string;
   subtitle: string;
   submitLabel: string;
-  onSubmit: (data: any) => Promise<void>;
+  onSubmit: (data: ProductFormData) => Promise<void>;
 }
 
 export default function ProductForm({ initialData, title, subtitle, submitLabel, onSubmit }: ProductFormProps) {
@@ -86,8 +99,12 @@ export default function ProductForm({ initialData, title, subtitle, submitLabel,
         imageUrl: cleanImages[0],
         images: cleanImages,
       });
-    } catch (err: any) {
-      setErrorMsg(err.message || 'Action failed');
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setErrorMsg(err.message);
+      } else {
+        setErrorMsg('Action failed');
+      }
     } finally {
       setSubmitting(false);
     }
@@ -95,26 +112,26 @@ export default function ProductForm({ initialData, title, subtitle, submitLabel,
 
   return (
     <div className="admin-card">
-      <div style={{ marginBottom: '24px' }}>
-        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '26px', fontWeight: '700', color: 'var(--color-on-surface)' }}>{title}</h1>
-        <p style={{ fontSize: '14px', color: 'var(--color-on-surface-variant)' }}>{subtitle}</p>
+      <div className="form-header-box">
+        <h1 className="form-title-text">{title}</h1>
+        <p className="form-subtitle-text">{subtitle}</p>
       </div>
 
       {errorMsg && (
-        <div style={{ padding: '12px 16px', borderRadius: '12px', background: 'rgba(186, 26, 26, 0.1)', color: '#ba1a1a', marginBottom: '24px', fontSize: '14px', fontWeight: '700' }}>
+        <div className="form-alert-error">
           <span>{errorMsg}</span>
         </div>
       )}
 
       <form onSubmit={handleSubmit}>
-        <div style={{ marginBottom: '20px' }}>
-          <label style={{ display: 'block', fontSize: '14px', fontWeight: '700', marginBottom: '6px', color: 'var(--color-on-surface)' }}>Toy Title / Name *</label>
+        <div className="form-group-mb">
+          <label className="form-label-block">Toy Title / Name *</label>
           <input type="text" name="name" className="admin-input" placeholder="e.g. CyberBot DX Action Figure" value={formData.name} onChange={handleChange} required />
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '20px' }}>
+        <div className="form-grid-2col">
           <div>
-            <label style={{ display: 'block', fontSize: '14px', fontWeight: '700', marginBottom: '6px', color: 'var(--color-on-surface)' }}>Category *</label>
+            <label className="form-label-block">Category *</label>
             <select name="category" className="admin-select" value={formData.category} onChange={handleChange} required>
               {CATEGORIES.filter((c) => c !== 'All').map((cat) => (
                 <option key={cat} value={cat}>{cat}</option>
@@ -122,89 +139,76 @@ export default function ProductForm({ initialData, title, subtitle, submitLabel,
             </select>
           </div>
           <div>
-            <label style={{ display: 'block', fontSize: '14px', fontWeight: '700', marginBottom: '6px', color: 'var(--color-on-surface)' }}>Age Group</label>
+            <label className="form-label-block">Age Group</label>
             <input type="text" name="ageGroup" className="admin-input" placeholder="e.g. 3-8 Years" value={formData.ageGroup} onChange={handleChange} />
           </div>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '20px' }}>
+        <div className="form-grid-2col">
           <div>
-            <label style={{ display: 'block', fontSize: '14px', fontWeight: '700', marginBottom: '6px', color: 'var(--color-on-surface)' }}>Price (₹) *</label>
+            <label className="form-label-block">Price (₹) *</label>
             <input type="number" name="price" className="admin-input" placeholder="1499" value={formData.price} onChange={handleChange} min="0" required />
           </div>
           <div>
-            <label style={{ display: 'block', fontSize: '14px', fontWeight: '700', marginBottom: '6px', color: 'var(--color-on-surface)' }}>Original Price (MSRP ₹)</label>
+            <label className="form-label-block">Original Price (MSRP ₹)</label>
             <input type="number" name="originalPrice" className="admin-input" placeholder="1999" value={formData.originalPrice} onChange={handleChange} min="0" />
           </div>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '20px' }}>
+        <div className="form-grid-2col">
           <div>
-            <label style={{ display: 'block', fontSize: '14px', fontWeight: '700', marginBottom: '6px', color: 'var(--color-on-surface)' }}>Stock Quantity</label>
+            <label className="form-label-block">Stock Quantity</label>
             <input type="number" name="stock" className="admin-input" value={formData.stock} onChange={handleChange} min="0" />
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-            <label style={{ display: 'block', fontSize: '14px', fontWeight: '700', marginBottom: '6px', color: 'var(--color-on-surface)' }}>Highlight</label>
-            <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontWeight: '700', color: 'var(--color-secondary)' }}>
-              <input type="checkbox" name="isBestSeller" checked={formData.isBestSeller} onChange={handleChange} style={{ width: '18px', height: '18px' }} />
+          <div className="flex-col justify-center">
+            <label className="form-label-block">Highlight</label>
+            <label className="form-checkbox-label">
+              <input type="checkbox" name="isBestSeller" checked={formData.isBestSeller} onChange={handleChange} className="form-checkbox-input" />
               <span>Mark as Best Seller</span>
             </label>
           </div>
         </div>
 
         {/* Multi-Image URL Management */}
-        <div style={{ marginBottom: '24px', background: 'var(--color-surface-container-low)', padding: '20px', borderRadius: '16px', border: '1px solid var(--color-outline-variant)' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
+        <div className="form-multiimg-box">
+          <div className="form-multiimg-header">
             <div>
-              <label style={{ fontSize: '15px', fontWeight: '700', color: 'var(--color-on-surface)', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <ImageIcon style={{ width: '18px', height: '18px', color: 'var(--color-primary)' }} />
+              <label className="form-multiimg-label">
+                <ImageIcon className="form-multiimg-icon" />
                 <span>Product Images (Add Multiple Photos) *</span>
               </label>
-              <p style={{ fontSize: '12px', color: 'var(--color-on-surface-variant)', marginTop: '2px' }}>
+              <p className="form-multiimg-sub">
                 Image 1 will be used as the primary featured thumbnail. Add extra URLs for additional toy views.
               </p>
             </div>
             <button
               type="button"
               onClick={addImageInput}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '6px',
-                padding: '6px 14px',
-                fontSize: '13px',
-                fontWeight: '700',
-                background: 'var(--color-primary)',
-                color: '#ffffff',
-                border: 'none',
-                borderRadius: '9999px',
-                cursor: 'pointer',
-              }}
-              className="bouncy-btn"
+              className="form-add-url-btn bouncy-btn"
             >
-              <Plus style={{ width: '16px', height: '16px' }} />
+              <Plus className="form-plus-icon" />
               <span>Add Image URL</span>
             </button>
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+          <div className="form-img-list">
             {images.map((url, idx) => (
-              <div key={idx} style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-                <div style={{ width: '56px', height: '56px', borderRadius: '12px', overflow: 'hidden', background: '#e0e3e5', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', border: idx === 0 ? '2px solid var(--color-primary)' : '1px solid var(--color-outline-variant)' }}>
+              <div key={idx} className="form-img-row">
+                <div className={idx === 0 ? 'form-img-thumb-featured' : 'form-img-thumb-frame'}>
                   {url ? (
-                    <img src={url} alt={`Preview ${idx + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} onError={(e) => (e.currentTarget.style.display = 'none')} />
+                    <img src={url} alt={`Preview ${idx + 1}`} className="form-img-preview" onError={(e) => (e.currentTarget.style.display = 'none')} />
                   ) : (
-                    <span style={{ fontSize: '11px', color: 'var(--color-outline)', fontWeight: '700' }}>#{idx + 1}</span>
+                    <span className="form-img-num">#{idx + 1}</span>
                   )}
                 </div>
 
-                <div style={{ flex: 1, position: 'relative' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                    <span style={{ fontSize: '12px', fontWeight: '700', color: idx === 0 ? 'var(--color-primary)' : 'var(--color-on-surface-variant)' }}>
+                <div className="form-img-input-wrap">
+                  <div className="form-img-title-row">
+                    <span className={idx === 0 ? 'form-img-title-primary' : 'form-img-title-sub'}>
                       {idx === 0 ? 'Primary Cover Photo' : `Photo #${idx + 1}`}
                     </span>
                     {idx === 0 && (
-                      <span style={{ background: 'var(--color-primary-container)', color: 'var(--color-primary)', fontSize: '10px', padding: '2px 8px', borderRadius: '9999px', fontWeight: '800' }}>
+                      <span className="form-badge-featured">
                         FEATURED
                       </span>
                     )}
@@ -224,33 +228,25 @@ export default function ProductForm({ initialData, title, subtitle, submitLabel,
                   onClick={() => removeImageInput(idx)}
                   disabled={images.length === 1 && idx === 0}
                   title="Remove image"
-                  style={{
-                    padding: '8px',
-                    borderRadius: '50%',
-                    background: 'var(--color-surface-container-high)',
-                    border: 'none',
-                    color: images.length === 1 && idx === 0 ? 'var(--color-outline)' : '#ba1a1a',
-                    cursor: images.length === 1 && idx === 0 ? 'not-allowed' : 'pointer',
-                    marginTop: '20px',
-                  }}
+                  className={images.length === 1 && idx === 0 ? 'form-remove-btn-disabled' : 'form-remove-btn-active'}
                 >
-                  <Trash2 style={{ width: '18px', height: '18px' }} />
+                  <Trash2 className="form-trash-icon" />
                 </button>
               </div>
             ))}
           </div>
         </div>
 
-        <div style={{ marginBottom: '24px' }}>
-          <label style={{ display: 'block', fontSize: '14px', fontWeight: '700', marginBottom: '6px', color: 'var(--color-on-surface)' }}>Description *</label>
+        <div className="form-group-mb">
+          <label className="form-label-block">Description *</label>
           <textarea name="description" className="admin-textarea" rows={3} value={formData.description} onChange={handleChange} required />
         </div>
 
-        <div style={{ display: 'flex', gap: '16px' }}>
-          <button type="submit" disabled={submitting} className="btn-primary-toyjoy" style={{ flex: 1, padding: '12px' }}>
+        <div className="display-flex gap-16">
+          <button type="submit" disabled={submitting} className="btn-primary-toyjoy form-btn-submit">
             {submitting ? 'Saving to Database...' : submitLabel}
           </button>
-          <Link href="/admin" className="btn-whatsapp-toyjoy" style={{ padding: '12px 24px', background: 'var(--color-surface-container-high)', color: 'var(--color-on-surface)' }}>Cancel</Link>
+          <Link href="/admin" className="btn-whatsapp-toyjoy form-btn-cancel">Cancel</Link>
         </div>
       </form>
     </div>

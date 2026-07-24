@@ -9,44 +9,44 @@ export default function AdminStats({ products }: { products: ProductType[] }) {
   const totalInventoryValue = products.reduce((acc, p) => acc + p.price * p.stock, 0);
 
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px', marginBottom: '32px' }}>
-      <div style={{ background: '#ffffff', padding: '20px', borderRadius: '16px', boxShadow: 'var(--plush-shadow)', display: 'flex', alignItems: 'center', gap: '16px' }}>
-        <div style={{ background: 'rgba(0, 88, 190, 0.1)', padding: '12px', borderRadius: '12px', color: 'var(--color-primary)', display: 'flex' }}>
+    <div className="admin-stats-grid">
+      <div className="admin-stat-card">
+        <div className="admin-stat-icon-blue">
           <span className="material-symbols-outlined">inventory_2</span>
         </div>
         <div>
-          <span style={{ fontSize: '12px', color: 'var(--color-on-surface-variant)', fontWeight: '700', textTransform: 'uppercase' }}>Total Toys</span>
-          <div style={{ fontSize: '24px', fontWeight: '800', color: 'var(--color-on-surface)' }}>{totalProducts}</div>
+          <span className="admin-stat-label">Total Toys</span>
+          <div className="admin-stat-val-large">{totalProducts}</div>
         </div>
       </div>
 
-      <div style={{ background: '#ffffff', padding: '20px', borderRadius: '16px', boxShadow: 'var(--plush-shadow)', display: 'flex', alignItems: 'center', gap: '16px' }}>
-        <div style={{ background: 'rgba(252, 212, 0, 0.25)', padding: '12px', borderRadius: '12px', color: 'var(--color-on-secondary-container)', display: 'flex' }}>
-          <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>local_fire_department</span>
+      <div className="admin-stat-card">
+        <div className="admin-stat-icon-yellow">
+          <span className="material-symbols-outlined icon-filled">local_fire_department</span>
         </div>
         <div>
-          <span style={{ fontSize: '12px', color: 'var(--color-on-surface-variant)', fontWeight: '700', textTransform: 'uppercase' }}>Best Sellers</span>
-          <div style={{ fontSize: '24px', fontWeight: '800', color: 'var(--color-on-surface)' }}>{bestSellersCount}</div>
+          <span className="admin-stat-label">Best Sellers</span>
+          <div className="admin-stat-val-large">{bestSellersCount}</div>
         </div>
       </div>
 
-      <div style={{ background: '#ffffff', padding: '20px', borderRadius: '16px', boxShadow: 'var(--plush-shadow)', display: 'flex', alignItems: 'center', gap: '16px' }}>
-        <div style={{ background: 'rgba(161, 58, 15, 0.1)', padding: '12px', borderRadius: '12px', color: 'var(--color-tertiary)', display: 'flex' }}>
+      <div className="admin-stat-card">
+        <div className="admin-stat-icon-red">
           <span className="material-symbols-outlined">category</span>
         </div>
         <div>
-          <span style={{ fontSize: '12px', color: 'var(--color-on-surface-variant)', fontWeight: '700', textTransform: 'uppercase' }}>Categories</span>
-          <div style={{ fontSize: '24px', fontWeight: '800', color: 'var(--color-on-surface)' }}>{categoriesCount}</div>
+          <span className="admin-stat-label">Categories</span>
+          <div className="admin-stat-val-large">{categoriesCount}</div>
         </div>
       </div>
 
-      <div style={{ background: '#ffffff', padding: '20px', borderRadius: '16px', boxShadow: 'var(--plush-shadow)', display: 'flex', alignItems: 'center', gap: '16px' }}>
-        <div style={{ background: 'rgba(37, 211, 102, 0.15)', padding: '12px', borderRadius: '12px', color: 'var(--color-whatsapp)', display: 'flex' }}>
+      <div className="admin-stat-card">
+        <div className="admin-stat-icon-green">
           <span className="material-symbols-outlined">payments</span>
         </div>
         <div>
-          <span style={{ fontSize: '12px', color: 'var(--color-on-surface-variant)', fontWeight: '700', textTransform: 'uppercase' }}>Stock Value</span>
-          <div style={{ fontSize: '22px', fontWeight: '800', color: 'var(--color-on-surface)' }}>₹{totalInventoryValue.toLocaleString('en-IN')}</div>
+          <span className="admin-stat-label">Stock Value</span>
+          <div className="admin-stat-val-medium">₹{totalInventoryValue.toLocaleString('en-IN')}</div>
         </div>
       </div>
     </div>

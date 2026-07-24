@@ -23,9 +23,10 @@ export async function GET(request: NextRequest) {
       { success: true, count: products.length, data: products },
       { headers: corsHeaders }
     );
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const errMsg = error instanceof Error ? error.message : 'Failed to fetch products';
     return NextResponse.json(
-      { success: false, error: error.message || 'Failed to fetch products' },
+      { success: false, error: errMsg },
       { status: 500, headers: corsHeaders }
     );
   }
@@ -62,9 +63,10 @@ export async function POST(request: NextRequest) {
       { success: true, data: newProduct },
       { status: 201, headers: corsHeaders }
     );
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const errMsg = error instanceof Error ? error.message : 'Failed to create product';
     return NextResponse.json(
-      { success: false, error: error.message || 'Failed to create product' },
+      { success: false, error: errMsg },
       { status: 500, headers: corsHeaders }
     );
   }

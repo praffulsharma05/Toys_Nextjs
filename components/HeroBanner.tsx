@@ -9,7 +9,7 @@ export default function HeroBanner() {
     <div className="hero-banner-container">
       <div className="hero-content">
         <div className="hero-tag-badge">
-          <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>stars</span>
+          <span className="material-symbols-outlined hero-star-icon">stars</span>
           <span>Special Discount • Instant WhatsApp Order</span>
         </div>
 
@@ -18,7 +18,7 @@ export default function HeroBanner() {
         </h1>
 
         <p className="hero-subtitle-text">
-          From wooden wonders to high-tech gadgets, find the perfect companion for your child's next adventure.
+          From wooden wonders to high-tech gadgets, find the perfect companion for your child&apos;s next adventure.
         </p>
 
         <div className="hero-btn-row">
@@ -33,7 +33,7 @@ export default function HeroBanner() {
           </a>
           <a href="/products" className="btn-hero-glass bouncy-btn">
             <span>View All Products</span>
-            <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>arrow_forward</span>
+            <span className="material-symbols-outlined hero-arrow-icon">arrow_forward</span>
           </a>
         </div>
       </div>

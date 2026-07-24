@@ -9,21 +9,29 @@ export const revalidate = 0;
 export default async function ProductsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ category?: string; search?: string }>;
+  searchParams: Promise<{ category?: string; search?: string; bestSeller?: string }>;
 }) {
   const params = await searchParams;
-  const products = await getProducts(params?.category, params?.search);
+  const isBestSeller = params?.bestSeller === 'true';
+
+  let products = await getProducts(params?.category, params?.search, isBestSeller);
+
+  if (isBestSeller) {
+    products = products.filter((p) => p.isBestSeller);
+  }
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+    <div className="page-container-flex">
       <Navbar />
-      <main style={{ flex: 1, paddingTop: '32px' }} className="container-max">
-        <div style={{ marginBottom: '24px' }}>
-          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '32px', fontWeight: '700', color: 'var(--color-on-surface)' }}>
-            All Toy Products
+      <main className="page-main-padded container-max">
+        <div className="page-header-box">
+          <h1 className="page-title-display">
+            {isBestSeller ? 'Best Seller Toys ⭐' : 'All Toy Products'}
           </h1>
-          <p style={{ fontSize: '16px', color: 'var(--color-on-surface-variant)' }}>
-            Explore our complete catalog of high quality toys, action figures, STEM games & plushies.
+          <p className="page-subtitle-text">
+            {isBestSeller
+              ? 'Browse our top-rated and most popular best seller toys chosen by kids & parents.'
+              : 'Explore our complete catalog of high quality toys, action figures, STEM games & plushies.'}
           </p>
         </div>
 

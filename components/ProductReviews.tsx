@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { ReviewType } from '@/lib/products';
-import { Star, MessageSquarePlus, CheckCircle, Calendar, X, Upload, Trash2 } from 'lucide-react';
+import { MessageSquarePlus, CheckCircle, Calendar, X, Upload, Trash2 } from 'lucide-react';
 
 interface ProductReviewsProps {
   productId: string;
@@ -87,7 +87,7 @@ export default function ProductReviews({
         setSuccessMsg('Thank you! Your review has been published.');
         setReviews([json.data, ...reviews]);
         const updatedCount = reviewCount + 1;
-        const updatedSum = reviews.reduce((acc, r) => acc + r.rating, 0) + json.data.rating;
+        const updatedSum = reviews.reduce((acc: number, r: ReviewType) => acc + r.rating, 0) + json.data.rating;
         setReviewCount(updatedCount);
         setRatingAvg(Number((updatedSum / updatedCount).toFixed(1)));
 
@@ -100,8 +100,12 @@ export default function ProductReviews({
       } else {
         throw new Error(json.error || 'Failed to submit review');
       }
-    } catch (err: any) {
-      setErrorMsg(err.message || 'Failed to submit review');
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setErrorMsg(err.message);
+      } else {
+        setErrorMsg('Failed to submit review');
+      }
     } finally {
       setSubmitting(false);
     }
@@ -120,7 +124,7 @@ export default function ProductReviews({
               <span className="reviews-score-big">{ratingAvg.toFixed(1)}</span>
               <div className="reviews-stars-gold">
                 {[...Array(5)].map((_, i) => (
-                  <span key={i} className="material-symbols-outlined" style={{ fontSize: '20px', color: i < Math.round(ratingAvg) ? '#fcd400' : '#e0e0e0', fontVariationSettings: "'FILL' 1" }}>
+                  <span key={i} className={`material-symbols-outlined ${i < Math.round(ratingAvg) ? 'detail-star-summary-gold' : 'detail-star-summary-muted'}`}>
                     star
                   </span>
                 ))}
@@ -135,16 +139,15 @@ export default function ProductReviews({
         <button
           onClick={() => setShowForm(!showForm)}
           className="btn-primary-toyjoy bouncy-btn"
-          style={{ padding: '10px 20px', fontSize: '0.95rem' }}
         >
-          <MessageSquarePlus style={{ width: '18px', height: '18px' }} />
+          <MessageSquarePlus className="reviews-alert-icon" />
           <span>{showForm ? 'Cancel Review' : 'Write a Review & Upload Photos'}</span>
         </button>
       </div>
 
       {successMsg && (
         <div className="reviews-alert-success">
-          <CheckCircle style={{ width: '20px', height: '20px' }} />
+          <CheckCircle className="reviews-alert-icon" />
           <span>{successMsg}</span>
         </div>
       )}
@@ -155,7 +158,7 @@ export default function ProductReviews({
           <div className="reviews-form-header">
             <h3 className="reviews-form-title">Share Your Experience with this Toy</h3>
             <button onClick={() => setShowForm(false)} className="reviews-close-btn">
-              <X style={{ width: '20px', height: '20px' }} />
+              <X className="reviews-close-icon" />
             </button>
           </div>
 
@@ -189,7 +192,7 @@ export default function ProductReviews({
                       onClick={() => handleRatingClick(starNum)}
                       className="reviews-star-btn"
                     >
-                      <span className="material-symbols-outlined" style={{ fontSize: '28px', color: starNum <= rating ? '#fcd400' : '#e0e0e0', fontVariationSettings: "'FILL' 1" }}>
+                      <span className={`material-symbols-outlined ${starNum <= rating ? 'detail-star-form-gold' : 'detail-star-form-muted'}`}>
                         star
                       </span>
                     </button>
@@ -201,7 +204,7 @@ export default function ProductReviews({
               </div>
             </div>
 
-            <div style={{ marginBottom: '1.25rem' }}>
+            <div className="form-group-mb">
               <label className="reviews-field-label">Review Details / Feedback *</label>
               <textarea
                 className="admin-textarea"
@@ -223,7 +226,7 @@ export default function ProductReviews({
                 type="file"
                 accept="image/*"
                 onChange={handleFileChange}
-                style={{ display: 'none' }}
+                className="hidden-input"
                 id="review-photo-upload"
               />
 
@@ -232,7 +235,7 @@ export default function ProductReviews({
                   htmlFor="review-photo-upload"
                   className="reviews-photo-upload-label bouncy-btn"
                 >
-                  <Upload style={{ width: '18px', height: '18px' }} />
+                  <Upload className="reviews-upload-icon" />
                   <span>Choose Photo File from Device</span>
                 </label>
               ) : (
@@ -247,7 +250,7 @@ export default function ProductReviews({
                       onClick={handleRemoveFile}
                       className="reviews-photo-remove-btn"
                     >
-                      <Trash2 style={{ width: '14px', height: '14px' }} />
+                      <Trash2 className="reviews-trash-icon" />
                       <span>Remove Photo</span>
                     </button>
                   </div>
@@ -267,7 +270,6 @@ export default function ProductReviews({
                 type="submit"
                 disabled={submitting}
                 className="btn-primary-toyjoy bouncy-btn"
-                style={{ padding: '10px 24px' }}
               >
                 {submitting ? 'Submitting Review...' : 'Submit Customer Review'}
               </button>
@@ -299,7 +301,7 @@ export default function ProductReviews({
                       </span>
                     </h4>
                     <span className="review-date-text">
-                      <Calendar style={{ width: '12px', height: '12px' }} />
+                      <Calendar className="reviews-cal-icon" />
                       <span>{new Date(rev.createdAt).toLocaleDateString('en-IN', { year: 'numeric', month: 'short', day: 'numeric' })}</span>
                     </span>
                   </div>
@@ -307,7 +309,7 @@ export default function ProductReviews({
 
                 <div className="reviews-stars-gold">
                   {[...Array(5)].map((_, i) => (
-                    <span key={i} className="material-symbols-outlined" style={{ fontSize: '18px', color: i < rev.rating ? '#fcd400' : '#e0e0e0', fontVariationSettings: "'FILL' 1" }}>
+                    <span key={i} className={`material-symbols-outlined ${i < rev.rating ? 'detail-star-gold' : 'detail-star-muted'}`}>
                       star
                     </span>
                   ))}

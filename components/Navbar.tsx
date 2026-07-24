@@ -13,7 +13,7 @@ function NavbarContent({ onSearch }: { onSearch?: (query: string) => void }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [categoryDropdownOpen, setCategoryDropdownOpen] = useState(false);
   const [query, setQuery] = useState('');
-  const [wishlistCount, setWishlistCount] = useState(0);
+  const [wishlistCount, setWishlistCount] = useState(() => typeof window !== 'undefined' ? getWishlistFromCookies().length : 0);
 
   const categoryRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
@@ -21,8 +21,6 @@ function NavbarContent({ onSearch }: { onSearch?: (query: string) => void }) {
   const searchParams = useSearchParams();
 
   useEffect(() => {
-    setWishlistCount(getWishlistFromCookies().length);
-
     const handleWishlistUpdate = () => {
       setWishlistCount(getWishlistFromCookies().length);
     };
@@ -43,11 +41,6 @@ function NavbarContent({ onSearch }: { onSearch?: (query: string) => void }) {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
-
-  // Close mobile menu on route change
-  useEffect(() => {
-    setMobileMenuOpen(false);
-  }, [pathname, searchParams]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -95,9 +88,9 @@ function NavbarContent({ onSearch }: { onSearch?: (query: string) => void }) {
               onClick={() => setCategoryDropdownOpen(!categoryDropdownOpen)}
               className={`nav-category-trigger ${categoryDropdownOpen ? 'nav-category-trigger-active' : ''} ${categoryParam ? 'nav-category-trigger-has-selected' : ''}`}
             >
-              <LayoutGrid style={{ width: '16px', height: '16px', color: 'var(--color-primary)' }} />
+              <LayoutGrid className="nav-category-icon" />
               <span>{categoryParam || 'Category'}</span>
-              <ChevronDown style={{ width: '16px', height: '16px', transform: categoryDropdownOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s ease' }} />
+              <ChevronDown className={categoryDropdownOpen ? 'nav-arrow-open' : 'nav-arrow-closed'} />
             </button>
 
             {categoryDropdownOpen && (
@@ -116,7 +109,7 @@ function NavbarContent({ onSearch }: { onSearch?: (query: string) => void }) {
                       className={`nav-category-option ${isSelected ? 'nav-category-option-selected' : ''}`}
                     >
                       <span>{cat === 'All' ? 'All Categories' : cat}</span>
-                      {isSelected && <Check style={{ width: '16px', height: '16px', color: 'var(--color-primary)' }} />}
+                      {isSelected && <Check className="nav-check-icon" />}
                     </button>
                   );
                 })}
@@ -129,8 +122,8 @@ function NavbarContent({ onSearch }: { onSearch?: (query: string) => void }) {
           </Link>
 
           {/* Wishlist Link with Live Badge */}
-          <Link href="/wishlist" className={isWishlistActive ? 'nav-link-active' : 'nav-link'} style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-            <span className="material-symbols-outlined" style={{ color: '#e63946', fontSize: '18px', fontVariationSettings: "'FILL' 1" }}>
+          <Link href="/wishlist" className={isWishlistActive ? 'nav-link-active inline-flex items-center gap-4' : 'nav-link inline-flex items-center gap-4'}>
+            <span className="material-symbols-outlined nav-wishlist-icon">
               favorite
             </span>
             <span>Wishlist</span>
@@ -145,7 +138,7 @@ function NavbarContent({ onSearch }: { onSearch?: (query: string) => void }) {
         {/* Header Actions */}
         <div className="nav-actions">
           {showSearch ? (
-            <form onSubmit={handleSearch} style={{ display: 'flex', alignItems: 'center' }}>
+            <form onSubmit={handleSearch} className="nav-form-inline">
               <input
                 type="text"
                 className="admin-input nav-search-input"
@@ -169,7 +162,6 @@ function NavbarContent({ onSearch }: { onSearch?: (query: string) => void }) {
             target="_blank"
             rel="noopener noreferrer"
             className="btn-whatsapp-toyjoy bouncy-btn hide-on-mobile"
-            style={{ padding: '8px 16px', fontSize: '13px' }}
           >
             <WhatsAppIcon size={18} color="#ffffff" />
             <span>Chat on WhatsApp</span>
@@ -181,7 +173,7 @@ function NavbarContent({ onSearch }: { onSearch?: (query: string) => void }) {
             className="mobile-menu-toggle bouncy-btn"
             aria-label="Toggle Navigation Menu"
           >
-            <span className="material-symbols-outlined" style={{ fontSize: '28px' }}>
+            <span className="material-symbols-outlined nav-menu-icon">
               {mobileMenuOpen ? 'close' : 'menu'}
             </span>
           </button>
@@ -191,15 +183,15 @@ function NavbarContent({ onSearch }: { onSearch?: (query: string) => void }) {
       {/* Mobile Drawer Menu Overlay */}
       {mobileMenuOpen && (
         <div className="mobile-menu-drawer">
-          <Link href="/" className={isHomeActive ? 'nav-link-active' : 'nav-link'}>
+          <Link href="/" onClick={() => setMobileMenuOpen(false)} className={isHomeActive ? 'nav-link-active' : 'nav-link'}>
             Home
           </Link>
 
-          <Link href="/products" className={isProductsActive ? 'nav-link-active' : 'nav-link'}>
+          <Link href="/products" onClick={() => setMobileMenuOpen(false)} className={isProductsActive ? 'nav-link-active' : 'nav-link'}>
             Product List
           </Link>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+          <div className="nav-category-col">
             <label className="mobile-menu-label">Filter Category</label>
             <select
               onChange={(e) => {
@@ -220,12 +212,12 @@ function NavbarContent({ onSearch }: { onSearch?: (query: string) => void }) {
             </select>
           </div>
 
-          <Link href="/products?bestSeller=true" className={isBestSellerActive ? 'nav-link-active' : 'nav-link'}>
+          <Link href="/products?bestSeller=true" onClick={() => setMobileMenuOpen(false)} className={isBestSellerActive ? 'nav-link-active' : 'nav-link'}>
             Best Sellers
           </Link>
 
-          <Link href="/wishlist" className={isWishlistActive ? 'nav-link-active' : 'nav-link'} style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
-            <span className="material-symbols-outlined" style={{ color: '#e63946', fontSize: '20px', fontVariationSettings: "'FILL' 1" }}>
+          <Link href="/wishlist" onClick={() => setMobileMenuOpen(false)} className={isWishlistActive ? 'nav-link-active inline-flex items-center gap-6' : 'nav-link inline-flex items-center gap-6'}>
+            <span className="material-symbols-outlined nav-wishlist-mobile-icon">
               favorite
             </span>
             <span>Wishlist ({wishlistCount})</span>
@@ -235,8 +227,7 @@ function NavbarContent({ onSearch }: { onSearch?: (query: string) => void }) {
             href={`https://wa.me/91${whatsappNumber}?text=${encodeURIComponent('Hello Toy Joy! I want to order some toys.')}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-whatsapp-toyjoy bouncy-btn"
-            style={{ width: '100%', padding: '12px', borderRadius: '9999px', marginTop: '0.5rem' }}
+            className="btn-whatsapp-toyjoy bouncy-btn w-full rounded-full"
           >
             <WhatsAppIcon size={20} color="#ffffff" />
             <span>Chat on WhatsApp</span>

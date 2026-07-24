@@ -27,9 +27,10 @@ export async function GET(
     }
 
     return NextResponse.json({ success: true, data: product }, { headers: corsHeaders });
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const errMsg = error instanceof Error ? error.message : 'Failed to fetch product';
     return NextResponse.json(
-      { success: false, error: error.message || 'Failed to fetch product' },
+      { success: false, error: errMsg },
       { status: 500, headers: corsHeaders }
     );
   }
@@ -53,9 +54,10 @@ export async function PUT(
     }
 
     return NextResponse.json({ success: true, data: updated }, { headers: corsHeaders });
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const errMsg = error instanceof Error ? error.message : 'Failed to update product';
     return NextResponse.json(
-      { success: false, error: error.message || 'Failed to update product' },
+      { success: false, error: errMsg },
       { status: 500, headers: corsHeaders }
     );
   }
@@ -77,9 +79,10 @@ export async function DELETE(
     }
 
     return NextResponse.json({ success: true, message: 'Product deleted successfully' }, { headers: corsHeaders });
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const errMsg = error instanceof Error ? error.message : 'Failed to delete product';
     return NextResponse.json(
-      { success: false, error: error.message || 'Failed to delete product' },
+      { success: false, error: errMsg },
       { status: 500, headers: corsHeaders }
     );
   }

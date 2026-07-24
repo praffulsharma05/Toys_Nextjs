@@ -1,4 +1,5 @@
 import { prisma } from './prisma';
+import { Prisma } from '@prisma/client';
 
 export interface ReviewType {
   id: string;
@@ -43,7 +44,7 @@ export const CATEGORIES = [
 /**
  * Safely parse images JSON string or comma-separated list or fallback to single imageUrl
  */
-function parseImages(imagesRaw: any, mainUrl: string): string[] {
+function parseImages(imagesRaw: unknown, mainUrl: string): string[] {
   let list: string[] = [];
   if (Array.isArray(imagesRaw)) {
     list = imagesRaw.map((s) => String(s).trim()).filter(Boolean);
@@ -71,7 +72,7 @@ function parseImages(imagesRaw: any, mainUrl: string): string[] {
  */
 export async function getProducts(category?: string, search?: string, bestSellerOnly?: boolean): Promise<ProductType[]> {
   try {
-    const whereClause: any = {
+    const whereClause: Prisma.ProductWhereInput = {
       isDeleted: false, // Soft delete filter
     };
 
@@ -98,11 +99,11 @@ export async function getProducts(category?: string, search?: string, bestSeller
     });
 
     return dbProducts.map((p) => {
-      const imgList = parseImages((p as any).images, p.imageUrl);
-      const revs = (p as any).reviews || [];
+      const imgList = parseImages(p.images, p.imageUrl);
+      const revs = p.reviews || [];
       const reviewCount = revs.length;
       const avgRating = reviewCount > 0
-        ? Number((revs.reduce((acc: number, r: any) => acc + r.rating, 0) / reviewCount).toFixed(1))
+        ? Number((revs.reduce((acc: number, r: { rating: number }) => acc + r.rating, 0) / reviewCount).toFixed(1))
         : 5.0;
 
       return {
@@ -141,11 +142,11 @@ export async function getProductById(id: string): Promise<ProductType | null> {
       include: { reviews: { orderBy: { createdAt: 'desc' } } }
     });
     if (dbProduct) {
-      const imgList = parseImages((dbProduct as any).images, dbProduct.imageUrl);
-      const revs = (dbProduct as any).reviews || [];
+      const imgList = parseImages(dbProduct.images, dbProduct.imageUrl);
+      const revs = dbProduct.reviews || [];
       const reviewCount = revs.length;
       const avgRating = reviewCount > 0
-        ? Number((revs.reduce((acc: number, r: any) => acc + r.rating, 0) / reviewCount).toFixed(1))
+        ? Number((revs.reduce((acc: number, r: { rating: number }) => acc + r.rating, 0) / reviewCount).toFixed(1))
         : 5.0;
 
       return {
@@ -194,10 +195,10 @@ export async function createProduct(data: Omit<ProductType, 'id'>): Promise<Prod
       isBestSeller: Boolean(data.isBestSeller),
       stock: Number(data.stock || 10),
       isDeleted: false,
-    } as any
+    }
   });
 
-  const parsedImgs = parseImages((created as any).images, created.imageUrl);
+  const parsedImgs = parseImages(created.images, created.imageUrl);
 
   return {
     id: created.id,
@@ -224,7 +225,7 @@ export async function createProduct(data: Omit<ProductType, 'id'>): Promise<Prod
  * Update an existing product in MySQL database
  */
 export async function updateProduct(id: string, data: Partial<ProductType>): Promise<ProductType | null> {
-  const updateData: any = {
+  const updateData: Prisma.ProductUpdateInput = {
     name: data.name,
     category: data.category,
     price: data.price !== undefined ? Number(data.price) : undefined,
@@ -248,7 +249,7 @@ export async function updateProduct(id: string, data: Partial<ProductType>): Pro
     data: updateData
   });
 
-  const parsedImgs = parseImages((updated as any).images, updated.imageUrl);
+  const parsedImgs = parseImages(updated.images, updated.imageUrl);
 
   return {
     id: updated.id,
@@ -308,5 +309,5 @@ export async function getReviewsForProduct(productId: string): Promise<ReviewTyp
     where: { productId },
     orderBy: { createdAt: 'desc' }
   });
-  return reviews as any;
+  return reviews as ReviewType[];
 }

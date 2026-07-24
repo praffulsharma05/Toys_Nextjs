@@ -8,7 +8,7 @@ export default function Footer() {
       <div className="footer-container">
         <div className="footer-col-main">
           <div className="footer-brand-row">
-            <span className="material-symbols-outlined" style={{ fontSize: '32px', color: 'var(--color-primary)' }}>
+            <span className="material-symbols-outlined nav-shield-icon text-primary">
               rocket_launch
             </span>
             <span className="footer-brand-title">
@@ -33,7 +33,7 @@ export default function Footer() {
 
           <div className="footer-links-col">
             <span className="footer-link-title">Support</span>
-            <a href={`https://wa.me/91${whatsappNumber}`} target="_blank" rel="noopener noreferrer" className="footer-link-item" style={{ color: 'var(--color-primary)', fontWeight: '700' }}>
+            <a href={`https://wa.me/91${whatsappNumber}`} target="_blank" rel="noopener noreferrer" className="footer-link-item text-primary font-bold">
               WhatsApp: +91 {whatsappNumber}
             </a>
             <span className="footer-link-item">Shipping Info</span>

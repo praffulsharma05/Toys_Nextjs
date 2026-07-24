@@ -14,32 +14,34 @@ export default function WishlistPage() {
   const [wishlistProducts, setWishlistProducts] = useState<ProductType[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const loadWishlistItems = async () => {
-    setLoading(true);
-    const wishlistedIds = getWishlistFromCookies();
-
-    if (wishlistedIds.length === 0) {
-      setWishlistProducts([]);
-      setLoading(false);
-      return;
-    }
-
-    try {
-      const res = await fetch('/api/products');
-      const json = await res.json();
-      if (json.success && Array.isArray(json.data)) {
-        const filtered = json.data.filter((p: ProductType) => wishlistedIds.includes(p.id));
-        setWishlistProducts(filtered);
-      }
-    } catch (err) {
-      console.error('Failed to load wishlist products:', err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
-    loadWishlistItems();
+    let isMounted = true;
+
+    const initWishlist = async () => {
+      const wishlistedIds = getWishlistFromCookies();
+      if (wishlistedIds.length === 0) {
+        if (isMounted) {
+          setWishlistProducts([]);
+          setLoading(false);
+        }
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/products');
+        const json = await res.json();
+        if (isMounted && json.success && Array.isArray(json.data)) {
+          const filtered = json.data.filter((p: ProductType) => wishlistedIds.includes(p.id));
+          setWishlistProducts(filtered);
+        }
+      } catch (err) {
+        console.error('Failed to load wishlist products:', err);
+      } finally {
+        if (isMounted) setLoading(false);
+      }
+    };
+
+    initWishlist();
 
     const handleWishlistUpdate = () => {
       const wishlistedIds = getWishlistFromCookies();
@@ -48,6 +50,7 @@ export default function WishlistPage() {
 
     window.addEventListener('wishlist-updated', handleWishlistUpdate);
     return () => {
+      isMounted = false;
       window.removeEventListener('wishlist-updated', handleWishlistUpdate);
     };
   }, []);
@@ -65,50 +68,27 @@ export default function WishlistPage() {
   };
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+    <div className="page-container-flex">
       <Navbar />
 
-      <main style={{ flex: 1, padding: '2.5rem 0' }}>
+      <main className="wishlist-page-main">
         <div className="container-max">
           <Link
             href="/"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.5rem',
-              color: 'var(--color-on-surface-variant)',
-              fontSize: '0.9rem',
-              fontWeight: '600',
-              marginBottom: '1.5rem',
-            }}
+            className="wishlist-back-link"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>Back to Storefront</span>
           </Link>
 
           <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              marginBottom: '2rem',
-              flexWrap: 'wrap',
-              gap: '1rem',
-            }}
+            className="wishlist-header-row"
           >
             <div>
               <h1
-                style={{
-                  fontFamily: 'var(--font-display)',
-                  fontSize: '2rem',
-                  fontWeight: '800',
-                  color: 'var(--color-on-surface)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '10px',
-                }}
+                className="wishlist-title-text"
               >
-                <Heart style={{ color: '#e63946', fill: '#e63946', width: '28px', height: '28px' }} />
+                <Heart className="wishlist-title-heart" />
                 <span>My Wishlist</span>
               </h1>
             </div>
@@ -116,66 +96,35 @@ export default function WishlistPage() {
             {wishlistProducts.length > 0 && (
               <button
                 onClick={handleClearWishlist}
-                className="bouncy-btn"
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                  padding: '8px 16px',
-                  borderRadius: '9999px',
-                  background: 'rgba(186, 26, 26, 0.1)',
-                  color: '#ba1a1a',
-                  border: 'none',
-                  fontSize: '13px',
-                  fontWeight: '700',
-                  cursor: 'pointer',
-                }}
+                className="bouncy-btn wishlist-clear-btn"
               >
-                <Trash2 style={{ width: '16px', height: '16px' }} />
+                <Trash2 className="wishlist-trash-icon" />
                 <span>Clear All Saved Toys</span>
               </button>
             )}
           </div>
 
           {loading ? (
-            <div style={{ padding: '4rem', textAlign: 'center', color: 'var(--color-on-surface-variant)' }}>
+            <div className="wishlist-loading-box">
               Loading your saved wishlist...
             </div>
           ) : wishlistProducts.length === 0 ? (
             <div
-              style={{
-                textAlign: 'center',
-                padding: '4rem 2rem',
-                background: '#ffffff',
-                borderRadius: '24px',
-                border: '1px solid var(--color-outline-variant)',
-                boxShadow: 'var(--plush-shadow)',
-                maxWidth: '600px',
-                margin: '2rem auto',
-              }}
+              className="wishlist-empty-card"
             >
               <div
-                style={{
-                  width: '80px',
-                  height: '80px',
-                  borderRadius: '50%',
-                  background: 'rgba(230, 57, 70, 0.1)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  margin: '0 auto 1.5rem auto',
-                }}
+                className="wishlist-empty-icon-wrap"
               >
-                <Heart style={{ width: '40px', height: '40px', color: '#e63946' }} />
+                <Heart className="wishlist-empty-heart" />
               </div>
-              <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.5rem', fontWeight: '700', marginBottom: '0.75rem' }}>
+              <h2 className="wishlist-empty-title">
                 Your Wishlist is Empty
               </h2>
-              <p style={{ color: 'var(--color-on-surface-variant)', fontSize: '0.95rem', marginBottom: '2rem', lineHeight: '1.5' }}>
-                You haven't saved any toys yet. Click the heart icon on any toy card to save it to your wishlist without logging in!
+              <p className="wishlist-empty-text">
+                You haven&apos;t saved any toys yet. Click the heart icon on any toy card to save it to your wishlist without logging in!
               </p>
-              <Link href="/products" className="btn-primary-toyjoy" style={{ display: 'inline-flex', padding: '12px 28px' }}>
-                <ShoppingBag style={{ width: '18px', height: '18px' }} />
+              <Link href="/products" className="btn-primary-toyjoy wishlist-explore-btn">
+                <ShoppingBag className="wishlist-bag-icon" />
                 <span>Explore All Toys</span>
               </Link>
             </div>

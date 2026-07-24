@@ -4,11 +4,9 @@ import { useState, useEffect } from 'react';
 import { isWishlistedInCookies, toggleWishlistItemInCookies } from '@/lib/wishlistCookie';
 
 export default function WishlistButton({ productId }: { productId: string }) {
-  const [isWishlisted, setIsWishlisted] = useState(false);
+  const [isWishlisted, setIsWishlisted] = useState(() => typeof window !== 'undefined' ? isWishlistedInCookies(productId) : false);
 
   useEffect(() => {
-    setIsWishlisted(isWishlistedInCookies(productId));
-
     const handleWishlistUpdate = () => {
       setIsWishlisted(isWishlistedInCookies(productId));
     };
@@ -30,11 +28,7 @@ export default function WishlistButton({ productId }: { productId: string }) {
       className={`wishlist-btn-detail bouncy-btn ${isWishlisted ? 'wishlist-btn-detail-active' : 'wishlist-btn-detail-inactive'}`}
     >
       <span
-        className="material-symbols-outlined"
-        style={{
-          fontSize: '22px',
-          fontVariationSettings: isWishlisted ? "'FILL' 1" : "'FILL' 0",
-        }}
+        className={`material-symbols-outlined wishlist-heart-icon ${isWishlisted ? 'icon-filled' : 'icon-outlined'}`}
       >
         favorite
       </span>
