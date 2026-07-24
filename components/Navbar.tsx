@@ -100,7 +100,7 @@ function NavbarContent({ onSearch }: { onSearch?: (query: string) => void }) {
 
             {categoryDropdownOpen && (
               <div className="nav-category-popover">
-                {CATEGORIES.map((cat) => {
+                {CATEGORIES.filter((cat) => cat !== 'Gift').map((cat) => {
                   const catVal = cat === 'All' ? '' : cat;
                   const isSelected = categoryParam === catVal || (!categoryParam && cat === 'All');
                   return (
@@ -203,7 +203,7 @@ function NavbarContent({ onSearch }: { onSearch?: (query: string) => void }) {
               value={categoryParam}
             >
               <option value="">All Categories</option>
-              {CATEGORIES.map((cat) => (
+              {CATEGORIES.filter((cat) => cat !== 'Gift').map((cat) => (
                 <option key={cat} value={cat}>
                   {cat === 'All' ? 'All Categories' : cat}
                 </option>

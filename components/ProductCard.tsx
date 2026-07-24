@@ -116,6 +116,10 @@ export default function ProductCard({ product, onWishlistToggle }: ProductCardPr
           <span className="toy-card-price">₹{product.price.toLocaleString('en-IN')}</span>
         </div>
 
+        <p className="toy-card-desc">
+          {product.description}
+        </p>
+
         <div className="toy-card-actions">
           <a
             href={whatsappLink}

@@ -80,6 +80,8 @@ export async function getProducts(category?: string, search?: string, bestSeller
 
     if (category && category !== 'All') {
       whereClause.category = category;
+    } else {
+      whereClause.category = { not: 'Gift' };
     }
 
     if (bestSellerOnly) {
