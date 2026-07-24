@@ -6,9 +6,11 @@ interface BestSellersProps {
 }
 
 export default function BestSellers({ products }: BestSellersProps) {
+  // Filter products marked as isBestSeller, or fallback to first items if none marked yet
   const bestSellers = products.filter((p) => p.isBestSeller);
+  const displayItems = bestSellers.length > 0 ? bestSellers : products.slice(0, 4);
 
-  if (bestSellers.length === 0) return null;
+  if (products.length === 0) return null;
 
   return (
     <section style={{ marginBottom: '48px' }}>
@@ -29,14 +31,14 @@ export default function BestSellers({ products }: BestSellersProps) {
           </div>
         </div>
 
-        <span style={{ background: 'var(--color-tertiary-container)', color: 'var(--color-on-tertiary-container)', padding: '6px 14px', borderRadius: '9999px', fontSize: '13px', fontWeight: '700' }}>
-          🔥 Top Picked
+        <span style={{ background: 'var(--color-secondary-container)', color: 'var(--color-on-secondary-container)', padding: '6px 16px', borderRadius: '9999px', fontSize: '13px', fontWeight: '700', boxShadow: '0 2px 6px rgba(0,0,0,0.06)' }}>
+          ★ Top Picked Items
         </span>
       </div>
 
       <div className="toy-grid">
-        {bestSellers.map((product) => (
-          <ProductCard key={product.id} product={product} />
+        {displayItems.map((product) => (
+          <ProductCard key={product.id} product={{ ...product, isBestSeller: true }} />
         ))}
       </div>
     </section>
