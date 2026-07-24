@@ -5,7 +5,9 @@ import ProductCard from '@/components/ProductCard';
 import ProductGallery from '@/components/ProductGallery';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { ArrowLeft, MessageCircle, ShieldCheck, Truck, RefreshCw, Star } from 'lucide-react';
+import { ArrowLeft, ShieldCheck, Truck, RefreshCw, Star } from 'lucide-react';
+import WishlistButton from '@/components/WishlistButton';
+import WhatsAppIcon from '@/components/WhatsAppIcon';
 
 export const revalidate = 0;
 
@@ -84,8 +86,10 @@ export default async function ProductDetailPage({
                 <p style={{ color: 'var(--on-surface-variant)', fontSize: '0.95rem', lineHeight: '1.6' }}>{product.description}</p>
               </div>
 
-              <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="btn-whatsapp-toyjoy" style={{ width: '100%', padding: '1rem', fontSize: '1.1rem', marginBottom: '1.5rem' }}>
-                <MessageCircle style={{ width: '22px', height: '22px' }} />
+              <WishlistButton productId={product.id} />
+
+              <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="btn-whatsapp-toyjoy" style={{ width: '100%', padding: '1rem', fontSize: '1.1rem', marginBottom: '1.5rem', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+                <WhatsAppIcon size={24} color="#ffffff" />
                 <span>Buy Now on WhatsApp (+91 {whatsappNumber})</span>
               </a>
 

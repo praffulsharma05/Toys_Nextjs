@@ -1,5 +1,7 @@
 'use client';
 
+import WhatsAppIcon from './WhatsAppIcon';
+
 export default function FloatingChat() {
   const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '7878606937';
 
@@ -14,10 +16,10 @@ export default function FloatingChat() {
         right: '32px',
         width: '64px',
         height: '64px',
-        backgroundColor: 'var(--color-primary)',
-        color: 'var(--color-on-primary)',
+        backgroundColor: '#25D366',
+        color: '#ffffff',
         borderRadius: '9999px',
-        boxShadow: '0 10px 25px rgba(0, 88, 190, 0.3)',
+        boxShadow: '0 8px 24px rgba(37, 211, 102, 0.4)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -27,9 +29,7 @@ export default function FloatingChat() {
       className="bouncy-btn"
       title="Chat with Toy Joy Support on WhatsApp"
     >
-      <span className="material-symbols-outlined" style={{ fontSize: '32px' }}>
-        forum
-      </span>
+      <WhatsAppIcon size={32} color="#ffffff" />
     </a>
   );
 }

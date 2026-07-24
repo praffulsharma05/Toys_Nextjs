@@ -1,13 +1,42 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { ProductType } from '@/lib/products';
+import WhatsAppIcon from './WhatsAppIcon';
+import { isWishlistedInCookies, toggleWishlistItemInCookies } from '@/lib/wishlistCookie';
 
 interface ProductCardProps {
   product: ProductType;
+  onWishlistToggle?: (productId: string, isWishlisted: boolean) => void;
 }
 
-export default function ProductCard({ product }: ProductCardProps) {
+export default function ProductCard({ product, onWishlistToggle }: ProductCardProps) {
+  const [isWishlisted, setIsWishlisted] = useState(false);
+
+  useEffect(() => {
+    setIsWishlisted(isWishlistedInCookies(product.id));
+
+    const handleWishlistUpdate = () => {
+      setIsWishlisted(isWishlistedInCookies(product.id));
+    };
+
+    window.addEventListener('wishlist-updated', handleWishlistUpdate);
+    return () => {
+      window.removeEventListener('wishlist-updated', handleWishlistUpdate);
+    };
+  }, [product.id]);
+
+  const handleHeartClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const res = toggleWishlistItemInCookies(product.id);
+    setIsWishlisted(res.isWishlisted);
+    if (onWishlistToggle) {
+      onWishlistToggle(product.id, res.isWishlisted);
+    }
+  };
+
   const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '7878606937';
   const origin = typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000';
   const productUrl = `${origin}/product/${product.id}`;
@@ -23,12 +52,38 @@ export default function ProductCard({ product }: ProductCardProps) {
           alt={product.name}
           style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s ease' }}
         />
+
+        {/* Wishlist Heart Button */}
         <button
-          style={{ position: 'absolute', top: '16px', right: '16px', background: 'rgba(255,255,255,0.8)', border: 'none', borderRadius: '9999px', padding: '8px', cursor: 'pointer', display: 'flex' }}
+          onClick={handleHeartClick}
+          style={{
+            position: 'absolute',
+            top: '16px',
+            right: '16px',
+            background: isWishlisted ? 'rgba(255, 235, 238, 0.95)' : 'rgba(255,255,255,0.85)',
+            border: 'none',
+            borderRadius: '9999px',
+            padding: '8px',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            boxShadow: '0 4px 12px rgba(0,0,0,0.12)',
+            zIndex: 10,
+            transition: 'all 0.2s ease',
+          }}
           className="bouncy-btn"
-          title="Add to wishlist"
+          title={isWishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
         >
-          <span className="material-symbols-outlined" style={{ color: 'var(--color-primary)', fontSize: '20px' }}>
+          <span
+            className="material-symbols-outlined"
+            style={{
+              color: isWishlisted ? '#e63946' : 'var(--color-outline)',
+              fontSize: '20px',
+              fontVariationSettings: isWishlisted ? "'FILL' 1" : "'FILL' 0",
+              transition: 'all 0.2s ease',
+            }}
+          >
             favorite
           </span>
         </button>
@@ -81,7 +136,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             className="btn-whatsapp-toyjoy bouncy-btn"
             style={{ flex: 1, padding: '10px', fontSize: '14px', borderRadius: '9999px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
           >
-            <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>chat</span>
+            <WhatsAppIcon size={18} color="#ffffff" />
             <span>Buy via WhatsApp</span>
           </a>
 

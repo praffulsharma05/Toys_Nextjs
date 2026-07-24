@@ -77,9 +77,9 @@ button, input, select, textarea { font-family: inherit; }
 .brand-title { font-family: var(--font-display); font-size: 32px; font-weight: 700; color: var(--color-primary); letter-spacing: -0.02em; }
 
 .nav-links { display: flex; align-items: center; gap: 24px; }
-.nav-link { color: var(--color-on-surface-variant); font-weight: 700; font-size: 14px; padding: 4px 8px; transition: transform 0.2s ease; }
-.nav-link:hover { transform: scale(1.05); }
-.nav-link-active { color: var(--color-primary); font-weight: 700; font-size: 14px; padding: 4px 8px; border-bottom: 2px solid var(--color-secondary-container); }
+.nav-link { color: var(--color-on-surface-variant); font-weight: 700; font-size: 14px; padding: 6px 12px; transition: all 0.2s ease; border-bottom: 3px solid transparent; }
+.nav-link:hover { color: var(--color-primary); transform: translateY(-1px); }
+.nav-link-active { color: var(--color-primary); font-weight: 800; font-size: 14px; padding: 6px 12px; border-bottom: 3px solid #fcd400; border-radius: 2px; transition: all 0.2s ease; }
 
 .nav-actions { display: flex; align-items: center; gap: 16px; }
 

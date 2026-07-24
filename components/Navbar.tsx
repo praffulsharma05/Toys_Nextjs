@@ -1,14 +1,32 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useEffect, Suspense } from 'react';
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { CATEGORIES } from '@/lib/products';
+import WhatsAppIcon from './WhatsAppIcon';
+import { getWishlistFromCookies } from '@/lib/wishlistCookie';
 
-export default function Navbar({ onSearch }: { onSearch?: (query: string) => void }) {
+function NavbarContent({ onSearch }: { onSearch?: (query: string) => void }) {
   const [showSearch, setShowSearch] = useState(false);
   const [query, setQuery] = useState('');
+  const [wishlistCount, setWishlistCount] = useState(0);
   const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    setWishlistCount(getWishlistFromCookies().length);
+
+    const handleWishlistUpdate = () => {
+      setWishlistCount(getWishlistFromCookies().length);
+    };
+
+    window.addEventListener('wishlist-updated', handleWishlistUpdate);
+    return () => {
+      window.removeEventListener('wishlist-updated', handleWishlistUpdate);
+    };
+  }, []);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -17,6 +35,15 @@ export default function Navbar({ onSearch }: { onSearch?: (query: string) => voi
   };
 
   const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '7878606937';
+
+  const isBestSeller = searchParams.get('bestSeller') === 'true';
+  const categoryParam = searchParams.get('category') || '';
+  const searchParam = searchParams.get('search') || '';
+
+  const isHomeActive = pathname === '/';
+  const isProductsActive = pathname === '/products' && !isBestSeller && !categoryParam && !searchParam;
+  const isBestSellerActive = pathname === '/products' && isBestSeller;
+  const isWishlistActive = pathname === '/wishlist';
 
   return (
     <header className="header-nav">
@@ -29,12 +56,17 @@ export default function Navbar({ onSearch }: { onSearch?: (query: string) => voi
           <span className="brand-title">Toy Joy</span>
         </Link>
 
-        {/* Navigation Links with Category Dropdown */}
+        {/* Navigation Links with Active Yellow Line Indicator */}
         <div className="nav-links">
-          <Link href="/" className="nav-link-active">Home</Link>
-          <Link href="/products" className="nav-link">Product List</Link>
+          <Link href="/" className={isHomeActive ? 'nav-link-active' : 'nav-link'}>
+            Home
+          </Link>
 
-          {/* Category Dropdown replacing Educational */}
+          <Link href="/products" className={isProductsActive ? 'nav-link-active' : 'nav-link'}>
+            Product List
+          </Link>
+
+          {/* Category Dropdown */}
           <div className="filter-group" style={{ margin: 0 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '4px', background: 'transparent' }}>
               <select
@@ -43,9 +75,9 @@ export default function Navbar({ onSearch }: { onSearch?: (query: string) => voi
                     router.push(e.target.value === 'All' ? '/products' : `/products?category=${encodeURIComponent(e.target.value)}`);
                   }
                 }}
-                className="nav-link"
+                className={categoryParam ? 'nav-link-active' : 'nav-link'}
                 style={{ background: 'transparent', border: 'none', cursor: 'pointer', outline: 'none', fontWeight: '700', paddingRight: '16px' }}
-                defaultValue=""
+                value={categoryParam}
               >
                 <option value="" disabled hidden>Category</option>
                 {CATEGORIES.map((cat) => (
@@ -57,7 +89,22 @@ export default function Navbar({ onSearch }: { onSearch?: (query: string) => voi
             </div>
           </div>
 
-          <Link href="/products?bestSeller=true" className="nav-link">Best Sellers</Link>
+          <Link href="/products?bestSeller=true" className={isBestSellerActive ? 'nav-link-active' : 'nav-link'}>
+            Best Sellers
+          </Link>
+
+          {/* Wishlist Link with Live Badge */}
+          <Link href="/wishlist" className={isWishlistActive ? 'nav-link-active' : 'nav-link'} style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+            <span className="material-symbols-outlined" style={{ color: '#e63946', fontSize: '18px', fontVariationSettings: "'FILL' 1" }}>
+              favorite
+            </span>
+            <span>Wishlist</span>
+            {wishlistCount > 0 && (
+              <span style={{ background: '#e63946', color: '#ffffff', fontSize: '11px', fontWeight: '800', borderRadius: '9999px', padding: '2px 7px', marginLeft: '2px' }}>
+                {wishlistCount}
+              </span>
+            )}
+          </Link>
         </div>
 
         {/* Actions */}
@@ -88,13 +135,34 @@ export default function Navbar({ onSearch }: { onSearch?: (query: string) => voi
             target="_blank"
             rel="noopener noreferrer"
             className="btn-whatsapp-toyjoy bouncy-btn"
-            style={{ padding: '8px 16px', fontSize: '13px' }}
+            style={{ padding: '8px 16px', fontSize: '13px', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
           >
-            <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>chat</span>
+            <WhatsAppIcon size={18} color="#ffffff" />
             <span>+91 {whatsappNumber}</span>
           </a>
         </div>
       </nav>
     </header>
+  );
+}
+
+export default function Navbar(props: { onSearch?: (query: string) => void }) {
+  return (
+    <Suspense
+      fallback={
+        <header className="header-nav">
+          <nav className="header-container">
+            <Link href="/" className="brand-logo-toyjoy">
+              <span className="material-symbols-outlined" style={{ fontSize: '40px', color: 'var(--color-primary)' }}>
+                rocket_launch
+              </span>
+              <span className="brand-title">Toy Joy</span>
+            </Link>
+          </nav>
+        </header>
+      }
+    >
+      <NavbarContent {...props} />
+    </Suspense>
   );
 }
