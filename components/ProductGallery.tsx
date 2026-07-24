@@ -19,6 +19,8 @@ export default function ProductGallery({
   const imageList = images && images.length > 0 ? images : ['/placeholder.png'];
   const [selectedIndex, setSelectedIndex] = useState(0);
 
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+
   const currentImage = imageList[selectedIndex] || imageList[0];
 
   const handlePrev = () => {
@@ -38,6 +40,8 @@ export default function ProductGallery({
           src={currentImage}
           alt={`${name} view ${selectedIndex + 1}`}
           className="gallery-main-img"
+          onClick={() => setIsLightboxOpen(true)}
+          title="Click to view full image"
           onError={(e) => {
             (e.currentTarget as HTMLImageElement).src = 'https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?w=800&q=80';
           }}
@@ -111,6 +115,53 @@ export default function ProductGallery({
               </button>
             );
           })}
+        </div>
+      )}
+
+      {/* Fullscreen Lightbox Modal */}
+      {isLightboxOpen && (
+        <div className="lightbox-backdrop" onClick={() => setIsLightboxOpen(false)}>
+          <div className="lightbox-content" onClick={(e) => e.stopPropagation()}>
+            <button
+              className="lightbox-close-btn bouncy-btn"
+              onClick={() => setIsLightboxOpen(false)}
+              title="Close modal"
+            >
+              <span className="material-symbols-outlined">close</span>
+            </button>
+
+            {imageList.length > 1 && (
+              <>
+                <button
+                  className="lightbox-arrow-btn lightbox-arrow-prev bouncy-btn"
+                  onClick={handlePrev}
+                  title="Previous photo"
+                >
+                  <ChevronLeft size={28} />
+                </button>
+                <button
+                  className="lightbox-arrow-btn lightbox-arrow-next bouncy-btn"
+                  onClick={handleNext}
+                  title="Next photo"
+                >
+                  <ChevronRight size={28} />
+                </button>
+              </>
+            )}
+
+            <img
+              src={currentImage}
+              alt={`${name} full view`}
+              className="lightbox-img"
+              onError={(e) => {
+                (e.currentTarget as HTMLImageElement).src = 'https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?w=1600&q=80';
+              }}
+            />
+            
+            <p className="lightbox-caption">
+              {name} {imageList.length > 1 && `(${selectedIndex + 1} of ${imageList.length})`}
+            </p>
+          </div>
         </div>
       )}
     </div>
