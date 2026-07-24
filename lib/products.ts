@@ -96,8 +96,8 @@ export async function getProducts(category?: string, search?: string, bestSeller
       ];
     }
 
-    const dbProducts = await prisma.product.findMany({
-      where: whereClause as never,
+    const dbProducts = await (prisma.product.findMany as any)({
+      where: whereClause,
       include: { reviews: true },
       orderBy: { createdAt: 'desc' }
     });
@@ -141,7 +141,7 @@ export async function getProducts(category?: string, search?: string, bestSeller
  */
 export async function getProductById(id: string): Promise<ProductType | null> {
   try {
-    const dbProduct = await prisma.product.findFirst({
+    const dbProduct = await (prisma.product.findFirst as any)({
       where: { id, isDeleted: false },
       include: { reviews: { orderBy: { createdAt: 'desc' } } }
     });

@@ -25,6 +25,7 @@ model Product {
   isDeleted     Boolean  @default(false)
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
+  reviews       Review[]
 }
 
 model Category {
@@ -32,5 +33,16 @@ model Category {
   name      String   @unique
   slug      String   @unique
   icon      String?
+  createdAt DateTime @default(now())
+}
+
+model Review {
+  id        String   @id @default(uuid())
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  author    String
+  rating    Int
+  comment   String   @db.Text
+  imageUrl  String?  @db.Text
   createdAt DateTime @default(now())
 }
