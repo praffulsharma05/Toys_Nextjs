@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { useState, useEffect, useRef, Suspense } from 'react';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { CATEGORIES } from '@/lib/products';
-import WhatsAppIcon from './WhatsAppIcon';
 import { getWishlistFromCookies } from '@/lib/wishlistCookie';
 import { ChevronDown, Check, LayoutGrid } from 'lucide-react';
 
@@ -49,7 +48,7 @@ function NavbarContent({ onSearch }: { onSearch?: (query: string) => void }) {
     setShowSearch(false);
   };
 
-  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '7878606937';
+
 
   const isBestSeller = searchParams.get('bestSeller') === 'true';
   const categoryParam = searchParams.get('category') || '';
@@ -161,16 +160,6 @@ function NavbarContent({ onSearch }: { onSearch?: (query: string) => void }) {
             </button>
           )}
 
-          <a
-            href={`https://wa.me/91${whatsappNumber}?text=${encodeURIComponent('Hello Toy Joy! I want to order some toys.')}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-whatsapp-toyjoy bouncy-btn hide-on-mobile"
-          >
-            <WhatsAppIcon size={18} color="#ffffff" />
-            <span>Chat on WhatsApp</span>
-          </a>
-
           {/* Mobile Hamburger Menu Toggle Button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -230,16 +219,6 @@ function NavbarContent({ onSearch }: { onSearch?: (query: string) => void }) {
             </span>
             <span>Wishlist ({wishlistCount})</span>
           </Link>
-
-          <a
-            href={`https://wa.me/91${whatsappNumber}?text=${encodeURIComponent('Hello Toy Joy! I want to order some toys.')}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-whatsapp-toyjoy bouncy-btn w-full rounded-full"
-          >
-            <WhatsAppIcon size={20} color="#ffffff" />
-            <span>Chat on WhatsApp</span>
-          </a>
         </div>
       )}
     </header>
