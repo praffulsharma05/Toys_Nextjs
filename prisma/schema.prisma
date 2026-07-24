@@ -17,6 +17,7 @@ model Product {
   price         Float
   originalPrice Float?
   imageUrl      String   @db.Text
+  images        String?  @db.Text
   description   String   @db.Text
   ageGroup      String   @default("3+ Years")
   isBestSeller  Boolean  @default(false)

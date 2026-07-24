@@ -35,9 +35,12 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
 
-    if (!body.name || !body.category || body.price === undefined || !body.imageUrl || !body.description) {
+    const images = Array.isArray(body.images) && body.images.length > 0 ? body.images : (body.imageUrl ? [body.imageUrl] : []);
+    const mainImageUrl = images[0] || body.imageUrl;
+
+    if (!body.name || !body.category || body.price === undefined || !mainImageUrl || !body.description) {
       return NextResponse.json(
-        { success: false, error: 'Missing required fields: name, category, price, imageUrl, description' },
+        { success: false, error: 'Missing required fields: name, category, price, imageUrl/images, description' },
         { status: 400, headers: corsHeaders }
       );
     }
@@ -47,7 +50,8 @@ export async function POST(request: NextRequest) {
       category: body.category,
       price: Number(body.price),
       originalPrice: body.originalPrice ? Number(body.originalPrice) : null,
-      imageUrl: body.imageUrl,
+      imageUrl: mainImageUrl,
+      images: images,
       description: body.description,
       ageGroup: body.ageGroup || '3+ Years',
       isBestSeller: Boolean(body.isBestSeller),

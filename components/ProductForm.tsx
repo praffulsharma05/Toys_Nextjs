@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { CATEGORIES } from '@/lib/products';
+import { Plus, Trash2, Image as ImageIcon, Star } from 'lucide-react';
 
 interface ProductFormProps {
   initialData?: {
@@ -11,6 +12,7 @@ interface ProductFormProps {
     price: string;
     originalPrice: string;
     imageUrl: string;
+    images?: string[];
     description: string;
     ageGroup: string;
     stock: string;
@@ -25,19 +27,22 @@ interface ProductFormProps {
 export default function ProductForm({ initialData, title, subtitle, submitLabel, onSubmit }: ProductFormProps) {
   const [submitting, setSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
-  const [formData, setFormData] = useState(
-    initialData || {
-      name: '',
-      category: 'Action Figures',
-      price: '',
-      originalPrice: '',
-      imageUrl: '',
-      description: '',
-      ageGroup: '3+ Years',
-      stock: '15',
-      isBestSeller: false,
-    }
-  );
+
+  const initialImagesList = initialData?.images && initialData.images.length > 0
+    ? initialData.images
+    : (initialData?.imageUrl ? [initialData.imageUrl] : ['']);
+
+  const [images, setImages] = useState<string[]>(initialImagesList);
+  const [formData, setFormData] = useState({
+    name: initialData?.name || '',
+    category: initialData?.category || 'Action Figures',
+    price: initialData?.price || '',
+    originalPrice: initialData?.originalPrice || '',
+    description: initialData?.description || '',
+    ageGroup: initialData?.ageGroup || '3+ Years',
+    stock: initialData?.stock || '15',
+    isBestSeller: initialData?.isBestSeller || false,
+  });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value, type } = e.target;
@@ -45,12 +50,42 @@ export default function ProductForm({ initialData, title, subtitle, submitLabel,
     setFormData((prev) => ({ ...prev, [name]: val }));
   };
 
+  const handleImageChange = (index: number, value: string) => {
+    const updated = [...images];
+    updated[index] = value;
+    setImages(updated);
+  };
+
+  const addImageInput = () => {
+    setImages([...images, '']);
+  };
+
+  const removeImageInput = (index: number) => {
+    if (images.length === 1) {
+      setImages(['']);
+    } else {
+      setImages(images.filter((_, i) => i !== index));
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
     setErrorMsg('');
+
+    const cleanImages = images.map((s) => s.trim()).filter(Boolean);
+    if (cleanImages.length === 0) {
+      setErrorMsg('Please provide at least one valid Image URL.');
+      setSubmitting(false);
+      return;
+    }
+
     try {
-      await onSubmit(formData);
+      await onSubmit({
+        ...formData,
+        imageUrl: cleanImages[0],
+        images: cleanImages,
+      });
     } catch (err: any) {
       setErrorMsg(err.message || 'Action failed');
     } finally {
@@ -117,9 +152,93 @@ export default function ProductForm({ initialData, title, subtitle, submitLabel,
           </div>
         </div>
 
-        <div style={{ marginBottom: '20px' }}>
-          <label style={{ display: 'block', fontSize: '14px', fontWeight: '700', marginBottom: '6px', color: 'var(--color-on-surface)' }}>Image URL *</label>
-          <input type="url" name="imageUrl" className="admin-input" placeholder="https://..." value={formData.imageUrl} onChange={handleChange} required />
+        {/* Multi-Image URL Management */}
+        <div style={{ marginBottom: '24px', background: 'var(--color-surface-container-low)', padding: '20px', borderRadius: '16px', border: '1px solid var(--color-outline-variant)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
+            <div>
+              <label style={{ fontSize: '15px', fontWeight: '700', color: 'var(--color-on-surface)', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <ImageIcon style={{ width: '18px', height: '18px', color: 'var(--color-primary)' }} />
+                <span>Product Images (Add Multiple Photos) *</span>
+              </label>
+              <p style={{ fontSize: '12px', color: 'var(--color-on-surface-variant)', marginTop: '2px' }}>
+                Image 1 will be used as the primary featured thumbnail. Add extra URLs for additional toy views.
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={addImageInput}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                padding: '6px 14px',
+                fontSize: '13px',
+                fontWeight: '700',
+                background: 'var(--color-primary)',
+                color: '#ffffff',
+                border: 'none',
+                borderRadius: '9999px',
+                cursor: 'pointer',
+              }}
+              className="bouncy-btn"
+            >
+              <Plus style={{ width: '16px', height: '16px' }} />
+              <span>Add Image URL</span>
+            </button>
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+            {images.map((url, idx) => (
+              <div key={idx} style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                <div style={{ width: '56px', height: '56px', borderRadius: '12px', overflow: 'hidden', background: '#e0e3e5', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', border: idx === 0 ? '2px solid var(--color-primary)' : '1px solid var(--color-outline-variant)' }}>
+                  {url ? (
+                    <img src={url} alt={`Preview ${idx + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} onError={(e) => (e.currentTarget.style.display = 'none')} />
+                  ) : (
+                    <span style={{ fontSize: '11px', color: 'var(--color-outline)', fontWeight: '700' }}>#{idx + 1}</span>
+                  )}
+                </div>
+
+                <div style={{ flex: 1, position: 'relative' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                    <span style={{ fontSize: '12px', fontWeight: '700', color: idx === 0 ? 'var(--color-primary)' : 'var(--color-on-surface-variant)' }}>
+                      {idx === 0 ? 'Primary Cover Photo' : `Photo #${idx + 1}`}
+                    </span>
+                    {idx === 0 && (
+                      <span style={{ background: 'var(--color-primary-container)', color: 'var(--color-primary)', fontSize: '10px', padding: '2px 8px', borderRadius: '9999px', fontWeight: '800' }}>
+                        FEATURED
+                      </span>
+                    )}
+                  </div>
+                  <input
+                    type="url"
+                    className="admin-input"
+                    placeholder="https://images.unsplash.com/photo-..."
+                    value={url}
+                    onChange={(e) => handleImageChange(idx, e.target.value)}
+                    required={idx === 0}
+                  />
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => removeImageInput(idx)}
+                  disabled={images.length === 1 && idx === 0}
+                  title="Remove image"
+                  style={{
+                    padding: '8px',
+                    borderRadius: '50%',
+                    background: 'var(--color-surface-container-high)',
+                    border: 'none',
+                    color: images.length === 1 && idx === 0 ? 'var(--color-outline)' : '#ba1a1a',
+                    cursor: images.length === 1 && idx === 0 ? 'not-allowed' : 'pointer',
+                    marginTop: '20px',
+                  }}
+                >
+                  <Trash2 style={{ width: '18px', height: '18px' }} />
+                </button>
+              </div>
+            ))}
+          </div>
         </div>
 
         <div style={{ marginBottom: '24px' }}>

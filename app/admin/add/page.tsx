@@ -18,6 +18,7 @@ export default function AddProductPage() {
         price: Number(formData.price),
         originalPrice: formData.originalPrice ? Number(formData.originalPrice) : null,
         imageUrl: formData.imageUrl,
+        images: formData.images,
         description: formData.description,
         ageGroup: formData.ageGroup,
         stock: Number(formData.stock || 10),

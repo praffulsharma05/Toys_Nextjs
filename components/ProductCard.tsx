@@ -39,6 +39,13 @@ export default function ProductCard({ product }: ProductCardProps) {
           </div>
         )}
 
+        {product.images && product.images.length > 1 && (
+          <div style={{ position: 'absolute', bottom: '12px', left: '12px', background: 'rgba(0,0,0,0.65)', backdropFilter: 'blur(4px)', color: '#fff', fontSize: '11px', fontWeight: '700', padding: '3px 8px', borderRadius: '9999px', display: 'flex', alignItems: 'center', gap: '4px', zIndex: 5 }}>
+            <span className="material-symbols-outlined" style={{ fontSize: '14px' }}>photo_library</span>
+            <span>{product.images.length} Photos</span>
+          </div>
+        )}
+
         <div className="toy-card-badge-age">
           {product.ageGroup}
         </div>

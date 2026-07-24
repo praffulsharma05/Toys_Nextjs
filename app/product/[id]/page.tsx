@@ -2,9 +2,10 @@ import { getProductById, getProducts } from '@/lib/products';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ProductCard from '@/components/ProductCard';
+import ProductGallery from '@/components/ProductGallery';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { ArrowLeft, MessageCircle, Flame, ShieldCheck, Truck, RefreshCw, Star } from 'lucide-react';
+import { ArrowLeft, MessageCircle, ShieldCheck, Truck, RefreshCw, Star } from 'lucide-react';
 
 export const revalidate = 0;
 
@@ -41,19 +42,12 @@ export default async function ProductDetailPage({
           </Link>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '3rem', background: '#ffffff', border: '1px solid var(--outline-variant)', borderRadius: '24px', padding: '2.5rem', boxShadow: 'var(--plush-shadow)', marginBottom: '4rem' }}>
-            <div style={{ position: 'relative', borderRadius: '20px', overflow: 'hidden', background: '#e0e3e5', height: '380px' }}>
-              <img src={product.imageUrl} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-              {product.isBestSeller && (
-                <div style={{ position: 'absolute', top: '16px', left: '16px', background: 'var(--tertiary)', color: '#fff', fontSize: '12px', fontWeight: '700', padding: '4px 12px', borderRadius: 'var(--radius-full)' }}>
-                  BEST SELLER
-                </div>
-              )}
-              {discountPercent && (
-                <div style={{ position: 'absolute', top: '16px', right: '16px', background: 'var(--primary)', color: '#fff', fontSize: '12px', fontWeight: '700', padding: '4px 8px', borderRadius: '8px' }}>
-                  SAVE {discountPercent}%
-                </div>
-              )}
-            </div>
+            <ProductGallery
+              images={product.images && product.images.length > 0 ? product.images : [product.imageUrl]}
+              name={product.name}
+              isBestSeller={product.isBestSeller}
+              discountPercent={discountPercent}
+            />
 
             <div style={{ display: 'flex', flexDirection: 'column' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.6rem' }}>
