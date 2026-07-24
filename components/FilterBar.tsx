@@ -11,8 +11,8 @@ interface FilterBarProps {
   onClear: () => void;
 }
 
-const AGE_OPTIONS = ['All Ages', '0-2 Years', '3-5 Years', '6-9 Years', '10+ Years'];
-const PRICE_OPTIONS = ['Any Price', 'Under ₹500', '₹500 - ₹1500', '₹1500+'];
+const AGE_OPTIONS = ['All Ages', '0-2 Years', '3-5 Years', '6-9 Years'];
+const PRICE_OPTIONS = ['Any Price', 'Under ₹500', '₹500 - ₹1500'];
 
 export default function FilterBar({
   selectedAge,

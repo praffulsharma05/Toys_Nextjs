@@ -21,7 +21,7 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
           const p = json.data;
           setInitialData({
             name: p.name || '',
-            category: p.category || 'Action Figures',
+            category: p.category || 'Educational',
             price: p.price ? String(p.price) : '',
             originalPrice: p.originalPrice ? String(p.originalPrice) : '',
             imageUrl: p.imageUrl || '',

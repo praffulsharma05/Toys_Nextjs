@@ -27,7 +27,6 @@ export default function ProductGrid({ products }: ProductGridProps) {
 
     if (selectedPrice === 'Under ₹500') result = result.filter((p) => p.price < 500);
     else if (selectedPrice === '₹500 - ₹1500') result = result.filter((p) => p.price >= 500 && p.price <= 1500);
-    else if (selectedPrice === '₹1500+') result = result.filter((p) => p.price > 1500);
 
     return result;
   }, [products, selectedAge, selectedPrice]);

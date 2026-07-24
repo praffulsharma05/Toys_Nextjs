@@ -32,10 +32,7 @@ export interface ProductType {
 
 export const CATEGORIES = [
   'All',
-  'Action Figures',
-  'Plush Toys',
   'Educational',
-  'RC & Vehicles',
   'Board Games',
   'Creative & Crafts'
 ];

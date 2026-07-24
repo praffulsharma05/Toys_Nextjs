@@ -48,7 +48,7 @@ export default function ProductForm({ initialData, title, subtitle, submitLabel,
   const [images, setImages] = useState<string[]>(initialImagesList);
   const [formData, setFormData] = useState({
     name: initialData?.name || '',
-    category: initialData?.category || 'Action Figures',
+    category: initialData?.category || 'Educational',
     price: initialData?.price || '',
     originalPrice: initialData?.originalPrice || '',
     description: initialData?.description || '',

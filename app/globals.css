@@ -137,7 +137,7 @@ button, input, select, textarea { font-family: inherit; }
 .page-subtitle-text { font-size: 16px; color: var(--color-on-surface-variant); }
 
 .grid-pagination-wrap { margin-top: 48px; display: flex; justify-content: center; align-items: center; gap: 12px; }
-.grid-page-btn-icon { width: 48px; height: 48px; border-radius: 9999px; background: var(--color-surface-container-high); border: none; cursor: pointer; display: flex; items-center: center; justify-content: center; }
+.grid-page-btn-icon { width: 48px; height: 48px; border-radius: 9999px; background: var(--color-surface-container-high); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; }
 .grid-pages-row { display: flex; align-items: center; gap: 8px; }
 .grid-page-btn-active { width: 48px; height: 48px; border-radius: 9999px; background: var(--color-primary); color: #ffffff; font-weight: 700; border: none; cursor: pointer; }
 .grid-page-btn-inactive { width: 48px; height: 48px; border-radius: 9999px; background: var(--color-surface-container-highest); font-weight: 700; border: none; cursor: pointer; }
@@ -192,7 +192,7 @@ button, input, select, textarea { font-family: inherit; }
 .form-add-url-btn { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; font-size: 13px; font-weight: 700; background: var(--color-primary); color: #ffffff; border: none; border-radius: 9999px; cursor: pointer; }
 .form-plus-icon { width: 16px; height: 16px; }
 .form-img-list { display: flex; flex-direction: column; gap: 14px; }
-.form-img-row { display: flex; gap: 12px; items-center: center; }
+.form-img-row { display: flex; gap: 12px; align-items: center; }
 .form-img-thumb-frame { width: 56px; height: 56px; border-radius: 12px; overflow: hidden; background: #e0e3e5; flex-shrink: 0; display: flex; align-items: center; justify-content: center; border: 1px solid var(--color-outline-variant); }
 .form-img-thumb-featured { width: 56px; height: 56px; border-radius: 12px; overflow: hidden; background: #e0e3e5; flex-shrink: 0; display: flex; align-items: center; justify-content: center; border: 2px solid var(--color-primary); }
 .form-img-preview { width: 100%; height: 100%; object-fit: cover; }
