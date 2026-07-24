@@ -1,6 +1,5 @@
 import ProductCard from './ProductCard';
 import { ProductType } from '@/lib/products';
-import { Flame, Sparkles } from 'lucide-react';
 
 interface BestSellersProps {
   products: ProductType[];
@@ -12,29 +11,30 @@ export default function BestSellers({ products }: BestSellersProps) {
   if (bestSellers.length === 0) return null;
 
   return (
-    <section style={{ margin: '3rem 0' }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-          <div style={{ background: 'rgba(255, 183, 3, 0.15)', padding: '0.6rem', borderRadius: '12px', color: '#ffb703', display: 'flex' }}>
-            <Flame className="w-6 h-6 fill-current text-yellow-500" />
+    <section style={{ marginBottom: '48px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div style={{ background: 'var(--color-secondary-container)', padding: '10px', borderRadius: '12px', color: 'var(--color-on-secondary-container)', display: 'flex' }}>
+            <span className="material-symbols-outlined" style={{ fontSize: '28px', fontVariationSettings: "'FILL' 1" }}>
+              local_fire_department
+            </span>
           </div>
           <div>
-            <h2 style={{ fontSize: '1.75rem', fontWeight: '800', color: 'var(--text-main)', letterSpacing: '-0.5px' }}>
+            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '28px', fontWeight: '700', color: 'var(--color-on-surface)' }}>
               Best Seller Toys
             </h2>
-            <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>
-              Most loved and highly recommended toys by kids and parents!
+            <p style={{ fontSize: '14px', color: 'var(--color-on-surface-variant)' }}>
+              Most loved and top-rated toys chosen by parents & kids!
             </p>
           </div>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'rgba(255, 82, 82, 0.1)', padding: '0.4rem 0.9rem', borderRadius: 'var(--radius-pill)', border: '1px solid rgba(255, 82, 82, 0.25)', color: 'var(--accent-primary)', fontSize: '0.85rem', fontWeight: '700' }}>
-          <Sparkles className="w-4 h-4" />
-          <span>{bestSellers.length} Top Picked Items</span>
-        </div>
+        <span style={{ background: 'var(--color-tertiary-container)', color: 'var(--color-on-tertiary-container)', padding: '6px 14px', borderRadius: '9999px', fontSize: '13px', fontWeight: '700' }}>
+          🔥 Top Picked
+        </span>
       </div>
 
-      <div className="product-grid">
+      <div className="toy-grid">
         {bestSellers.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}

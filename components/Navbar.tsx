@@ -12,7 +12,7 @@ export default function Navbar({ onSearch }: { onSearch?: (query: string) => voi
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (onSearch) onSearch(query);
-    else router.push(`/?search=${encodeURIComponent(query)}`);
+    else router.push(`/products?search=${encodeURIComponent(query)}`);
   };
 
   const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '7878606937';
@@ -20,7 +20,7 @@ export default function Navbar({ onSearch }: { onSearch?: (query: string) => voi
   return (
     <header className="header-nav">
       <nav className="header-container">
-        {/* Brand */}
+        {/* Brand Logo */}
         <Link href="/" className="brand-logo-toyjoy">
           <span className="material-symbols-outlined" style={{ fontSize: '40px', color: 'var(--color-primary)' }}>
             rocket_launch
@@ -28,12 +28,12 @@ export default function Navbar({ onSearch }: { onSearch?: (query: string) => voi
           <span className="brand-title">Toy Joy</span>
         </Link>
 
-        {/* Links */}
+        {/* Navigation Links with Products List Page */}
         <div className="nav-links">
-          <Link href="/" className="nav-link-active">Shop All</Link>
-          <Link href="/?category=Educational" className="nav-link">New Arrivals</Link>
-          <Link href="/?bestSeller=true" className="nav-link">Best Sellers</Link>
-          <Link href="/" className="nav-link">Sale</Link>
+          <Link href="/" className="nav-link-active">Home</Link>
+          <Link href="/products" className="nav-link">Product List</Link>
+          <Link href="/products?category=Educational" className="nav-link">Educational</Link>
+          <Link href="/products?bestSeller=true" className="nav-link">Best Sellers</Link>
         </div>
 
         {/* Actions */}
