@@ -52,7 +52,7 @@
   .hide-on-mobile { display: none !important; }
   .hero-title { font-size: 28px; }
   .hero-subtitle { font-size: 15px; }
-  .toy-card-img-container { height: 230px; }
+  .toy-card-img-container { height: 230px; padding: 8px; }
   .floating-chat-btn { bottom: 20px; right: 20px; width: 54px; height: 54px; }
   
   /* Best Sellers Header Mobile */
@@ -63,8 +63,8 @@
 
   /* Product Detail Mobile Adjustments */
   .detail-grid-box { grid-template-columns: 1fr !important; gap: 1.5rem !important; padding: 1.25rem !important; border-radius: 18px !important; margin-bottom: 2rem !important; }
-  .gallery-main-frame { height: 280px !important; border-radius: 16px !important; }
-  .gallery-thumb-btn { width: 60px !important; height: 60px !important; border-radius: 10px !important; }
+  .gallery-main-frame { height: 280px !important; border-radius: 16px !important; padding: 10px !important; }
+  .gallery-thumb-btn { width: 60px !important; height: 60px !important; border-radius: 10px !important; padding: 4px !important; }
   .detail-title { font-size: 1.5rem !important; }
   .detail-price-current { font-size: 1.8rem !important; }
 }
@@ -77,7 +77,7 @@
   .hero-title { font-size: 24px; line-height: 1.2; }
   .hero-subtitle { font-size: 14px; }
   .btn-whatsapp-toyjoy, .btn-primary-toyjoy { font-size: 12px; padding: 8px 14px; }
-  .toy-card-img-container { height: 220px; }
+  .toy-card-img-container { height: 220px; padding: 6px; }
   .detail-btn-row { flex-direction: column !important; align-items: stretch !important; gap: 10px !important; }
   .detail-btn-row > * { width: 100% !important; flex: none !important; }
   .hero-banner-container { padding: 24px 18px !important; min-height: 280px !important; border-radius: 18px !important; height: auto !important; }
@@ -86,7 +86,7 @@
   .filter-select-wrap { padding: 6px 8px; }
   
   .detail-grid-box { padding: 1rem !important; }
-  .gallery-main-frame { height: 250px !important; }
+  .gallery-main-frame { height: 250px !important; padding: 8px !important; }
   .detail-title { font-size: 1.35rem !important; }
   .detail-price-current { font-size: 1.6rem !important; }
 
