@@ -61,7 +61,7 @@ export default function ProductCard({ product, onWishlistToggle }: ProductCardPr
           alt={product.name}
           className="toy-card-img"
           onError={(e) => {
-            (e.currentTarget as HTMLImageElement).src = 'https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?w=800&q=80';
+            (e.currentTarget as HTMLImageElement).style.display = 'none';
           }}
         />
 

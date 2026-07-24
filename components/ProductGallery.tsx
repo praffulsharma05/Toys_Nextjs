@@ -43,7 +43,7 @@ export default function ProductGallery({
           onClick={() => setIsLightboxOpen(true)}
           title="Click to view full image"
           onError={(e) => {
-            (e.currentTarget as HTMLImageElement).src = 'https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?w=800&q=80';
+            (e.currentTarget as HTMLImageElement).style.display = 'none';
           }}
         />
 
@@ -109,7 +109,7 @@ export default function ProductGallery({
                   alt={`${name} thumbnail ${idx + 1}`}
                   className="gallery-thumb-img"
                   onError={(e) => {
-                    (e.currentTarget as HTMLImageElement).src = 'https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?w=200&q=80';
+                    (e.currentTarget as HTMLImageElement).style.display = 'none';
                   }}
                 />
               </button>
@@ -154,7 +154,7 @@ export default function ProductGallery({
               alt={`${name} full view`}
               className="lightbox-img"
               onError={(e) => {
-                (e.currentTarget as HTMLImageElement).src = 'https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?w=1600&q=80';
+                (e.currentTarget as HTMLImageElement).style.display = 'none';
               }}
             />
             
