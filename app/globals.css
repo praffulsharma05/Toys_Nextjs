@@ -190,7 +190,8 @@ button, input, select, textarea { font-family: inherit; }
 
 .wishlist-heart-icon { font-size: 22px; }
 .wishlist-page-main { flex: 1; padding: 2.5rem 0; }
-.wishlist-back-link { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--color-on-surface-variant); font-size: 0.9rem; font-weight: 600; margin-bottom: 1.5rem; }
+.wishlist-back-link { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--color-on-surface-variant); font-size: 0.9rem; font-weight: 600; margin-bottom: 1.5rem; padding: 10px 20px; border: 1.5px solid var(--color-border); border-radius: 9999px; transition: all 0.2s ease; }
+.wishlist-back-link:hover { border-color: var(--color-primary); color: var(--color-primary); background: rgba(99, 102, 241, 0.06); }
 .wishlist-header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem; }
 .wishlist-title-text { font-family: var(--font-display); font-size: 2rem; font-weight: 800; color: var(--color-on-surface); display: flex; align-items: center; gap: 10px; }
 .wishlist-title-heart { color: #e63946; fill: #e63946; width: 28px; height: 28px; }
@@ -249,6 +250,66 @@ button, input, select, textarea { font-family: inherit; }
 .form-trash-icon { width: 18px; height: 18px; }
 .form-btn-submit { flex: 1; padding: 12px; }
 .form-btn-cancel { padding: 12px 24px; background: var(--color-surface-container-high); color: var(--color-on-surface); }
+
+/* Image Upload Controls */
+.form-file-hidden { display: none; }
+.form-upload-icon { width: 16px; height: 16px; }
+@keyframes spin-slow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+/* Upload Card */
+.form-upload-card {
+  background: #ffffff;
+  border: 1px solid var(--color-outline-variant);
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 14px;
+  transition: box-shadow 0.2s ease;
+}
+.form-upload-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
+.form-upload-card-top { display: flex; flex-direction: column; gap: 12px; }
+
+/* Upload Dropzone (empty state) */
+.form-upload-dropzone {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 8px; padding: 32px 20px;
+  border: 2px dashed var(--color-outline-variant);
+  border-radius: 12px; background: var(--color-surface-container-low);
+  cursor: pointer; transition: all 0.2s ease; width: 100%;
+}
+.form-upload-dropzone:hover { border-color: var(--color-primary); background: rgba(99, 102, 241, 0.04); }
+.form-upload-dropzone:disabled { opacity: 0.6; cursor: not-allowed; }
+.form-dropzone-icon { width: 32px; height: 32px; color: var(--color-primary); }
+.form-dropzone-text { font-size: 15px; font-weight: 700; color: var(--color-on-surface); }
+.form-dropzone-hint { font-size: 12px; color: var(--color-on-surface-variant); }
+.form-upload-spinner-large { font-size: 28px; animation: spin-slow 1.2s linear infinite; display: inline-block; }
+
+/* Upload Preview (filled state) */
+.form-upload-preview-wrap { display: flex; flex-direction: column; gap: 10px; }
+.form-upload-preview-img {
+  width: 100%; max-height: 220px; object-fit: contain;
+  border-radius: 10px; background: var(--color-surface-container-low);
+  border: 1px solid var(--color-outline-variant);
+}
+.form-upload-preview-actions { display: flex; gap: 8px; align-items: center; }
+.form-upload-replace-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 16px; font-size: 13px; font-weight: 700;
+  background: var(--color-secondary-container); color: var(--color-on-secondary-container);
+  border: 1.5px solid var(--color-outline-variant); border-radius: 9999px;
+  cursor: pointer; transition: all 0.2s ease;
+}
+.form-upload-replace-btn:hover { border-color: var(--color-primary); background: var(--color-primary-container); color: var(--color-primary); }
+.form-upload-replace-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+/* Add Another Photo button */
+.form-add-photo-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 10px 20px; font-size: 14px; font-weight: 700;
+  background: transparent; color: var(--color-primary);
+  border: 1.5px dashed var(--color-primary); border-radius: 9999px;
+  cursor: pointer; margin-top: 14px; transition: all 0.2s ease;
+}
+.form-add-photo-btn:hover { background: rgba(99, 102, 241, 0.06); }
 
 .detail-star-gold { font-size: 18px; color: #fcd400; font-variation-settings: 'FILL' 1; }
 .detail-star-muted { font-size: 18px; color: #e0e0e0; font-variation-settings: 'FILL' 1; }

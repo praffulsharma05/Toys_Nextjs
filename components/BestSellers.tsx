@@ -15,19 +15,19 @@ export default function BestSellers({ products }: BestSellersProps) {
     <section className="bestsellers-section">
       <div className="bestsellers-header-row">
         <div className="bestsellers-title-group">
-          <div className="bestsellers-icon-box">
-            <span className="material-symbols-outlined bestsellers-fire-icon">
-              local_fire_department
-            </span>
-          </div>
-          <div>
+          <div className="bestsellers-title-row">
+            <div className="bestsellers-icon-box">
+              <span className="material-symbols-outlined bestsellers-fire-icon">
+                local_fire_department
+              </span>
+            </div>
             <h2 className="bestsellers-title">
               Best Seller Toys
             </h2>
-            <p className="bestsellers-subtitle">
-              Most loved and top-rated toys chosen by parents & kids!
-            </p>
           </div>
+          <p className="bestsellers-subtitle">
+            Most loved and top-rated toys chosen by parents & kids!
+          </p>
         </div>
 
         <span className="top-picked-badge bouncy-btn">

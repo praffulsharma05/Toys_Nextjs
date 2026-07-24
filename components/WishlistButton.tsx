@@ -4,15 +4,20 @@ import { useState, useEffect } from 'react';
 import { isWishlistedInCookies, toggleWishlistItemInCookies } from '@/lib/wishlistCookie';
 
 export default function WishlistButton({ productId }: { productId: string }) {
-  const [isWishlisted, setIsWishlisted] = useState(() => typeof window !== 'undefined' ? isWishlistedInCookies(productId) : false);
+  const [isWishlisted, setIsWishlisted] = useState(false);
 
   useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsWishlisted(isWishlistedInCookies(productId));
+    }, 0);
+
     const handleWishlistUpdate = () => {
       setIsWishlisted(isWishlistedInCookies(productId));
     };
 
     window.addEventListener('wishlist-updated', handleWishlistUpdate);
     return () => {
+      clearTimeout(timer);
       window.removeEventListener('wishlist-updated', handleWishlistUpdate);
     };
   }, [productId]);

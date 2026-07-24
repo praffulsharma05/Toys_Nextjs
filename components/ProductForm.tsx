@@ -1,9 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import Link from 'next/link';
 import { CATEGORIES } from '@/lib/products';
-import { Plus, Trash2, Image as ImageIcon } from 'lucide-react';
+import { Plus, Trash2, Image as ImageIcon, Upload } from 'lucide-react';
 
 export interface ProductFormData {
   name: string;
@@ -40,6 +40,8 @@ interface ProductFormProps {
 export default function ProductForm({ initialData, title, subtitle, submitLabel, onSubmit }: ProductFormProps) {
   const [submitting, setSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+  const [uploadingIdx, setUploadingIdx] = useState<number | null>(null);
+  const fileInputRefs = useRef<Map<number, HTMLInputElement>>(new Map());
 
   const initialImagesList = initialData?.images && initialData.images.length > 0
     ? initialData.images
@@ -81,6 +83,31 @@ export default function ProductForm({ initialData, title, subtitle, submitLabel,
     }
   };
 
+  const handleFileUpload = async (index: number, file: File) => {
+    setUploadingIdx(index);
+    setErrorMsg('');
+    try {
+      const body = new FormData();
+      body.append('file', file);
+      const res = await fetch('/api/upload', { method: 'POST', body });
+      const json = await res.json();
+      if (json.success && json.url) {
+        handleImageChange(index, json.url);
+      } else {
+        setErrorMsg(json.error || 'Upload failed');
+      }
+    } catch {
+      setErrorMsg('Image upload failed. Please try again.');
+    } finally {
+      setUploadingIdx(null);
+    }
+  };
+
+  const triggerFileInput = (index: number) => {
+    const input = fileInputRefs.current.get(index);
+    if (input) input.click();
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
@@ -88,7 +115,7 @@ export default function ProductForm({ initialData, title, subtitle, submitLabel,
 
     const cleanImages = images.map((s) => s.trim()).filter(Boolean);
     if (cleanImages.length === 0) {
-      setErrorMsg('Please provide at least one valid Image URL.');
+      setErrorMsg('Please upload at least one product image.');
       setSubmitting(false);
       return;
     }
@@ -169,72 +196,100 @@ export default function ProductForm({ initialData, title, subtitle, submitLabel,
           </div>
         </div>
 
-        {/* Multi-Image URL Management */}
+        {/* Image Upload Section */}
         <div className="form-multiimg-box">
           <div className="form-multiimg-header">
             <div>
               <label className="form-multiimg-label">
                 <ImageIcon className="form-multiimg-icon" />
-                <span>Product Images (Add Multiple Photos) *</span>
+                <span>Product Images (Upload Photos) *</span>
               </label>
               <p className="form-multiimg-sub">
-                Image 1 will be used as the primary featured thumbnail. Add extra URLs for additional toy views.
+                Upload images from your device. Image 1 is the primary featured thumbnail. Max 5MB per image.
               </p>
             </div>
-            <button
-              type="button"
-              onClick={addImageInput}
-              className="form-add-url-btn bouncy-btn"
-            >
-              <Plus className="form-plus-icon" />
-              <span>Add Image URL</span>
-            </button>
           </div>
 
           <div className="form-img-list">
             {images.map((url, idx) => (
-              <div key={idx} className="form-img-row">
-                <div className={idx === 0 ? 'form-img-thumb-featured' : 'form-img-thumb-frame'}>
-                  {url ? (
-                    <img src={url} alt={`Preview ${idx + 1}`} className="form-img-preview" onError={(e) => (e.currentTarget.style.display = 'none')} />
-                  ) : (
-                    <span className="form-img-num">#{idx + 1}</span>
-                  )}
-                </div>
+              <div key={idx} className="form-upload-card">
+                <input
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp,image/gif,image/avif"
+                  className="form-file-hidden"
+                  ref={(el) => { if (el) fileInputRefs.current.set(idx, el); }}
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) handleFileUpload(idx, file);
+                    e.target.value = '';
+                  }}
+                />
 
-                <div className="form-img-input-wrap">
+                <div className="form-upload-card-top">
                   <div className="form-img-title-row">
                     <span className={idx === 0 ? 'form-img-title-primary' : 'form-img-title-sub'}>
                       {idx === 0 ? 'Primary Cover Photo' : `Photo #${idx + 1}`}
                     </span>
                     {idx === 0 && (
-                      <span className="form-badge-featured">
-                        FEATURED
-                      </span>
+                      <span className="form-badge-featured">FEATURED</span>
                     )}
                   </div>
-                  <input
-                    type="url"
-                    className="admin-input"
-                    placeholder="https://images.unsplash.com/photo-..."
-                    value={url}
-                    onChange={(e) => handleImageChange(idx, e.target.value)}
-                    required={idx === 0}
-                  />
-                </div>
 
-                <button
-                  type="button"
-                  onClick={() => removeImageInput(idx)}
-                  disabled={images.length === 1 && idx === 0}
-                  title="Remove image"
-                  className={images.length === 1 && idx === 0 ? 'form-remove-btn-disabled' : 'form-remove-btn-active'}
-                >
-                  <Trash2 className="form-trash-icon" />
-                </button>
+                  {url ? (
+                    <div className="form-upload-preview-wrap">
+                      <img src={url} alt={`Preview ${idx + 1}`} className="form-upload-preview-img" onError={(e) => (e.currentTarget.style.display = 'none')} />
+                      <div className="form-upload-preview-actions">
+                        <button
+                          type="button"
+                          onClick={() => triggerFileInput(idx)}
+                          disabled={uploadingIdx === idx}
+                          className="form-upload-replace-btn bouncy-btn"
+                        >
+                          <Upload className="form-upload-icon" />
+                          <span>{uploadingIdx === idx ? 'Uploading...' : 'Replace Image'}</span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => removeImageInput(idx)}
+                          disabled={images.length === 1 && idx === 0}
+                          title="Remove image"
+                          className={images.length === 1 && idx === 0 ? 'form-remove-btn-disabled' : 'form-remove-btn-active'}
+                        >
+                          <Trash2 className="form-trash-icon" />
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => triggerFileInput(idx)}
+                      disabled={uploadingIdx === idx}
+                      className="form-upload-dropzone"
+                    >
+                      {uploadingIdx === idx ? (
+                        <span className="form-upload-spinner-large">⏳</span>
+                      ) : (
+                        <Upload className="form-dropzone-icon" />
+                      )}
+                      <span className="form-dropzone-text">
+                        {uploadingIdx === idx ? 'Uploading image...' : 'Click to upload image'}
+                      </span>
+                      <span className="form-dropzone-hint">JPEG, PNG, WebP, GIF — Max 5MB</span>
+                    </button>
+                  )}
+                </div>
               </div>
             ))}
           </div>
+
+          <button
+            type="button"
+            onClick={addImageInput}
+            className="form-add-photo-btn bouncy-btn"
+          >
+            <Plus className="form-plus-icon" />
+            <span>Add Another Photo</span>
+          </button>
         </div>
 
         <div className="form-group-mb">

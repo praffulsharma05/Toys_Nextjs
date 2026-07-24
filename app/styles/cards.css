@@ -89,18 +89,27 @@
   gap: 16px;
   margin-bottom: 24px;
   flex-wrap: wrap;
+  margin-left: 16px;
+  margin-right: 16px;
 }
 
 .bestsellers-title-group {
   display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.bestsellers-title-row {
+  display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
 }
 
 .bestsellers-icon-box {
   background: var(--color-secondary-container);
-  padding: 10px;
-  border-radius: 14px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
   color: var(--color-on-secondary-container);
   display: flex;
   align-items: center;
@@ -110,7 +119,7 @@
 }
 
 .bestsellers-fire-icon {
-  font-size: 28px;
+  font-size: 24px;
   font-variation-settings: 'FILL' 1;
 }
 
@@ -125,6 +134,7 @@
 .bestsellers-subtitle {
   font-size: 14px;
   color: var(--color-on-surface-variant);
+  margin-left: 56px; /* Align subtitle with the start of title text (icon width 44px + gap 12px) */
 }
 
 .top-picked-badge {

@@ -20,6 +20,8 @@
   .hero-banner-container { min-height: 300px; max-height: 360px; padding: 32px 36px; margin: 16px 0 32px 0; }
   .hero-title-text { font-size: 34px; margin-bottom: 8px; }
   .hero-subtitle-text { font-size: 15px; margin-bottom: 18px; }
+  .desktop-filter-bar { display: none !important; }
+  .mobile-filter-bar { display: block !important; }
   .toy-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
   .toy-card-img-container { height: 230px; }
   .detail-grid-box { grid-template-columns: 1fr; gap: 2rem; padding: 1.75rem; margin-bottom: 2rem; }
@@ -54,9 +56,9 @@
   .floating-chat-btn { bottom: 20px; right: 20px; width: 54px; height: 54px; }
   
   /* Best Sellers Header Mobile */
-  .bestsellers-header-row { flex-direction: column; align-items: flex-start; gap: 10px; margin-bottom: 18px; }
+  .bestsellers-header-row { flex-direction: column; align-items: flex-start; gap: 10px; margin-bottom: 18px; margin-left: 0; margin-right: 0; }
   .bestsellers-title { font-size: 22px; }
-  .bestsellers-subtitle { font-size: 13px; }
+  .bestsellers-subtitle { font-size: 13px; margin-left: 56px; }
   .top-picked-badge { font-size: 12px; padding: 5px 12px; }
 
   /* Product Detail Mobile Adjustments */
@@ -102,4 +104,85 @@
   .toy-card-img-container { height: 200px; }
   .hero-title { font-size: 22px; }
   .gallery-main-frame { height: 230px !important; }
+}
+
+/* ==========================================================================
+   Admin Panel Responsive
+   ========================================================================== */
+
+/* Tablet: admin header and form */
+@media (max-width: 768px) {
+  /* Admin Header: stack brand and nav vertically */
+  .admin-header-flex {
+    flex-direction: column;
+    align-items: flex-start;
+    height: auto;
+    padding: 16px 0;
+    gap: 12px;
+  }
+  .admin-nav-flex { width: 100%; flex-wrap: wrap; gap: 8px; }
+  .admin-db-badge { font-size: 11px; }
+
+  /* Admin Form Card */
+  .admin-card { padding: 20px; margin: 16px auto; border-radius: 16px; }
+  .form-grid-2col { grid-template-columns: 1fr; gap: 12px; }
+
+  /* Multi-image header: stack label + button */
+  .form-multiimg-header { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .form-multiimg-box { padding: 14px; }
+
+  /* Image rows: stack thumbnail, input, delete vertically */
+  .form-img-row { flex-direction: column; align-items: stretch; gap: 8px; }
+  .form-img-thumb-frame, .form-img-thumb-featured { width: 48px; height: 48px; }
+  .form-remove-btn-active, .form-remove-btn-disabled { margin-top: 0; align-self: flex-end; }
+
+  /* Submit row: stack buttons */
+  .display-flex.gap-16 { flex-direction: column; gap: 10px; }
+  .form-btn-submit, .form-btn-cancel { width: 100%; text-align: center; justify-content: center; }
+
+  /* Back link */
+  .wishlist-back-link { font-size: 0.8rem; padding: 8px 16px; }
+
+  /* Form title */
+  .form-title-text { font-size: 22px; }
+  .form-subtitle-text { font-size: 13px; }
+
+  /* Admin stats grid */
+  .admin-stats-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+
+  /* Admin table: smaller text & padding */
+  .admin-table-th, .admin-table-th-right { padding: 12px 14px; font-size: 11px; }
+  .admin-table-td, .admin-table-td-right { padding: 12px 14px; }
+  .admin-toy-img { width: 40px; height: 40px; }
+  .admin-toy-title { font-size: 13px; }
+}
+
+/* Mobile: further compaction */
+@media (max-width: 480px) {
+  .admin-header-flex { padding: 12px 0; gap: 10px; }
+  .admin-brand-title { font-size: 20px; }
+  .admin-shield-icon { font-size: 26px; }
+  .admin-nav-flex { gap: 6px; }
+
+  .admin-card { padding: 16px; margin: 12px auto; border-radius: 14px; }
+  .form-title-text { font-size: 20px; }
+  .form-subtitle-text { font-size: 12px; }
+  .form-label-block { font-size: 13px; }
+  .admin-input, .admin-select, .admin-textarea { padding: 10px 12px; font-size: 14px; }
+
+  .form-multiimg-box { padding: 12px; border-radius: 12px; }
+  .form-img-thumb-frame, .form-img-thumb-featured { width: 42px; height: 42px; border-radius: 10px; }
+
+  .admin-stats-grid { grid-template-columns: 1fr; gap: 10px; }
+  .admin-stat-card { padding: 16px; gap: 12px; }
+  .admin-stat-val-large { font-size: 20px; }
+  .admin-stat-val-medium { font-size: 18px; }
+
+  .admin-table-th, .admin-table-th-right { padding: 10px 10px; font-size: 10px; }
+  .admin-table-td, .admin-table-td-right { padding: 10px 10px; font-size: 13px; }
+  .admin-toy-img { width: 36px; height: 36px; border-radius: 8px; }
+  .admin-toy-title { font-size: 12px; }
+  .admin-toy-age { font-size: 10px; }
+  .admin-badge-category { font-size: 11px; padding: 3px 8px; }
+  .admin-btn-edit, .admin-btn-delete { padding: 5px 8px; font-size: 11px; }
 }

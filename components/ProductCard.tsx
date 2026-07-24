@@ -12,16 +12,23 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product, onWishlistToggle }: ProductCardProps) {
-  const [isWishlisted, setIsWishlisted] = useState(() => typeof window !== 'undefined' ? isWishlistedInCookies(product.id) : false);
+  const [isWishlisted, setIsWishlisted] = useState(false);
+  const [origin, setOrigin] = useState('');
   const router = useRouter();
 
   useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsWishlisted(isWishlistedInCookies(product.id));
+      setOrigin(window.location.origin);
+    }, 0);
+
     const handleWishlistUpdate = () => {
       setIsWishlisted(isWishlistedInCookies(product.id));
     };
 
     window.addEventListener('wishlist-updated', handleWishlistUpdate);
     return () => {
+      clearTimeout(timer);
       window.removeEventListener('wishlist-updated', handleWishlistUpdate);
     };
   }, [product.id]);
@@ -41,7 +48,6 @@ export default function ProductCard({ product, onWishlistToggle }: ProductCardPr
   };
 
   const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '7878606937';
-  const origin = typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000';
   const productUrl = `${origin}/product/${product.id}`;
   const whatsappMsg = `Hello Toy Joy! 👋\nI would like to purchase:\n🧸 *Toy*: ${product.name}\n💰 *Price*: ₹${product.price.toLocaleString('en-IN')}\n🏷️ *Category*: ${product.category}\n🔗 *Link*: ${productUrl}`;
   const whatsappLink = `https://wa.me/91${whatsappNumber}?text=${encodeURIComponent(whatsappMsg)}`;
