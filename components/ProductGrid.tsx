@@ -70,16 +70,21 @@ export default function ProductGrid({ products }: ProductGridProps) {
         </>
       ) : (
         <div className="grid-empty-card">
-          <span className="material-symbols-outlined grid-empty-icon">
-            sentiment_dissatisfied
-          </span>
+          <div className="grid-empty-icon-wrap">
+            <span className="material-symbols-outlined grid-empty-icon">
+              sentiment_dissatisfied
+            </span>
+          </div>
           <h3 className="grid-empty-title">
             No Toys Found
           </h3>
           <p className="grid-empty-subtitle">
             Add toys from your Admin Panel to populate your catalog in MySQL!
           </p>
-          <button onClick={handleClear} className="btn-primary-toyjoy">Clear Filters</button>
+          <button onClick={handleClear} className="btn-clear-empty-state bouncy-btn">
+            <span className="material-symbols-outlined">restart_alt</span>
+            <span>Clear Filters</span>
+          </button>
         </div>
       )}
     </div>
