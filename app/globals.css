@@ -82,7 +82,7 @@ button, input, select, textarea { font-family: inherit; }
   display: flex; justify-content: space-between; align-items: center;
 }
 
-.brand-logo-toyjoy { display: flex; items-center; gap: 12px; cursor: pointer; transition: transform 0.2s ease; }
+.brand-logo-toyjoy { display: flex; align-items: center; gap: 12px; cursor: pointer; transition: transform 0.2s ease; }
 .brand-logo-toyjoy:hover { transform: scale(1.04); }
 .brand-title { font-family: var(--font-display); font-size: 32px; font-weight: 700; color: var(--primary); }
 
