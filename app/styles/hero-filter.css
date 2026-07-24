@@ -431,3 +431,12 @@
   border-color: var(--color-primary);
   box-shadow: 0 4px 12px rgba(0, 88, 190, 0.25);
 }
+
+.gift-hero-bg {
+  background: linear-gradient(135deg, rgba(161, 58, 15, 0.95), rgba(194, 82, 39, 0.85)), url('https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=1600&q=80') center/cover !important;
+  box-shadow: 0 16px 40px rgba(194, 82, 39, 0.2) !important;
+}
+
+.gift-section-padding {
+  padding: 40px 0;
+}

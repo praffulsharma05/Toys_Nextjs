@@ -121,6 +121,10 @@ function NavbarContent({ onSearch }: { onSearch?: (query: string) => void }) {
             Best Sellers
           </Link>
 
+          <Link href="/gift" className={pathname === '/gift' ? 'nav-link-active' : 'nav-link'}>
+            Gift
+          </Link>
+
           {/* Wishlist Link with Live Badge */}
           <Link href="/wishlist" className={isWishlistActive ? 'nav-link-active inline-flex items-center gap-4' : 'nav-link inline-flex items-center gap-4'}>
             <span className="material-symbols-outlined nav-wishlist-icon">
@@ -214,6 +218,10 @@ function NavbarContent({ onSearch }: { onSearch?: (query: string) => void }) {
 
           <Link href="/products?bestSeller=true" onClick={() => setMobileMenuOpen(false)} className={isBestSellerActive ? 'nav-link-active' : 'nav-link'}>
             Best Sellers
+          </Link>
+
+          <Link href="/gift" onClick={() => setMobileMenuOpen(false)} className={pathname === '/gift' ? 'nav-link-active' : 'nav-link'}>
+            Gift
           </Link>
 
           <Link href="/wishlist" onClick={() => setMobileMenuOpen(false)} className={isWishlistActive ? 'nav-link-active inline-flex items-center gap-6' : 'nav-link inline-flex items-center gap-6'}>
