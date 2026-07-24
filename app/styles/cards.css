@@ -5,6 +5,9 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 24px;
+  margin-top: 28px;
+  margin-left: 16px;
+  margin-right: 16px;
 }
 
 .toy-card {
