@@ -1,5 +1,4 @@
 import { prisma } from './prisma';
-import { Prisma } from '@prisma/client';
 
 export interface ReviewType {
   id: string;
@@ -41,6 +40,11 @@ export const CATEGORIES = [
   'Creative & Crafts'
 ];
 
+type DbProductItem = Omit<ProductType, 'images'> & {
+  images?: unknown;
+  reviews?: ReviewType[];
+};
+
 /**
  * Safely parse images JSON string or comma-separated list or fallback to single imageUrl
  */
@@ -72,8 +76,8 @@ function parseImages(imagesRaw: unknown, mainUrl: string): string[] {
  */
 export async function getProducts(category?: string, search?: string, bestSellerOnly?: boolean): Promise<ProductType[]> {
   try {
-    const whereClause: Prisma.ProductWhereInput = {
-      isDeleted: false, // Soft delete filter
+    const whereClause: Record<string, unknown> = {
+      isDeleted: false,
     };
 
     if (category && category !== 'All') {
@@ -93,12 +97,12 @@ export async function getProducts(category?: string, search?: string, bestSeller
     }
 
     const dbProducts = await prisma.product.findMany({
-      where: whereClause,
+      where: whereClause as never,
       include: { reviews: true },
       orderBy: { createdAt: 'desc' }
     });
 
-    return dbProducts.map((p) => {
+    return (dbProducts as unknown as DbProductItem[]).map((p: DbProductItem) => {
       const imgList = parseImages(p.images, p.imageUrl);
       const revs = p.reviews || [];
       const reviewCount = revs.length;
@@ -142,31 +146,32 @@ export async function getProductById(id: string): Promise<ProductType | null> {
       include: { reviews: { orderBy: { createdAt: 'desc' } } }
     });
     if (dbProduct) {
-      const imgList = parseImages(dbProduct.images, dbProduct.imageUrl);
-      const revs = dbProduct.reviews || [];
+      const typedProduct = dbProduct as unknown as DbProductItem;
+      const imgList = parseImages(typedProduct.images, typedProduct.imageUrl);
+      const revs = typedProduct.reviews || [];
       const reviewCount = revs.length;
       const avgRating = reviewCount > 0
         ? Number((revs.reduce((acc: number, r: { rating: number }) => acc + r.rating, 0) / reviewCount).toFixed(1))
         : 5.0;
 
       return {
-        id: dbProduct.id,
-        name: dbProduct.name,
-        category: dbProduct.category,
-        price: dbProduct.price,
-        originalPrice: dbProduct.originalPrice,
-        imageUrl: imgList[0] || dbProduct.imageUrl,
+        id: typedProduct.id,
+        name: typedProduct.name,
+        category: typedProduct.category,
+        price: typedProduct.price,
+        originalPrice: typedProduct.originalPrice,
+        imageUrl: imgList[0] || typedProduct.imageUrl,
         images: imgList,
-        description: dbProduct.description,
-        ageGroup: dbProduct.ageGroup,
-        isBestSeller: dbProduct.isBestSeller,
-        stock: dbProduct.stock,
+        description: typedProduct.description,
+        ageGroup: typedProduct.ageGroup,
+        isBestSeller: typedProduct.isBestSeller,
+        stock: typedProduct.stock,
         rating: avgRating,
         reviewCount: reviewCount,
         reviews: revs,
-        isDeleted: dbProduct.isDeleted,
-        createdAt: dbProduct.createdAt,
-        updatedAt: dbProduct.updatedAt
+        isDeleted: typedProduct.isDeleted,
+        createdAt: typedProduct.createdAt,
+        updatedAt: typedProduct.updatedAt
       };
     }
   } catch (error) {
@@ -198,26 +203,27 @@ export async function createProduct(data: Omit<ProductType, 'id'>): Promise<Prod
     }
   });
 
-  const parsedImgs = parseImages(created.images, created.imageUrl);
+  const typedCreated = created as unknown as DbProductItem;
+  const parsedImgs = parseImages(typedCreated.images, typedCreated.imageUrl);
 
   return {
-    id: created.id,
-    name: created.name,
-    category: created.category,
-    price: created.price,
-    originalPrice: created.originalPrice,
-    imageUrl: parsedImgs[0] || created.imageUrl,
+    id: typedCreated.id,
+    name: typedCreated.name,
+    category: typedCreated.category,
+    price: typedCreated.price,
+    originalPrice: typedCreated.originalPrice,
+    imageUrl: parsedImgs[0] || typedCreated.imageUrl,
     images: parsedImgs,
-    description: created.description,
-    ageGroup: created.ageGroup,
-    isBestSeller: created.isBestSeller,
-    stock: created.stock,
+    description: typedCreated.description,
+    ageGroup: typedCreated.ageGroup,
+    isBestSeller: typedCreated.isBestSeller,
+    stock: typedCreated.stock,
     rating: 5.0,
     reviewCount: 0,
     reviews: [],
-    isDeleted: created.isDeleted,
-    createdAt: created.createdAt,
-    updatedAt: created.updatedAt
+    isDeleted: typedCreated.isDeleted,
+    createdAt: typedCreated.createdAt,
+    updatedAt: typedCreated.updatedAt
   };
 }
 
@@ -225,7 +231,7 @@ export async function createProduct(data: Omit<ProductType, 'id'>): Promise<Prod
  * Update an existing product in MySQL database
  */
 export async function updateProduct(id: string, data: Partial<ProductType>): Promise<ProductType | null> {
-  const updateData: Prisma.ProductUpdateInput = {
+  const updateData: Record<string, unknown> = {
     name: data.name,
     category: data.category,
     price: data.price !== undefined ? Number(data.price) : undefined,
@@ -246,26 +252,27 @@ export async function updateProduct(id: string, data: Partial<ProductType>): Pro
 
   const updated = await prisma.product.update({
     where: { id },
-    data: updateData
+    data: updateData as never
   });
 
-  const parsedImgs = parseImages(updated.images, updated.imageUrl);
+  const typedUpdated = updated as unknown as DbProductItem;
+  const parsedImgs = parseImages(typedUpdated.images, typedUpdated.imageUrl);
 
   return {
-    id: updated.id,
-    name: updated.name,
-    category: updated.category,
-    price: updated.price,
-    originalPrice: updated.originalPrice,
-    imageUrl: parsedImgs[0] || updated.imageUrl,
+    id: typedUpdated.id,
+    name: typedUpdated.name,
+    category: typedUpdated.category,
+    price: typedUpdated.price,
+    originalPrice: typedUpdated.originalPrice,
+    imageUrl: parsedImgs[0] || typedUpdated.imageUrl,
     images: parsedImgs,
-    description: updated.description,
-    ageGroup: updated.ageGroup,
-    isBestSeller: updated.isBestSeller,
-    stock: updated.stock,
-    isDeleted: updated.isDeleted,
-    createdAt: updated.createdAt,
-    updatedAt: updated.updatedAt
+    description: typedUpdated.description,
+    ageGroup: typedUpdated.ageGroup,
+    isBestSeller: typedUpdated.isBestSeller,
+    stock: typedUpdated.stock,
+    isDeleted: typedUpdated.isDeleted,
+    createdAt: typedUpdated.createdAt,
+    updatedAt: typedUpdated.updatedAt
   };
 }
 
