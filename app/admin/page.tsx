@@ -87,9 +87,6 @@ export default function AdminDashboard() {
           <h1 className="admin-title-main">
             Product Inventory Management
           </h1>
-          <p className="admin-subtitle-main">
-            Add, update pricing, set categories, toggle best sellers, and manage toy stock directly in MySQL.
-          </p>
         </div>
 
         <div>
