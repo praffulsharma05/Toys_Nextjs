@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { CATEGORIES } from '@/lib/products';
 
 export default function Navbar({ onSearch }: { onSearch?: (query: string) => void }) {
   const [showSearch, setShowSearch] = useState(false);
@@ -28,11 +29,34 @@ export default function Navbar({ onSearch }: { onSearch?: (query: string) => voi
           <span className="brand-title">Toy Joy</span>
         </Link>
 
-        {/* Navigation Links with Products List Page */}
+        {/* Navigation Links with Category Dropdown */}
         <div className="nav-links">
           <Link href="/" className="nav-link-active">Home</Link>
           <Link href="/products" className="nav-link">Product List</Link>
-          <Link href="/products?category=Educational" className="nav-link">Educational</Link>
+
+          {/* Category Dropdown replacing Educational */}
+          <div className="filter-group" style={{ margin: 0 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '4px', background: 'transparent' }}>
+              <select
+                onChange={(e) => {
+                  if (e.target.value) {
+                    router.push(e.target.value === 'All' ? '/products' : `/products?category=${encodeURIComponent(e.target.value)}`);
+                  }
+                }}
+                className="nav-link"
+                style={{ background: 'transparent', border: 'none', cursor: 'pointer', outline: 'none', fontWeight: '700', paddingRight: '16px' }}
+                defaultValue=""
+              >
+                <option value="" disabled hidden>Category</option>
+                {CATEGORIES.map((cat) => (
+                  <option key={cat} value={cat} style={{ color: 'var(--color-on-surface)' }}>
+                    {cat === 'All' ? 'All Categories' : cat}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
           <Link href="/products?bestSeller=true" className="nav-link">Best Sellers</Link>
         </div>
 
