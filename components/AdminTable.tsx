@@ -77,12 +77,10 @@ export default function AdminTable({ products, loading, onDelete, onToggleBestSe
                 <div className="admin-actions-flex">
                   <Link href={`/admin/edit/${p.id}`} className="btn-primary-toyjoy admin-btn-edit" title="Edit Toy Details">
                     <span className="material-symbols-outlined nav-category-icon">edit</span>
-                    <span>Edit</span>
                   </Link>
 
                   <button onClick={() => onDelete(p.id, p.name)} className="bouncy-btn admin-btn-delete" title="Soft Delete Product">
                     <span className="material-symbols-outlined nav-category-icon">delete</span>
-                    <span>Delete</span>
                   </button>
                 </div>
               </td>

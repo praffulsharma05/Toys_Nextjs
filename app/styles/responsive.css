@@ -173,10 +173,12 @@
   .form-multiimg-box { padding: 12px; border-radius: 12px; }
   .form-img-thumb-frame, .form-img-thumb-featured { width: 42px; height: 42px; border-radius: 10px; }
 
-  .admin-stats-grid { grid-template-columns: 1fr; gap: 10px; }
+  .admin-stats-grid { grid-template-columns: 1fr; gap: 10px; margin-left: 0; margin-right: 0; }
   .admin-stat-card { padding: 16px; gap: 12px; }
   .admin-stat-val-large { font-size: 20px; }
   .admin-stat-val-medium { font-size: 18px; }
+  .admin-table-container { margin-left: 0; margin-right: 0; }
+  .admin-header-row { margin-left: 0; margin-right: 0; }
 
   .admin-table-th, .admin-table-th-right { padding: 10px 10px; font-size: 10px; }
   .admin-table-td, .admin-table-td-right { padding: 10px 10px; font-size: 13px; }

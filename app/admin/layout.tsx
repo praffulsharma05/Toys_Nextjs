@@ -23,11 +23,6 @@ export default function AdminLayout({
               </span>
               <span className="brand-title admin-brand-title">Toy Joy Admin</span>
             </Link>
-            <span
-              className="admin-db-badge"
-            >
-              MySQL Connected
-            </span>
           </div>
 
           <nav className="admin-nav-flex">
@@ -35,7 +30,7 @@ export default function AdminLayout({
               Manage Products
             </Link>
 
-            <Link href="/admin/add" className="btn-primary-toyjoy">
+            <Link href="/admin/add" className="btn-primary-toyjoy btn-admin-add">
               <span className="material-symbols-outlined admin-add-icon">add_circle</span>
               <span>Add New Toy</span>
             </Link>

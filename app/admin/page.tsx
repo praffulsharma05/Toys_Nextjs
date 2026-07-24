@@ -90,7 +90,7 @@ export default function AdminDashboard() {
         </div>
 
         <div>
-          <Link href="/admin/add" className="btn-primary-toyjoy">
+          <Link href="/admin/add" className="btn-primary-toyjoy btn-admin-add">
             <span className="material-symbols-outlined">add</span>
             <span>Add New Toy</span>
           </Link>
