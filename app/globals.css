@@ -120,7 +120,7 @@ button, input, select, textarea { font-family: inherit; }
 }
 .btn-whatsapp-toyjoy:hover { transform: scale(1.05); background: var(--color-whatsapp-hover); }
 
-.toy-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 28px; }
+.toy-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
 
 .toy-card {
   background: var(--color-surface-container-lowest); border-radius: 16px;
@@ -158,10 +158,11 @@ button, input, select, textarea { font-family: inherit; }
 
 @media (max-width: 1024px) {
   .header-container, .container-max { max-width: 100%; padding: 0 24px; }
-  .toy-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; }
+  .toy-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 640px) {
   .header-container, .container-max { padding: 0 16px; }
+  .toy-grid { grid-template-columns: 1fr; gap: 16px; }
   .nav-links { display: none; }
 }
