@@ -1,5 +1,8 @@
 'use client';
 
+import { useState, useRef, useEffect } from 'react';
+import { X, SlidersHorizontal, Check, ChevronDown, RotateCcw, Sparkles } from 'lucide-react';
+
 interface FilterBarProps {
   selectedAge: string;
   onAgeChange: (age: string) => void;
@@ -8,6 +11,9 @@ interface FilterBarProps {
   onClear: () => void;
 }
 
+const AGE_OPTIONS = ['All Ages', '0-2 Years', '3-5 Years', '6-9 Years', '10+ Years'];
+const PRICE_OPTIONS = ['Any Price', 'Under ₹500', '₹500 - ₹1500', '₹1500+'];
+
 export default function FilterBar({
   selectedAge,
   onAgeChange,
@@ -15,74 +21,243 @@ export default function FilterBar({
   onPriceChange,
   onClear,
 }: FilterBarProps) {
+  const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
+  const [ageOpen, setAgeOpen] = useState(false);
+  const [priceOpen, setPriceOpen] = useState(false);
+
+  const ageRef = useRef<HTMLDivElement>(null);
+  const priceRef = useRef<HTMLDivElement>(null);
+
+  const hasActiveFilters = (selectedAge && selectedAge !== 'All Ages') || (selectedPrice && selectedPrice !== 'Any Price');
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (ageRef.current && !ageRef.current.contains(e.target as Node)) {
+        setAgeOpen(false);
+      }
+      if (priceRef.current && !priceRef.current.contains(e.target as Node)) {
+        setPriceOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   return (
-    <section className="filter-section">
-      <div className="filter-box">
-        <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '24px' }}>
-          {/* Age Filter */}
-          <div className="filter-group">
-            <label className="filter-label">Filter by Age</label>
-            <div className="filter-select-wrap">
-              <span className="material-symbols-outlined" style={{ color: 'var(--color-primary)', fontSize: '18px' }}>
-                child_care
-              </span>
-              <select
-                value={selectedAge}
-                onChange={(e) => onAgeChange(e.target.value)}
-                className="filter-select"
+    <>
+      {/* Desktop Filter Bar (Stylish Custom Floating Popovers) */}
+      <section className="filter-section desktop-filter-bar">
+        <div className="filter-box">
+          <div className="filter-flex-group">
+            {/* Custom Stylish Age Filter Dropdown */}
+            <div className="custom-filter-dropdown" ref={ageRef}>
+              <div style={{ fontSize: '11px', fontWeight: '700', color: 'var(--color-on-surface-variant)', marginLeft: '12px', marginBottom: '2px' }}>
+                Filter by Age
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  setAgeOpen(!ageOpen);
+                  setPriceOpen(false);
+                }}
+                className={`custom-filter-trigger ${ageOpen ? 'custom-filter-trigger-active' : ''}`}
               >
-                <option value="All Ages">All Ages</option>
-                <option value="0-2 Years">0-2 Years</option>
-                <option value="3-5 Years">3-5 Years</option>
-                <option value="6-9 Years">6-9 Years</option>
-                <option value="10+ Years">10+ Years</option>
-              </select>
-              <span className="material-symbols-outlined" style={{ position: 'absolute', right: '12px', color: 'var(--color-on-surface-variant)', pointerEvents: 'none', fontSize: '18px' }}>
-                keyboard_arrow_down
-              </span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <span className="material-symbols-outlined filter-icon">child_care</span>
+                  <span>{selectedAge || 'All Ages'}</span>
+                </div>
+                <ChevronDown style={{ width: '16px', height: '16px', color: 'var(--color-on-surface-variant)', transform: ageOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s ease' }} />
+              </button>
+
+              {ageOpen && (
+                <div className="custom-filter-popover">
+                  {AGE_OPTIONS.map((opt) => {
+                    const isSelected = (selectedAge || 'All Ages') === opt;
+                    return (
+                      <button
+                        key={opt}
+                        type="button"
+                        onClick={() => {
+                          onAgeChange(opt);
+                          setAgeOpen(false);
+                        }}
+                        className={`custom-filter-option ${isSelected ? 'custom-filter-option-selected' : ''}`}
+                      >
+                        <span>{opt}</span>
+                        {isSelected && <Check style={{ width: '16px', height: '16px', color: 'var(--color-primary)' }} />}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+
+            {/* Custom Stylish Price Filter Dropdown */}
+            <div className="custom-filter-dropdown" ref={priceRef}>
+              <div style={{ fontSize: '11px', fontWeight: '700', color: 'var(--color-on-surface-variant)', marginLeft: '12px', marginBottom: '2px' }}>
+                Filter by Price
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  setPriceOpen(!priceOpen);
+                  setAgeOpen(false);
+                }}
+                className={`custom-filter-trigger ${priceOpen ? 'custom-filter-trigger-active' : ''}`}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <span className="material-symbols-outlined filter-icon">payments</span>
+                  <span>{selectedPrice || 'Any Price'}</span>
+                </div>
+                <ChevronDown style={{ width: '16px', height: '16px', color: 'var(--color-on-surface-variant)', transform: priceOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s ease' }} />
+              </button>
+
+              {priceOpen && (
+                <div className="custom-filter-popover">
+                  {PRICE_OPTIONS.map((opt) => {
+                    const isSelected = (selectedPrice || 'Any Price') === opt;
+                    return (
+                      <button
+                        key={opt}
+                        type="button"
+                        onClick={() => {
+                          onPriceChange(opt);
+                          setPriceOpen(false);
+                        }}
+                        className={`custom-filter-option ${isSelected ? 'custom-filter-option-selected' : ''}`}
+                      >
+                        <span>{opt}</span>
+                        {isSelected && <Check style={{ width: '16px', height: '16px', color: 'var(--color-primary)' }} />}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
             </div>
           </div>
 
-          {/* Price Filter */}
-          <div className="filter-group">
-            <label className="filter-label">Filter by Price</label>
-            <div className="filter-select-wrap">
-              <span className="material-symbols-outlined" style={{ color: 'var(--color-primary)', fontSize: '18px' }}>
-                payments
-              </span>
-              <select
-                value={selectedPrice}
-                onChange={(e) => onPriceChange(e.target.value)}
-                className="filter-select"
-              >
-                <option value="Any Price">Any Price</option>
-                <option value="Under ₹500">Under ₹500</option>
-                <option value="₹500 - ₹1500">₹500 - ₹1500</option>
-                <option value="₹1500+">₹1500+</option>
-              </select>
-              <span className="material-symbols-outlined" style={{ position: 'absolute', right: '12px', color: 'var(--color-on-surface-variant)', pointerEvents: 'none', fontSize: '18px' }}>
-                keyboard_arrow_down
-              </span>
-            </div>
+          {/* Stylish Action Buttons */}
+          <div className="filter-actions">
+            <button className="btn-show-toys bouncy-btn">
+              <Sparkles style={{ width: '16px', height: '16px' }} />
+              <span>Show Toys</span>
+            </button>
+            <button
+              onClick={onClear}
+              className="btn-clear-all-stylish bouncy-btn"
+            >
+              <RotateCcw style={{ width: '14px', height: '14px' }} />
+              <span>Clear All</span>
+            </button>
           </div>
         </div>
+      </section>
 
-        {/* Actions */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <button className="btn-primary-toyjoy bouncy-btn">
-            <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>
-              tune
+      {/* Mobile Filter Bar Trigger Button */}
+      <section className="mobile-filter-bar">
+        <button
+          onClick={() => setIsBottomSheetOpen(true)}
+          className="mobile-filter-trigger-btn bouncy-btn"
+        >
+          <SlidersHorizontal style={{ width: '18px', height: '18px' }} />
+          <span>{hasActiveFilters ? 'Filters Applied 🎛️' : 'Filter Toys by Age & Price'}</span>
+          {hasActiveFilters && (
+            <span style={{ background: 'var(--color-primary)', color: '#fff', fontSize: '11px', padding: '2px 8px', borderRadius: '9999px', fontWeight: '800' }}>
+              Active
             </span>
-            <span>Apply Filters</span>
-          </button>
-          <button
-            onClick={onClear}
-            style={{ background: 'none', border: 'none', color: 'var(--color-on-surface-variant)', fontWeight: '700', fontSize: '14px', cursor: 'pointer', padding: '0 8px' }}
-          >
-            Clear All
-          </button>
+          )}
+        </button>
+      </section>
+
+      {/* Mobile Bottom Sheet Modal (Interactive Filter Chips & Stylish Action Buttons) */}
+      {isBottomSheetOpen && (
+        <div className="bottom-sheet-backdrop" onClick={() => setIsBottomSheetOpen(false)}>
+          <div className="bottom-sheet-content" onClick={(e) => e.stopPropagation()}>
+            <div className="bottom-sheet-header">
+              <div className="bottom-sheet-title">
+                <SlidersHorizontal style={{ width: '20px', height: '20px', color: 'var(--color-primary)' }} />
+                <span>Filter Toys</span>
+              </div>
+              <button
+                onClick={() => setIsBottomSheetOpen(false)}
+                className="bottom-sheet-close-btn bouncy-btn"
+              >
+                <X style={{ width: '20px', height: '20px' }} />
+              </button>
+            </div>
+
+            {/* Filter Chips inside Bottom Sheet */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+              <div>
+                <label style={{ display: 'block', fontSize: '13px', fontWeight: '700', color: 'var(--color-on-surface)', marginBottom: '8px' }}>
+                  Filter by Age
+                </label>
+                <div className="filter-chip-group">
+                  {AGE_OPTIONS.map((opt) => {
+                    const isSelected = (selectedAge || 'All Ages') === opt;
+                    return (
+                      <button
+                        key={opt}
+                        type="button"
+                        onClick={() => onAgeChange(opt)}
+                        className={`filter-chip-btn bouncy-btn ${isSelected ? 'filter-chip-btn-active' : ''}`}
+                      >
+                        {isSelected && <Check style={{ width: '14px', height: '14px' }} />}
+                        <span>{opt}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div>
+                <label style={{ display: 'block', fontSize: '13px', fontWeight: '700', color: 'var(--color-on-surface)', marginBottom: '8px' }}>
+                  Filter by Price
+                </label>
+                <div className="filter-chip-group">
+                  {PRICE_OPTIONS.map((opt) => {
+                    const isSelected = (selectedPrice || 'Any Price') === opt;
+                    return (
+                      <button
+                        key={opt}
+                        type="button"
+                        onClick={() => onPriceChange(opt)}
+                        className={`filter-chip-btn bouncy-btn ${isSelected ? 'filter-chip-btn-active' : ''}`}
+                      >
+                        {isSelected && <Check style={{ width: '14px', height: '14px' }} />}
+                        <span>{opt}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+
+            {/* Bottom Sheet Action Buttons */}
+            <div style={{ display: 'flex', gap: '12px', marginTop: '12px' }}>
+              <button
+                onClick={() => setIsBottomSheetOpen(false)}
+                className="btn-show-toys bouncy-btn"
+                style={{ flex: 1, padding: '12px' }}
+              >
+                <Sparkles style={{ width: '18px', height: '18px' }} />
+                <span>Show Toys</span>
+              </button>
+              <button
+                onClick={() => {
+                  onClear();
+                  setIsBottomSheetOpen(false);
+                }}
+                className="btn-clear-all-stylish bouncy-btn"
+                style={{ padding: '10px 18px' }}
+              >
+                <RotateCcw style={{ width: '14px', height: '14px' }} />
+                <span>Clear All</span>
+              </button>
+            </div>
+          </div>
         </div>
-      </div>
-    </section>
+      )}
+    </>
   );
 }

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { ProductType } from '@/lib/products';
 import WhatsAppIcon from './WhatsAppIcon';
 import { isWishlistedInCookies, toggleWishlistItemInCookies } from '@/lib/wishlistCookie';
@@ -13,6 +13,7 @@ interface ProductCardProps {
 
 export default function ProductCard({ product, onWishlistToggle }: ProductCardProps) {
   const [isWishlisted, setIsWishlisted] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     setIsWishlisted(isWishlistedInCookies(product.id));
@@ -37,6 +38,10 @@ export default function ProductCard({ product, onWishlistToggle }: ProductCardPr
     }
   };
 
+  const handleCardClick = () => {
+    router.push(`/product/${product.id}`);
+  };
+
   const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '7878606937';
   const origin = typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000';
   const productUrl = `${origin}/product/${product.id}`;
@@ -44,45 +49,27 @@ export default function ProductCard({ product, onWishlistToggle }: ProductCardPr
   const whatsappLink = `https://wa.me/91${whatsappNumber}?text=${encodeURIComponent(whatsappMsg)}`;
 
   return (
-    <div className="toy-card group">
-      {/* Image & Badges */}
+    <div onClick={handleCardClick} className="toy-card group">
+      {/* Image & Badges Container */}
       <div className="toy-card-img-container">
         <img
           src={product.imageUrl}
           alt={product.name}
-          style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s ease' }}
+          className="toy-card-img"
+          onError={(e) => {
+            (e.currentTarget as HTMLImageElement).src = 'https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?w=800&q=80';
+          }}
         />
 
         {/* Wishlist Heart Button */}
         <button
           onClick={handleHeartClick}
-          style={{
-            position: 'absolute',
-            top: '16px',
-            right: '16px',
-            background: isWishlisted ? 'rgba(255, 235, 238, 0.95)' : 'rgba(255,255,255,0.85)',
-            border: 'none',
-            borderRadius: '9999px',
-            padding: '8px',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            boxShadow: '0 4px 12px rgba(0,0,0,0.12)',
-            zIndex: 10,
-            transition: 'all 0.2s ease',
-          }}
-          className="bouncy-btn"
+          className={`toy-card-heart-btn bouncy-btn ${isWishlisted ? 'toy-card-heart-btn-active' : 'toy-card-heart-btn-inactive'}`}
           title={isWishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
         >
           <span
-            className="material-symbols-outlined"
-            style={{
-              color: isWishlisted ? '#e63946' : 'var(--color-outline)',
-              fontSize: '20px',
-              fontVariationSettings: isWishlisted ? "'FILL' 1" : "'FILL' 0",
-              transition: 'all 0.2s ease',
-            }}
+            className={`material-symbols-outlined ${isWishlisted ? 'toy-card-heart-icon-active' : 'toy-card-heart-icon-inactive'}`}
+            style={{ fontVariationSettings: isWishlisted ? "'FILL' 1" : "'FILL' 0" }}
           >
             favorite
           </span>
@@ -94,8 +81,21 @@ export default function ProductCard({ product, onWishlistToggle }: ProductCardPr
           </div>
         )}
 
+        {/* Low Stock Alert Badge (Only shown if stock <= 5 and > 0) */}
+        {product.stock <= 5 && product.stock > 0 && (
+          <div className={`toy-card-badge-lowstock ${product.isBestSeller ? 'toy-card-badge-lowstock-left' : 'toy-card-badge-lowstock-default'}`}>
+            <span>🔥 Only {product.stock} Left in Stock</span>
+          </div>
+        )}
+
+        {product.stock === 0 && (
+          <div className={`toy-card-badge-outofstock ${product.isBestSeller ? 'toy-card-badge-outofstock-left' : 'toy-card-badge-outofstock-default'}`}>
+            Out of Stock
+          </div>
+        )}
+
         {product.images && product.images.length > 1 && (
-          <div style={{ position: 'absolute', bottom: '12px', left: '12px', background: 'rgba(0,0,0,0.65)', backdropFilter: 'blur(4px)', color: '#fff', fontSize: '11px', fontWeight: '700', padding: '3px 8px', borderRadius: '9999px', display: 'flex', alignItems: 'center', gap: '4px', zIndex: 5 }}>
+          <div className="toy-card-badge-photos">
             <span className="material-symbols-outlined" style={{ fontSize: '14px' }}>photo_library</span>
             <span>{product.images.length} Photos</span>
           </div>
@@ -106,48 +106,24 @@ export default function ProductCard({ product, onWishlistToggle }: ProductCardPr
         </div>
       </div>
 
-      {/* Card Content */}
-      <div style={{ padding: '24px', display: 'flex', flexDirection: 'column', flex: 1 }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
-          <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '20px', fontWeight: '600', color: 'var(--color-on-surface)' }}>
-            {product.name}
-          </h3>
-          <span style={{ color: 'var(--color-primary)', fontWeight: '700', fontSize: '20px' }}>
-            ₹{product.price.toLocaleString('en-IN')}
-          </span>
+      {/* Card Content Body */}
+      <div className="toy-card-content">
+        <div className="toy-card-header">
+          <h3 className="toy-card-title">{product.name}</h3>
+          <span className="toy-card-price">₹{product.price.toLocaleString('en-IN')}</span>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '4px', marginBottom: '16px' }}>
-          <div style={{ display: 'flex', color: 'var(--color-secondary-container)' }}>
-            {[...Array(5)].map((_, i) => (
-              <span key={i} className="material-symbols-outlined" style={{ fontSize: '18px', color: '#fcd400', fontVariationSettings: "'FILL' 1" }}>
-                star
-              </span>
-            ))}
-          </div>
-          <span style={{ fontSize: '12px', fontWeight: '600', color: 'var(--color-outline)' }}>(128)</span>
-        </div>
-
-        <div style={{ display: 'flex', gap: '8px', marginTop: 'auto' }}>
+        <div className="toy-card-actions">
           <a
             href={whatsappLink}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-whatsapp-toyjoy bouncy-btn"
-            style={{ flex: 1, padding: '10px', fontSize: '14px', borderRadius: '9999px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
+            onClick={(e) => e.stopPropagation()}
+            className="btn-whatsapp-toyjoy btn-whatsapp-card bouncy-btn"
           >
             <WhatsAppIcon size={18} color="#ffffff" />
             <span>Buy via WhatsApp</span>
           </a>
-
-          <Link
-            href={`/product/${product.id}`}
-            style={{ background: 'var(--color-surface-container-highest)', color: 'var(--color-primary)', borderRadius: '9999px', padding: '10px 14px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
-            className="bouncy-btn"
-            title="View Details"
-          >
-            <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>visibility</span>
-          </Link>
         </div>
       </div>
     </div>

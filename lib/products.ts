@@ -1,5 +1,15 @@
 import { prisma } from './prisma';
 
+export interface ReviewType {
+  id: string;
+  productId: string;
+  author: string;
+  rating: number;
+  comment: string;
+  imageUrl?: string | null;
+  createdAt: Date | string;
+}
+
 export interface ProductType {
   id: string;
   name: string;
@@ -12,6 +22,9 @@ export interface ProductType {
   ageGroup: string;
   isBestSeller: boolean;
   stock: number;
+  rating?: number;
+  reviewCount?: number;
+  reviews?: ReviewType[];
   isDeleted?: boolean;
   createdAt?: Date | string;
   updatedAt?: Date | string;
@@ -80,11 +93,18 @@ export async function getProducts(category?: string, search?: string, bestSeller
 
     const dbProducts = await prisma.product.findMany({
       where: whereClause,
+      include: { reviews: true },
       orderBy: { createdAt: 'desc' }
     });
 
     return dbProducts.map((p) => {
       const imgList = parseImages((p as any).images, p.imageUrl);
+      const revs = (p as any).reviews || [];
+      const reviewCount = revs.length;
+      const avgRating = reviewCount > 0
+        ? Number((revs.reduce((acc: number, r: any) => acc + r.rating, 0) / reviewCount).toFixed(1))
+        : 5.0;
+
       return {
         id: p.id,
         name: p.name,
@@ -97,6 +117,9 @@ export async function getProducts(category?: string, search?: string, bestSeller
         ageGroup: p.ageGroup,
         isBestSeller: p.isBestSeller,
         stock: p.stock,
+        rating: avgRating,
+        reviewCount: reviewCount,
+        reviews: revs,
         isDeleted: p.isDeleted,
         createdAt: p.createdAt,
         updatedAt: p.updatedAt
@@ -114,10 +137,17 @@ export async function getProducts(category?: string, search?: string, bestSeller
 export async function getProductById(id: string): Promise<ProductType | null> {
   try {
     const dbProduct = await prisma.product.findFirst({
-      where: { id, isDeleted: false }
+      where: { id, isDeleted: false },
+      include: { reviews: { orderBy: { createdAt: 'desc' } } }
     });
     if (dbProduct) {
       const imgList = parseImages((dbProduct as any).images, dbProduct.imageUrl);
+      const revs = (dbProduct as any).reviews || [];
+      const reviewCount = revs.length;
+      const avgRating = reviewCount > 0
+        ? Number((revs.reduce((acc: number, r: any) => acc + r.rating, 0) / reviewCount).toFixed(1))
+        : 5.0;
+
       return {
         id: dbProduct.id,
         name: dbProduct.name,
@@ -130,6 +160,9 @@ export async function getProductById(id: string): Promise<ProductType | null> {
         ageGroup: dbProduct.ageGroup,
         isBestSeller: dbProduct.isBestSeller,
         stock: dbProduct.stock,
+        rating: avgRating,
+        reviewCount: reviewCount,
+        reviews: revs,
         isDeleted: dbProduct.isDeleted,
         createdAt: dbProduct.createdAt,
         updatedAt: dbProduct.updatedAt
@@ -178,6 +211,9 @@ export async function createProduct(data: Omit<ProductType, 'id'>): Promise<Prod
     ageGroup: created.ageGroup,
     isBestSeller: created.isBestSeller,
     stock: created.stock,
+    rating: 5.0,
+    reviewCount: 0,
+    reviews: [],
     isDeleted: created.isDeleted,
     createdAt: created.createdAt,
     updatedAt: created.updatedAt
@@ -246,4 +282,31 @@ export async function deleteProduct(id: string): Promise<boolean> {
     console.error('MySQL Soft Delete error:', error);
     return false;
   }
+}
+
+/**
+ * Create a new review for a product
+ */
+export async function createReview(productId: string, data: { author: string; rating: number; comment: string; imageUrl?: string }) {
+  const newReview = await prisma.review.create({
+    data: {
+      productId,
+      author: data.author || 'Customer',
+      rating: Math.min(5, Math.max(1, Number(data.rating) || 5)),
+      comment: data.comment,
+      imageUrl: data.imageUrl || null,
+    }
+  });
+  return newReview;
+}
+
+/**
+ * Get all reviews for a product
+ */
+export async function getReviewsForProduct(productId: string): Promise<ReviewType[]> {
+  const reviews = await prisma.review.findMany({
+    where: { productId },
+    orderBy: { createdAt: 'desc' }
+  });
+  return reviews as any;
 }

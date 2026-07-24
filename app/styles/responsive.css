@@ -1,0 +1,98 @@
+/* ==========================================================================
+   Responsive Breakpoints (Desktop, Tablet 768px x 804px & 698px x 1207px, Mobile 390px x 844px)
+   ========================================================================== */
+@media (min-width: 768px) {
+  .footer-container { flex-direction: row; }
+  .footer-links-grid { width: auto; }
+}
+
+@media (max-width: 1024px) {
+  .header-container, .container-max { padding: 0 20px; }
+  .toy-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  .hero-title { font-size: 36px; }
+  .nav-links { gap: 12px; }
+  .nav-link, .nav-link-active { font-size: 13px; padding: 4px 8px; }
+}
+
+/* 768px x 804px Tablet Viewport Optimizations */
+@media (max-width: 768px) {
+  .header-container, .container-max { padding: 0 24px; }
+  .hero-banner-container { min-height: 300px; max-height: 360px; padding: 32px 36px; margin: 16px 0 32px 0; }
+  .hero-title-text { font-size: 34px; margin-bottom: 8px; }
+  .hero-subtitle-text { font-size: 15px; margin-bottom: 18px; }
+  .toy-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  .toy-card-img-container { height: 230px; }
+  .detail-grid-box { grid-template-columns: 1fr; gap: 2rem; padding: 1.75rem; margin-bottom: 2rem; }
+  .gallery-main-frame { height: 320px; }
+  .detail-title { font-size: 1.75rem; }
+  .detail-price-current { font-size: 2rem; }
+}
+
+/* 698px x 1207px Mid-Tablet / Fold Viewport Optimizations */
+@media (max-width: 720px) {
+  .header-container, .container-max { padding: 0 20px; }
+  .toy-grid { grid-template-columns: repeat(2, 1fr); gap: 18px; }
+  .hero-banner-container { padding: 32px 28px; min-height: 300px; height: auto; }
+  .hero-title-text { font-size: 32px; }
+  .hero-subtitle-text { font-size: 15px; }
+  .toy-card-img-container { height: 240px; }
+  .detail-grid-box { grid-template-columns: 1fr; gap: 2rem; padding: 1.5rem; }
+  .gallery-main-frame { height: 320px; }
+}
+
+@media (max-width: 640px) {
+  .header-container, .container-max { padding: 0 16px; }
+  .header-nav { height: 72px; }
+  .brand-title { font-size: 22px; }
+  .toy-grid { grid-template-columns: 1fr; gap: 16px; }
+  .nav-links { display: none; }
+  .mobile-menu-toggle { display: flex; align-items: center; justify-content: center; }
+  .hide-on-mobile { display: none !important; }
+  .hero-title { font-size: 28px; }
+  .hero-subtitle { font-size: 15px; }
+  .toy-card-img-container { height: 230px; }
+  .floating-chat-btn { bottom: 20px; right: 20px; width: 54px; height: 54px; }
+  
+  /* Best Sellers Header Mobile */
+  .bestsellers-header-row { flex-direction: column; align-items: flex-start; gap: 10px; margin-bottom: 18px; }
+  .bestsellers-title { font-size: 22px; }
+  .bestsellers-subtitle { font-size: 13px; }
+  .top-picked-badge { font-size: 12px; padding: 5px 12px; }
+
+  /* Product Detail Mobile Adjustments */
+  .detail-grid-box { grid-template-columns: 1fr !important; gap: 1.5rem !important; padding: 1.25rem !important; border-radius: 18px !important; margin-bottom: 2rem !important; }
+  .gallery-main-frame { height: 280px !important; border-radius: 16px !important; }
+  .gallery-thumb-btn { width: 60px !important; height: 60px !important; border-radius: 10px !important; }
+  .detail-title { font-size: 1.5rem !important; }
+  .detail-price-current { font-size: 1.8rem !important; }
+}
+
+/* 390px x 844px Mobile Viewport Optimizations (iPhone 12/13/14/15) */
+@media (max-width: 480px) {
+  .header-container, .container-max { padding: 0 16px; }
+  .header-nav { height: 68px; }
+  .brand-title { font-size: 20px; }
+  .hero-title { font-size: 24px; line-height: 1.2; }
+  .hero-subtitle { font-size: 14px; }
+  .btn-whatsapp-toyjoy, .btn-primary-toyjoy { font-size: 12px; padding: 8px 14px; }
+  .toy-card-img-container { height: 220px; }
+  .detail-btn-row { flex-direction: column !important; align-items: stretch !important; gap: 10px !important; }
+  .detail-btn-row > * { width: 100% !important; flex: none !important; }
+  .hero-banner-container { padding: 24px 18px !important; min-height: 280px !important; border-radius: 18px !important; height: auto !important; }
+  .filter-select { font-size: 12px; padding-right: 14px; }
+  .filter-label { font-size: 10px; margin-left: 8px; }
+  .filter-select-wrap { padding: 6px 8px; }
+  
+  .detail-grid-box { padding: 1rem !important; }
+  .gallery-main-frame { height: 250px !important; }
+  .detail-title { font-size: 1.35rem !important; }
+  .detail-price-current { font-size: 1.6rem !important; }
+}
+
+@media (max-width: 390px) {
+  .header-container, .container-max { padding: 0 12px; }
+  .brand-title { font-size: 19px; }
+  .toy-card-img-container { height: 200px; }
+  .hero-title { font-size: 22px; }
+  .gallery-main-frame { height: 230px !important; }
+}

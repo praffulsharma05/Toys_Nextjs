@@ -27,24 +27,7 @@ export default function WishlistButton({ productId }: { productId: string }) {
   return (
     <button
       onClick={handleToggle}
-      className="bouncy-btn"
-      style={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: '8px',
-        width: '100%',
-        padding: '12px',
-        borderRadius: '9999px',
-        border: '2px solid #e63946',
-        background: isWishlisted ? 'rgba(230, 57, 70, 0.1)' : '#ffffff',
-        color: '#e63946',
-        fontWeight: '700',
-        fontSize: '1rem',
-        cursor: 'pointer',
-        marginBottom: '1.5rem',
-        transition: 'all 0.2s ease',
-      }}
+      className={`wishlist-btn-detail bouncy-btn ${isWishlisted ? 'wishlist-btn-detail-active' : 'wishlist-btn-detail-inactive'}`}
     >
       <span
         className="material-symbols-outlined"

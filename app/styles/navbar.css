@@ -1,0 +1,124 @@
+/* ==========================================================================
+   Navigation Bar & Mobile Menu Drawer Styles
+   ========================================================================== */
+.header-nav {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(247, 249, 251, 0.92); backdrop-filter: blur(12px);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06); height: 80px;
+  display: flex; align-items: center;
+}
+
+.header-container {
+  max-width: 1536px; margin: 0 auto; padding: 0 32px; width: 100%;
+  display: flex; justify-content: space-between; align-items: center;
+}
+
+.brand-logo-toyjoy { display: flex; align-items: center; gap: 10px; cursor: pointer; transition: transform 0.2s ease; }
+.brand-logo-toyjoy:hover { transform: scale(1.04); }
+.brand-logo-icon { font-size: 36px; color: var(--color-primary); }
+.brand-title { font-family: var(--font-display); font-size: 28px; font-weight: 800; color: var(--color-primary); letter-spacing: -0.02em; }
+
+.nav-links { display: flex; align-items: center; gap: 20px; }
+.nav-link { color: var(--color-on-surface-variant); font-weight: 700; font-size: 14px; padding: 6px 12px; transition: all 0.2s ease; border-bottom: 3px solid transparent; }
+.nav-link:hover { color: var(--color-primary); transform: translateY(-1px); }
+.nav-link-active { color: var(--color-primary); font-weight: 800; font-size: 14px; padding: 6px 12px; border-bottom: 3px solid #fcd400; border-radius: 2px; transition: all 0.2s ease; }
+
+/* Custom Floating Category Dropdown in Navbar */
+.nav-category-dropdown-wrap {
+  position: relative;
+}
+
+.nav-category-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--color-surface-container-low);
+  padding: 8px 16px;
+  border-radius: 9999px;
+  border: 1.5px solid var(--color-outline-variant);
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-on-surface);
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 88, 190, 0.06);
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.nav-category-trigger:hover, .nav-category-trigger-active {
+  border-color: var(--color-primary);
+  background: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(0, 88, 190, 0.15);
+}
+
+.nav-category-trigger-has-selected {
+  border-color: #fcd400;
+  background: rgba(252, 212, 0, 0.15);
+  color: var(--color-primary);
+  font-weight: 800;
+}
+
+.nav-category-popover {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  min-width: 220px;
+  background: #ffffff;
+  border-radius: 18px;
+  border: 1.5px solid var(--color-outline-variant);
+  box-shadow: 0 12px 36px rgba(0, 88, 190, 0.18);
+  padding: 8px;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  animation: fadeIn 0.18s ease;
+}
+
+.nav-category-option {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: none;
+  background: transparent;
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-on-surface);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-align: left;
+}
+
+.nav-category-option:hover {
+  background: var(--color-surface-container-low);
+  color: var(--color-primary);
+}
+
+.nav-category-option-selected {
+  background: rgba(0, 88, 190, 0.1) !important;
+  color: var(--color-primary) !important;
+  font-weight: 800;
+}
+
+.nav-badge-count {
+  background: #e63946; color: #ffffff; font-size: 11px; font-weight: 800; border-radius: 9999px; padding: 2px 7px; margin-left: 2px;
+}
+
+.nav-actions { display: flex; align-items: center; gap: 12px; }
+.nav-search-btn { color: var(--color-primary); background: none; border: none; cursor: pointer; padding: 8px; }
+.nav-search-input { padding: 6px 12px; font-size: 13px; border-radius: 9999px; width: 140px; }
+
+.mobile-menu-toggle {
+  display: none; background: none; border: none; cursor: pointer; padding: 6px; color: var(--color-primary);
+}
+.mobile-menu-drawer {
+  position: absolute; top: 80px; left: 0; right: 0; background: #ffffff;
+  border-bottom: 2px solid var(--color-outline-variant); box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+  padding: 1.25rem 1.5rem; display: flex; flex-direction: column; gap: 1rem; z-index: 99;
+}
+.mobile-menu-label { font-size: 12px; font-weight: 700; color: var(--color-outline); }

@@ -13,25 +13,25 @@ export default function BestSellers({ products }: BestSellersProps) {
   if (products.length === 0) return null;
 
   return (
-    <section style={{ marginBottom: '48px' }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <div style={{ background: 'var(--color-secondary-container)', padding: '10px', borderRadius: '12px', color: 'var(--color-on-secondary-container)', display: 'flex' }}>
-            <span className="material-symbols-outlined" style={{ fontSize: '28px', fontVariationSettings: "'FILL' 1" }}>
+    <section className="bestsellers-section">
+      <div className="bestsellers-header-row">
+        <div className="bestsellers-title-group">
+          <div className="bestsellers-icon-box">
+            <span className="material-symbols-outlined bestsellers-fire-icon">
               local_fire_department
             </span>
           </div>
           <div>
-            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '28px', fontWeight: '700', color: 'var(--color-on-surface)' }}>
+            <h2 className="bestsellers-title">
               Best Seller Toys
             </h2>
-            <p style={{ fontSize: '14px', color: 'var(--color-on-surface-variant)' }}>
+            <p className="bestsellers-subtitle">
               Most loved and top-rated toys chosen by parents & kids!
             </p>
           </div>
         </div>
 
-        <span style={{ background: 'var(--color-secondary-container)', color: 'var(--color-on-secondary-container)', padding: '6px 16px', borderRadius: '9999px', fontSize: '13px', fontWeight: '700', boxShadow: '0 2px 6px rgba(0,0,0,0.06)' }}>
+        <span className="top-picked-badge bouncy-btn">
           ★ Top Picked Items
         </span>
       </div>

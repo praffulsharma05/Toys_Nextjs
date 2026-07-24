@@ -1,0 +1,36 @@
+/* ==========================================================================
+   Admin Panel, Form Controls & Footer Styles
+   ========================================================================== */
+.admin-card { background: #ffffff; border-radius: 20px; box-shadow: var(--plush-shadow); padding: 28px; margin: 24px auto; max-width: 900px; }
+.admin-table-wrap { overflow-x: auto; background: #ffffff; border-radius: 16px; border: 1px solid var(--color-outline-variant); }
+.admin-input, .admin-select, .admin-textarea {
+  width: 100%; padding: 12px 16px; background: var(--color-surface-container-low);
+  border: 1px solid var(--color-outline-variant); border-radius: 12px;
+  color: var(--color-on-surface); font-size: 15px; outline: none; transition: all 0.2s ease;
+}
+.admin-input:focus, .admin-select:focus, .admin-textarea:focus { border-color: var(--color-primary); background: #ffffff; box-shadow: 0 0 0 3px rgba(0, 88, 190, 0.15); }
+
+/* Footer */
+.footer-section { background: var(--color-surface-container-highest); margin-top: 48px; border-top-left-radius: 20px; border-top-right-radius: 20px; }
+.footer-container { display: flex; flex-direction: column; justify-content: space-between; align-items: flex-start; gap: 24px; padding: 48px 32px; max-width: 1536px; margin: 0 auto; }
+.footer-col-main { display: flex; flex-direction: column; gap: 12px; max-width: 380px; }
+.footer-brand-row { display: flex; align-items: center; gap: 8px; }
+.footer-brand-title { font-family: var(--font-display); font-size: 24px; font-weight: 800; color: var(--color-on-surface); }
+.footer-brand-text { font-size: 15px; color: var(--color-on-surface-variant); line-height: 1.6; }
+.footer-copy-text { font-size: 12px; font-weight: 700; color: var(--color-primary); margin-top: 8px; }
+
+.footer-links-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; width: 100%; }
+.footer-links-col { display: flex; flex-direction: column; gap: 10px; }
+.footer-link-title { font-weight: 700; color: var(--color-on-surface); font-size: 14px; margin-bottom: 8px; }
+.footer-link-item { font-size: 14px; color: var(--color-on-surface-variant); text-decoration: underline; transition: all 0.2s ease; }
+.footer-link-item:hover { color: var(--color-primary); transform: translateX(4px); }
+
+/* Floating Chat Button */
+.floating-chat-btn {
+  position: fixed; bottom: 32px; right: 32px; width: 64px; height: 64px;
+  background-color: var(--color-whatsapp); border-radius: 9999px;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 8px 30px rgba(37, 211, 102, 0.4); z-index: 90;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.floating-chat-btn:hover { transform: scale(1.1); background-color: var(--color-whatsapp-hover); }
