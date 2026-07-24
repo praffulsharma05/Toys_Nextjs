@@ -2,15 +2,23 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import FloatingChat from '@/components/FloatingChat';
 import Link from 'next/link';
+import { getProducts } from '@/lib/products';
+import ProductCard from '@/components/ProductCard';
 
 export const metadata = {
   title: 'Gift Joy | Toy Joy Gift Cards & Packs',
 };
 
-export default function GiftPage() {
+// Make page dynamic to fetch latest products from database
+export const revalidate = 0;
+
+export default async function GiftPage() {
   const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '7878606937';
 
-  // Customized WhatsApp messages for each Gift Box
+  // Fetch products with category "Gift" from MySQL
+  const dbGifts = await getProducts('Gift');
+
+  // Customized WhatsApp messages for fallback Gift Boxes
   const getGiftLink = (name: string, price: string) => {
     const text = `Hello Toy Joy! 👋\nI am interested in buying the *${name}* curated Gift Pack for *${price}*. Please let me know how to proceed!`;
     return `https://wa.me/91${whatsappNumber}?text=${encodeURIComponent(text)}`;
@@ -59,6 +67,12 @@ export default function GiftPage() {
           </div>
 
           <div className="toy-grid">
+            {/* Dynamic Gift Products from MySQL database */}
+            {dbGifts.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+
+            {/* Default curated items (Shown along with database items or as fallbacks) */}
             {/* Birthday Box */}
             <div className="toy-card">
               <div className="toy-card-img-container">

@@ -34,7 +34,8 @@ export const CATEGORIES = [
   'All',
   'Educational',
   'Board Games',
-  'Creative & Crafts'
+  'Creative & Crafts',
+  'Gift'
 ];
 
 type DbProductItem = Omit<ProductType, 'images'> & {
