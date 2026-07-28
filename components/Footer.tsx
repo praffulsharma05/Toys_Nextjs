@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { ROUTES } from '@/lib/apiRoutes';
 
 export default function Footer() {
   const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '7878606937';
@@ -26,9 +27,9 @@ export default function Footer() {
         <div className="footer-links-grid">
           <div className="footer-links-col">
             <span className="footer-link-title">Shop</span>
-            <Link href="/" className="footer-link-item">All Toys</Link>
-            <Link href="/products?category=Educational" className="footer-link-item">Age Groups</Link>
-            <Link href="/products?bestSeller=true" className="footer-link-item">Gift Cards</Link>
+            <Link href={ROUTES.HOME} className="footer-link-item">All Toys</Link>
+            <Link href={ROUTES.PRODUCTS_CATEGORY_EDUCATIONAL} className="footer-link-item">Age Groups</Link>
+            <Link href={ROUTES.PRODUCTS_BEST_SELLER} className="footer-link-item">Gift Cards</Link>
           </div>
 
           <div className="footer-links-col">

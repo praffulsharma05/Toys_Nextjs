@@ -3,6 +3,7 @@
 import { useState, useRef } from 'react';
 import Link from 'next/link';
 import { CATEGORIES } from '@/lib/products';
+import { API_ROUTES, ROUTES } from '@/lib/apiRoutes';
 import { Plus, Trash2, Image as ImageIcon, Upload } from 'lucide-react';
 
 export interface ProductFormData {
@@ -89,7 +90,7 @@ export default function ProductForm({ initialData, title, subtitle, submitLabel,
     try {
       const body = new FormData();
       body.append('file', file);
-      const res = await fetch('/api/upload', { method: 'POST', body });
+      const res = await fetch(API_ROUTES.UPLOAD, { method: 'POST', body });
       const json = await res.json();
       if (json.success && json.url) {
         handleImageChange(index, json.url);
@@ -301,7 +302,7 @@ export default function ProductForm({ initialData, title, subtitle, submitLabel,
           <button type="submit" disabled={submitting} className="btn-primary-toyjoy form-btn-submit">
             {submitting ? 'Saving to Database...' : submitLabel}
           </button>
-          <Link href="/admin" className="btn-whatsapp-toyjoy form-btn-cancel">Cancel</Link>
+          <Link href={ROUTES.ADMIN} className="btn-whatsapp-toyjoy form-btn-cancel">Cancel</Link>
         </div>
       </form>
     </div>

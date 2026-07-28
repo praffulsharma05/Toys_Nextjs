@@ -8,6 +8,7 @@ import FloatingChat from '@/components/FloatingChat';
 import Link from 'next/link';
 import { ProductType } from '@/lib/products';
 import { getWishlistFromCookies } from '@/lib/wishlistCookie';
+import { API_ROUTES, ROUTES } from '@/lib/apiRoutes';
 import { Heart, ArrowLeft, Trash2, ShoppingBag } from 'lucide-react';
 
 export default function WishlistPage() {
@@ -28,7 +29,7 @@ export default function WishlistPage() {
       }
 
       try {
-        const res = await fetch('/api/products');
+        const res = await fetch(API_ROUTES.PRODUCTS);
         const json = await res.json();
         if (isMounted && json.success && Array.isArray(json.data)) {
           const filtered = json.data.filter((p: ProductType) => wishlistedIds.includes(p.id));
@@ -74,7 +75,7 @@ export default function WishlistPage() {
       <main className="wishlist-page-main">
         <div className="container-max">
           <Link
-            href="/"
+            href={ROUTES.HOME}
             className="wishlist-back-link"
           >
             <ArrowLeft className="w-4 h-4" />
@@ -123,7 +124,7 @@ export default function WishlistPage() {
               <p className="wishlist-empty-text">
                 You haven&apos;t saved any toys yet. Click the heart icon on any toy card to save it to your wishlist without logging in!
               </p>
-              <Link href="/products" className="btn-primary-toyjoy wishlist-explore-btn">
+              <Link href={ROUTES.PRODUCTS} className="btn-primary-toyjoy wishlist-explore-btn">
                 <ShoppingBag className="wishlist-bag-icon" />
                 <span>Explore All Toys</span>
               </Link>

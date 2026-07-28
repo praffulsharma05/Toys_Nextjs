@@ -3,6 +3,7 @@ import Footer from '@/components/Footer';
 import FloatingChat from '@/components/FloatingChat';
 import Link from 'next/link';
 import { getProducts } from '@/lib/products';
+import { ROUTES } from '@/lib/apiRoutes';
 import ProductCard from '@/components/ProductCard';
 
 export const metadata = {
@@ -44,7 +45,7 @@ export default async function GiftPage() {
                 <span className="material-symbols-outlined">chat</span>
                 <span>Order Gift on WhatsApp</span>
               </a>
-              <Link href="/products" className="btn-hero-glass bouncy-btn">
+              <Link href={ROUTES.PRODUCTS} className="btn-hero-glass bouncy-btn">
                 <span>Explore Catalog</span>
               </Link>
             </div>
@@ -70,7 +71,7 @@ export default async function GiftPage() {
               <p className="grid-empty-subtitle">
                 Add toys with category &apos;Gift&apos; from your Admin Panel to populate your gift catalog!
               </p>
-              <Link href="/admin" className="btn-primary-toyjoy btn-clear-empty-state bouncy-btn">
+              <Link href={ROUTES.ADMIN} className="btn-primary-toyjoy btn-clear-empty-state bouncy-btn">
                 <span>Go to Admin Panel</span>
               </Link>
             </div>

@@ -1,4 +1,5 @@
 import { getProductById, getProducts } from '@/lib/products';
+import { ROUTES } from '@/lib/apiRoutes';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ProductCard from '@/components/ProductCard';
@@ -37,7 +38,7 @@ export default async function ProductDetailPage({
 
       <main className="main-content">
         <div className="container-max">
-          <Link href="/" className="detail-back-link">
+          <Link href={ROUTES.HOME} className="detail-back-link">
             <ArrowLeft className="w-4 h-4" />
             <span>Back to All Toys</span>
           </Link>

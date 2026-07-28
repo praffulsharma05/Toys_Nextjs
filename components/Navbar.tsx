@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useState, useEffect, useRef, Suspense } from 'react';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { CATEGORIES } from '@/lib/products';
+import { ROUTES } from '@/lib/apiRoutes';
 import { getWishlistFromCookies } from '@/lib/wishlistCookie';
 import { ChevronDown, Check, LayoutGrid } from 'lucide-react';
 
@@ -50,7 +51,7 @@ function NavbarContent({ onSearch }: { onSearch?: (query: string) => void }) {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (onSearch) onSearch(query);
-    else router.push(`/products?search=${encodeURIComponent(query)}`);
+    else router.push(ROUTES.PRODUCTS_BY_SEARCH(query));
     setShowSearch(false);
   };
 
@@ -60,16 +61,16 @@ function NavbarContent({ onSearch }: { onSearch?: (query: string) => void }) {
   const categoryParam = searchParams.get('category') || '';
   const searchParam = searchParams.get('search') || '';
 
-  const isHomeActive = pathname === '/';
-  const isProductsActive = pathname === '/products' && !isBestSeller && !categoryParam && !searchParam;
-  const isBestSellerActive = pathname === '/products' && isBestSeller;
-  const isWishlistActive = pathname === '/wishlist';
+  const isHomeActive = pathname === ROUTES.HOME;
+  const isProductsActive = pathname === ROUTES.PRODUCTS && !isBestSeller && !categoryParam && !searchParam;
+  const isBestSellerActive = pathname === ROUTES.PRODUCTS && isBestSeller;
+  const isWishlistActive = pathname === ROUTES.WISHLIST;
 
   return (
     <header className="header-nav">
       <nav className="header-container">
         {/* Brand Logo */}
-        <Link href="/" className="brand-logo-toyjoy">
+        <Link href={ROUTES.HOME} className="brand-logo-toyjoy">
           <span className="material-symbols-outlined brand-logo-icon">
             rocket_launch
           </span>
@@ -78,11 +79,11 @@ function NavbarContent({ onSearch }: { onSearch?: (query: string) => void }) {
 
         {/* Desktop Navigation Links with Active Yellow Line Indicator */}
         <div className="nav-links">
-          <Link href="/" className={isHomeActive ? 'nav-link-active' : 'nav-link'}>
+          <Link href={ROUTES.HOME} className={isHomeActive ? 'nav-link-active' : 'nav-link'}>
             Home
           </Link>
 
-          <Link href="/products" className={isProductsActive ? 'nav-link-active' : 'nav-link'}>
+          <Link href={ROUTES.PRODUCTS} className={isProductsActive ? 'nav-link-active' : 'nav-link'}>
             Product List
           </Link>
 
@@ -108,7 +109,7 @@ function NavbarContent({ onSearch }: { onSearch?: (query: string) => void }) {
                       key={cat}
                       type="button"
                       onClick={() => {
-                        router.push(cat === 'All' ? '/products' : `/products?category=${encodeURIComponent(cat)}`);
+                        router.push(ROUTES.PRODUCTS_BY_CATEGORY(cat));
                         setCategoryDropdownOpen(false);
                       }}
                       className={`nav-category-option ${isSelected ? 'nav-category-option-selected' : ''}`}
@@ -122,16 +123,16 @@ function NavbarContent({ onSearch }: { onSearch?: (query: string) => void }) {
             )}
           </div>
 
-          <Link href="/products?bestSeller=true" className={isBestSellerActive ? 'nav-link-active' : 'nav-link'}>
+          <Link href={ROUTES.PRODUCTS_BEST_SELLER} className={isBestSellerActive ? 'nav-link-active' : 'nav-link'}>
             Best Sellers
           </Link>
 
-          <Link href="/gift" className={pathname === '/gift' ? 'nav-link-active' : 'nav-link'}>
+          <Link href={ROUTES.GIFT} className={pathname === ROUTES.GIFT ? 'nav-link-active' : 'nav-link'}>
             Gift
           </Link>
 
           {/* Wishlist Link with Live Badge */}
-          <Link href="/wishlist" className={isWishlistActive ? 'nav-link-active inline-flex items-center gap-4' : 'nav-link inline-flex items-center gap-4'}>
+          <Link href={ROUTES.WISHLIST} className={isWishlistActive ? 'nav-link-active inline-flex items-center gap-4' : 'nav-link inline-flex items-center gap-4'}>
             <span className="material-symbols-outlined nav-wishlist-icon">
               favorite
             </span>
@@ -182,11 +183,11 @@ function NavbarContent({ onSearch }: { onSearch?: (query: string) => void }) {
       {/* Mobile Drawer Menu Overlay */}
       {mobileMenuOpen && (
         <div className="mobile-menu-drawer">
-          <Link href="/" onClick={() => setMobileMenuOpen(false)} className={isHomeActive ? 'nav-link-active' : 'nav-link'}>
+          <Link href={ROUTES.HOME} onClick={() => setMobileMenuOpen(false)} className={isHomeActive ? 'nav-link-active' : 'nav-link'}>
             Home
           </Link>
 
-          <Link href="/products" onClick={() => setMobileMenuOpen(false)} className={isProductsActive ? 'nav-link-active' : 'nav-link'}>
+          <Link href={ROUTES.PRODUCTS} onClick={() => setMobileMenuOpen(false)} className={isProductsActive ? 'nav-link-active' : 'nav-link'}>
             Product List
           </Link>
 
@@ -195,7 +196,7 @@ function NavbarContent({ onSearch }: { onSearch?: (query: string) => void }) {
             <select
               onChange={(e) => {
                 if (e.target.value) {
-                  router.push(e.target.value === 'All' ? '/products' : `/products?category=${encodeURIComponent(e.target.value)}`);
+                  router.push(ROUTES.PRODUCTS_BY_CATEGORY(e.target.value));
                   setMobileMenuOpen(false);
                 }
               }}
@@ -211,15 +212,15 @@ function NavbarContent({ onSearch }: { onSearch?: (query: string) => void }) {
             </select>
           </div>
 
-          <Link href="/products?bestSeller=true" onClick={() => setMobileMenuOpen(false)} className={isBestSellerActive ? 'nav-link-active' : 'nav-link'}>
+          <Link href={ROUTES.PRODUCTS_BEST_SELLER} onClick={() => setMobileMenuOpen(false)} className={isBestSellerActive ? 'nav-link-active' : 'nav-link'}>
             Best Sellers
           </Link>
 
-          <Link href="/gift" onClick={() => setMobileMenuOpen(false)} className={pathname === '/gift' ? 'nav-link-active' : 'nav-link'}>
+          <Link href={ROUTES.GIFT} onClick={() => setMobileMenuOpen(false)} className={pathname === ROUTES.GIFT ? 'nav-link-active' : 'nav-link'}>
             Gift
           </Link>
 
-          <Link href="/wishlist" onClick={() => setMobileMenuOpen(false)} className={isWishlistActive ? 'nav-link-active inline-flex items-center gap-6' : 'nav-link inline-flex items-center gap-6'}>
+          <Link href={ROUTES.WISHLIST} onClick={() => setMobileMenuOpen(false)} className={isWishlistActive ? 'nav-link-active inline-flex items-center gap-6' : 'nav-link inline-flex items-center gap-6'}>
             <span className="material-symbols-outlined nav-wishlist-mobile-icon">
               favorite
             </span>
@@ -237,7 +238,7 @@ export default function Navbar(props: { onSearch?: (query: string) => void }) {
       fallback={
         <header className="header-nav">
           <nav className="header-container">
-            <Link href="/" className="brand-logo-toyjoy">
+            <Link href={ROUTES.HOME} className="brand-logo-toyjoy">
               <span className="material-symbols-outlined brand-logo-icon">
                 rocket_launch
               </span>

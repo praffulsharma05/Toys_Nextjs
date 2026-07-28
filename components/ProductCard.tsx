@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { ProductType } from '@/lib/products';
+import { ROUTES } from '@/lib/apiRoutes';
 import WhatsAppIcon from './WhatsAppIcon';
 import { isWishlistedInCookies, toggleWishlistItemInCookies } from '@/lib/wishlistCookie';
 
@@ -44,11 +45,11 @@ export default function ProductCard({ product, onWishlistToggle }: ProductCardPr
   };
 
   const handleCardClick = () => {
-    router.push(`/product/${product.id}`);
+    router.push(ROUTES.PRODUCT_DETAIL(product.id));
   };
 
   const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '7878606937';
-  const productUrl = `${origin}/product/${product.id}`;
+  const productUrl = `${origin}${ROUTES.PRODUCT_DETAIL(product.id)}`;
   const whatsappMsg = `Hello Toy Joy! 👋\nI would like to purchase:\n🧸 *Toy*: ${product.name}\n💰 *Price*: ₹${product.price.toLocaleString('en-IN')}\n🏷️ *Category*: ${product.category}\n🔗 *Link*: ${productUrl}`;
   const whatsappLink = `https://wa.me/91${whatsappNumber}?text=${encodeURIComponent(whatsappMsg)}`;
 

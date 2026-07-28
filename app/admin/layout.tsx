@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { ROUTES } from '@/lib/apiRoutes';
 
 export const metadata = {
   title: 'Toy Joy Admin | Inventory Management',
@@ -17,7 +18,7 @@ export default function AdminLayout({
       >
         <div className="container-max admin-header-flex">
           <div className="admin-brand-wrap">
-            <Link href="/admin" className="brand-logo-toyjoy">
+            <Link href={ROUTES.ADMIN} className="brand-logo-toyjoy">
               <span className="material-symbols-outlined admin-shield-icon">
                 shield
               </span>
@@ -26,16 +27,16 @@ export default function AdminLayout({
           </div>
 
           <nav className="admin-nav-flex">
-            <Link href="/admin" className="nav-link-active">
+            <Link href={ROUTES.ADMIN} className="nav-link-active">
               Manage Products
             </Link>
 
-            <Link href="/admin/add" className="btn-primary-toyjoy btn-admin-add">
+            <Link href={ROUTES.ADMIN_ADD} className="btn-primary-toyjoy btn-admin-add">
               <span className="material-symbols-outlined admin-add-icon">add_circle</span>
               <span>Add New Toy</span>
             </Link>
 
-            <Link href="/" target="_blank" className="btn-whatsapp-toyjoy admin-store-link">
+            <Link href={ROUTES.HOME} target="_blank" className="btn-whatsapp-toyjoy admin-store-link">
               <span className="material-symbols-outlined admin-store-icon">open_in_new</span>
               <span>Storefront</span>
             </Link>

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { ReviewType } from '@/lib/products';
+import { API_ROUTES } from '@/lib/apiRoutes';
 import { MessageSquarePlus, CheckCircle, Calendar, X, Upload, Trash2 } from 'lucide-react';
 
 interface ProductReviewsProps {
@@ -71,7 +72,7 @@ export default function ProductReviews({
     setSuccessMsg('');
 
     try {
-      const res = await fetch(`/api/products/${productId}/reviews`, {
+      const res = await fetch(API_ROUTES.PRODUCT_REVIEWS(productId), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

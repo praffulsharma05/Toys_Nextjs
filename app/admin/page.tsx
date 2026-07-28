@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { ProductType, CATEGORIES } from '@/lib/products';
+import { API_ROUTES, ROUTES } from '@/lib/apiRoutes';
 import AdminStats from '@/components/AdminStats';
 import AdminTable from '@/components/AdminTable';
 
@@ -23,7 +24,7 @@ export default function AdminDashboard() {
     async function load() {
       setLoading(true);
       try {
-        const res = await fetch('/api/products');
+        const res = await fetch(API_ROUTES.PRODUCTS);
         const json = await res.json();
         if (isMounted && json.success) setProducts(json.data);
       } catch {
@@ -42,7 +43,7 @@ export default function AdminDashboard() {
     if (!confirm(`Are you sure you want to soft delete "${name}" from MySQL?`)) return;
 
     try {
-      const res = await fetch(`/api/products/${id}`, { method: 'DELETE' });
+      const res = await fetch(API_ROUTES.PRODUCT_BY_ID(id), { method: 'DELETE' });
       const json = await res.json();
       if (json.success) {
         setProducts((prev) => prev.filter((p) => p.id !== id));
@@ -57,7 +58,7 @@ export default function AdminDashboard() {
 
   const handleToggleBestSeller = async (product: ProductType) => {
     try {
-      const res = await fetch(`/api/products/${product.id}`, {
+      const res = await fetch(API_ROUTES.PRODUCT_BY_ID(product.id), {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ isBestSeller: !product.isBestSeller }),
@@ -90,7 +91,7 @@ export default function AdminDashboard() {
         </div>
 
         <div>
-          <Link href="/admin/add" className="btn-primary-toyjoy btn-admin-add">
+          <Link href={ROUTES.ADMIN_ADD} className="btn-primary-toyjoy btn-admin-add">
             <span className="material-symbols-outlined">add</span>
             <span>Add New Toy</span>
           </Link>

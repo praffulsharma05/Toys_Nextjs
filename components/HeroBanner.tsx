@@ -1,6 +1,7 @@
 'use client';
 
 import WhatsAppIcon from './WhatsAppIcon';
+import { ROUTES } from '@/lib/apiRoutes';
 
 export default function HeroBanner() {
   const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '7878606937';
@@ -31,7 +32,7 @@ export default function HeroBanner() {
             <WhatsAppIcon size={20} color="#ffffff" />
             <span>Order via WhatsApp</span>
           </a>
-          <a href="/products" className="btn-hero-glass bouncy-btn">
+          <a href={ROUTES.PRODUCTS} className="btn-hero-glass bouncy-btn">
             <span>View All Products</span>
             <span className="material-symbols-outlined hero-arrow-icon">arrow_forward</span>
           </a>

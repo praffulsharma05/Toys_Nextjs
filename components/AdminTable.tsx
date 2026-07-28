@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { ProductType } from '@/lib/products';
+import { ROUTES } from '@/lib/apiRoutes';
 
 interface AdminTableProps {
   products: ProductType[];
@@ -23,7 +24,7 @@ export default function AdminTable({ products, loading, onDelete, onToggleBestSe
         <p className="admin-empty-text">
           No products found in MySQL database. Use &quot;Add New Toy&quot; to add products from the admin panel.
         </p>
-        <Link href="/admin/add" className="btn-primary-toyjoy btn-admin-add">
+        <Link href={ROUTES.ADMIN_ADD} className="btn-primary-toyjoy btn-admin-add">
           <span className="material-symbols-outlined">add</span>
           <span>Add Your First Toy Product</span>
         </Link>
@@ -79,7 +80,7 @@ export default function AdminTable({ products, loading, onDelete, onToggleBestSe
               </td>
               <td className="admin-table-td-right">
                 <div className="admin-actions-flex">
-                  <Link href={`/admin/edit/${p.id}`} className="btn-primary-toyjoy admin-btn-edit" title="Edit Toy Details">
+                  <Link href={ROUTES.ADMIN_EDIT(p.id)} className="btn-primary-toyjoy admin-btn-edit" title="Edit Toy Details">
                     <span className="material-symbols-outlined admin-action-icon">edit</span>
                   </Link>
 

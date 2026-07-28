@@ -4,6 +4,7 @@ import { useState, useEffect, use } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import ProductForm, { ProductFormData } from '@/components/ProductForm';
+import { API_ROUTES, ROUTES } from '@/lib/apiRoutes';
 import { ArrowLeft } from 'lucide-react';
 
 export default function EditProductPage({ params }: { params: Promise<{ id: string }> }) {
@@ -15,7 +16,7 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
   useEffect(() => {
     async function loadProduct() {
       try {
-        const res = await fetch(`/api/products/${id}`);
+        const res = await fetch(API_ROUTES.PRODUCT_BY_ID(id));
         const json = await res.json();
         if (json.success && json.data) {
           const p = json.data;
@@ -42,7 +43,7 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
   }, [id]);
 
   const handleEditProduct = async (formData: ProductFormData) => {
-    const res = await fetch(`/api/products/${id}`, {
+    const res = await fetch(API_ROUTES.PRODUCT_BY_ID(id), {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -61,7 +62,7 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
 
     const json = await res.json();
     if (json.success) {
-      router.push('/admin');
+      router.push(ROUTES.ADMIN);
       router.refresh();
     } else {
       throw new Error(json.error || 'Failed to update product');
@@ -72,7 +73,7 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
 
   return (
     <div>
-      <Link href="/admin" className="wishlist-back-link">
+      <Link href={ROUTES.ADMIN} className="wishlist-back-link">
         <ArrowLeft className="w-4 h-4" />
         <span>Back to Admin Dashboard</span>
       </Link>

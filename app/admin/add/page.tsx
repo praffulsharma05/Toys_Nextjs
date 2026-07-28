@@ -3,13 +3,14 @@
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import ProductForm, { ProductFormData } from '@/components/ProductForm';
+import { API_ROUTES, ROUTES } from '@/lib/apiRoutes';
 import { ArrowLeft } from 'lucide-react';
 
 export default function AddProductPage() {
   const router = useRouter();
 
   const handleAddProduct = async (formData: ProductFormData) => {
-    const res = await fetch('/api/products', {
+    const res = await fetch(API_ROUTES.PRODUCTS, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -28,7 +29,7 @@ export default function AddProductPage() {
 
     const json = await res.json();
     if (json.success) {
-      router.push('/admin');
+      router.push(ROUTES.ADMIN);
       router.refresh();
     } else {
       throw new Error(json.error || 'Failed to add product');
@@ -37,7 +38,7 @@ export default function AddProductPage() {
 
   return (
     <div>
-      <Link href="/admin" className="wishlist-back-link">
+      <Link href={ROUTES.ADMIN} className="wishlist-back-link">
         <ArrowLeft className="w-4 h-4" />
         <span>Back to Admin Dashboard</span>
       </Link>
